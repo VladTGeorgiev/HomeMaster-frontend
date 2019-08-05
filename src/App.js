@@ -4,7 +4,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import API from './adapters/API';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Userform from './components/LogInForm'
+import SignUpForm from './components/SignUpForm'
 import LogInForm from './components/LogInForm';
 class App extends React.Component {
   constructor(props)
@@ -33,13 +33,13 @@ class App extends React.Component {
   }
 
   signUp = user => {
+    {console.log(user)}
     API.signUp(user)
       .then(user => this.setState({ user }))
       window.history.pushState({}, "new state", "home");
   }
 
   logIn = user => {
-    console.log(user)
     API.logIn(user)
       .then(user => this.setState({ user }))
       window.history.pushState({}, "new state", "home");
@@ -57,7 +57,11 @@ class App extends React.Component {
         { this.state.user ?
           <Navbar user={this.state.user} logOut={this.logOut}/>
         : 
-          <LogInForm user={this.state.user} submit={this.logIn}/>
+          <div>
+            <LogInForm user={this.state.user} submit={this.logIn}/>
+            <span></span>
+            <SignUpForm user={this.state.user} submit={this.signUp}/>
+          </div>
         }
       </div>
     );

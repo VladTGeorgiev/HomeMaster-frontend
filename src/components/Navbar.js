@@ -1,9 +1,10 @@
 import React from 'react'
 
-const Navbar = ({ user, signUp, logIn, logOut}) => {
+const Navbar = ({ user, logOut}) => {
     return (
         <div>
-            Logged in!
+           Hello, {user.first_name}!
+            <button onClick={logOut}>Log Out</button>
         </div>
     )
 }

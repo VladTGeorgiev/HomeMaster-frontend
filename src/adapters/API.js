@@ -15,13 +15,13 @@ const handleServerError = response => console.error(response)
 
 const clearToken = () => localStorage.removeItem('token')
 
-const signUp = (user) => fetch(signupUrl, {
+const signUp = (user) =>fetch(signupUrl, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({ user })
-}).then(jsonify)
+    }).then(jsonify)
     .then(data => {
         localStorage.setItem('token', data.token)
         return data.user
