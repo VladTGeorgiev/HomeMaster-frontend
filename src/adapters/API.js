@@ -51,10 +51,15 @@ const validateUser = () => {
         .catch(handleServerError)
 }
 
-const fetchData = () =>
+const fetchUsers = () =>
     fetch('http://localhost:3000/api/v1/users', {
     headers: {'Authorization': localStorage.getItem('token')}
-    }).then(response => response.json())
+}).then(response => response.json())
+
+const fetchHomes = () =>
+    fetch('http://localhost:3000/api/v1/homes', {
+    headers: {'Authorization': localStorage.getItem('token')}
+}).then(response => response.json())
 
 export default {
     signUp,
@@ -62,5 +67,6 @@ export default {
     validateUser,
     clearToken,
     homesUrl,
-    fetchData
+    fetchUsers,
+    fetchHomes
 }
