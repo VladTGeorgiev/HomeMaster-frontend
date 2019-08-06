@@ -6,6 +6,8 @@ import API from './adapters/API';
 import SignUpForm from './components/SignUpForm'
 import LogInForm from './components/LogInForm';
 import Dashboard from './components/Dashboard';
+import swal from 'sweetalert';
+
 class App extends React.Component {
   constructor(props)
   {
@@ -35,19 +37,46 @@ class App extends React.Component {
   signUp = user => {
     API.signUp(user)
       .then(user => this.setState({ user }))
-      window.history.pushState({}, "new state", "home");
+      window.history.pushState({}, "new state", "home")
+      swal({
+        title: "Success!",
+        text: "You have signed up!",
+        icon: "success",
+        timer: 1500,
+        buttons: false
+        });
   }
 
   logIn = user => {
     API.logIn(user)
-      .then(user => this.setState({ user }))
-      window.history.pushState({}, "new state", "home");
+      .then(user => {
+        if (user === undefined) {
+          console.log('no user')
+        } else {
+          this.setState({ user })
+          window.history.pushState({}, "new state", "home")
+          swal({
+          title: "Success!",
+          text: "You have logged in!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          });
+        }
+      })
   }
 
   logOut = () => {
     API.clearToken()
     this.setState({ user: undefined })
-    window.history.pushState({}, "new state", "login");
+    window.history.pushState({}, "new state", "login")
+    swal({
+      title: "Success!",
+      text: "You have logged out!",
+      icon: "info",
+      timer: 1500,
+      buttons: false
+      });
   }
 
   render() {
