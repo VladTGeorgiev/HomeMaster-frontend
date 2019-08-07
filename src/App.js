@@ -14,8 +14,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       user: undefined,
-      homeusers: [],
-      homes: []
+      data: []
     }
   }
 
@@ -27,9 +26,8 @@ class App extends React.Component {
           // display some error
         } else {
           this.setState({ user: data.user })
-          window.history.pushState({}, "new state", "home");
-          API.fetchUsers().then(homeusers => this.setState({homeusers: homeusers}))
-          API.fetchHomes().then(homes => this.setState({homes: homes}))
+          window.history.pushState({}, "new state", "home")
+          API.fetchData().then(data => this.setState({data: data}))
         }}
       )
   }
@@ -54,6 +52,7 @@ class App extends React.Component {
           console.log('no user')
         } else {
           this.setState({ user })
+          API.fetchData().then(data => this.setState({data: data}))
           window.history.pushState({}, "new state", "home")
           swal({
           title: "Success!",
@@ -68,7 +67,7 @@ class App extends React.Component {
 
   logOut = () => {
     API.clearToken()
-    this.setState({ user: undefined })
+    this.setState({ user: undefined, data: [] })
     window.history.pushState({}, "new state", "login")
     swal({
       title: "Success!",
@@ -85,7 +84,7 @@ class App extends React.Component {
         { this.state.user ?
           <div className="home">
             <Navbar user={this.state.user} logOut={this.logOut}/>
-            <Dashboard user={this.state.user} homeusers={this.state.homeusers} homes={this.state.homes}/>
+            <Dashboard user={this.state.user} data={this.state.data}/>
           </div>
         : 
           <div>

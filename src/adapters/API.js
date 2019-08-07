@@ -3,6 +3,7 @@ const signupUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
 const validateUrl = `${endpoint}/validate`
+const dataUrl = `${endpoint}/data`
 
 const jsonify = res => {
     if (res.ok)
@@ -51,15 +52,11 @@ const validateUser = () => {
         .catch(handleServerError)
 }
 
-const fetchUsers = () =>
-    fetch('http://localhost:3000/api/v1/users', {
-    headers: {'Authorization': localStorage.getItem('token')}
-}).then(response => response.json())
-
-const fetchHomes = () =>
-    fetch('http://localhost:3000/api/v1/homes', {
-    headers: {'Authorization': localStorage.getItem('token')}
-}).then(response => response.json())
+const fetchData = () => {
+    return fetch('http://localhost:3000/api/v1/data', {
+        headers: {'Authorization': localStorage.getItem('token')}
+    }).then(res => res.json());
+  };
 
 export default {
     signUp,
@@ -67,6 +64,5 @@ export default {
     validateUser,
     clearToken,
     homesUrl,
-    fetchUsers,
-    fetchHomes
+    fetchData
 }
