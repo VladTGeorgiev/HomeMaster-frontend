@@ -19,7 +19,7 @@ const LogInForm = ({ submit}) => {
                     setPassword('')
                 }}>
             <Segment stacked>
-              <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' type="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
+              <Form.Input fluid icon='mail' iconPosition='left' placeholder='E-mail address' type="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
               <Form.Input fluid icon='lock' iconPosition='left' placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
               <Button color='teal' fluid size='large' type='submit'>Log In</Button>
             </Segment>

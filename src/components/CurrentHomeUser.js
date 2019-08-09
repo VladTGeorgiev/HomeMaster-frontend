@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class HomeUser extends Component {
+class CurrentHomeUser extends Component {
     render() {
         if (!this.props.homeuser){
             return (
@@ -17,4 +17,4 @@ class HomeUser extends Component {
     }
 }
 
-export default HomeUser;
+export default CurrentHomeUser;

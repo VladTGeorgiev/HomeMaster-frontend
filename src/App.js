@@ -44,7 +44,7 @@ class App extends React.Component {
   signUp = user => {
     API.signUp(user)
       .then(user => this.setState({ user }))
-      this.props.history.push(`/signup`)
+      this.props.history.push(`/dashboard`)
       swal({
         title: "Success!",
         text: "You have signed up!",
@@ -128,7 +128,6 @@ class App extends React.Component {
       if (willDelete) {
         API.deleteThisUser(this.state.user)
         API.clearToken()
-        this.props.history.push(`/signup`)
         swal({
           title: "Success!",
           text: "You have deleted your profile!",
@@ -136,11 +135,34 @@ class App extends React.Component {
           timer: 1500,
           buttons: false
           });
+          this.props.history.push(`/signup`)
       } else {
         this.props.history.push(`/profile`)
       }
     });
   }
+
+  // HOME
+  updateHome = home => {
+    console.log(home)
+    // API.updateThisHome(this.state.user, home)
+    // .then(home => console.log(home))
+    // API.fetchData().then(data => this.setState({data: data}))
+    // this.props.history.push(`/dashboard`)
+    swal({
+      title: "Success!",
+      text: "You have changed your details!",
+      icon: "success",
+      timer: 1500,
+      buttons: false
+      });
+  }
+
+  submitNewHomeId = (home) => {
+    console.log(home)
+    //have to update user home_id
+  }
+
 
   render() {
     return (
@@ -162,7 +184,7 @@ class App extends React.Component {
             <Route exact path="/home" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Home user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile}/>
+                <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.updateHome} submitNewHomeId={this.submitNewHomeId} submitBillUpdate={this.updateHomeBills}/>
               </div>
             } />
           </div>

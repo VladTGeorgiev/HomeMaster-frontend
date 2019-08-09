@@ -98,6 +98,21 @@ const deleteThisUser = (user) => {
         })
 }
 
+// HOME
+const updateThisHome = (current_user, user) => ///edit to suit the purpose
+    fetch(`${homesUrl}/${current_user.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token() 
+        },
+        body: JSON.stringify({ user })
+        }).then(jsonify)
+        .then(data => {
+            console.log(data)
+        })
+        .catch(handleServerError)
+
 export default {
     signUp,
     logIn,
@@ -106,5 +121,6 @@ export default {
     homesUrl,
     fetchData,
     updateUser,
-    deleteThisUser
+    deleteThisUser,
+    updateThisHome
 }
