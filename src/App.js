@@ -19,6 +19,8 @@ class App extends React.Component {
     this.state = {
       user: undefined,
       data: [],
+      // outstandingBills: [],
+      // outstandingTasks: []
     }
   }
 
@@ -38,7 +40,21 @@ class App extends React.Component {
           API.fetchData().then(data => this.setState({data: data}))
         }}
       )
+      // .then(this.outstandingTasks())
   }
+
+  // outstandingBills = () => {
+  //   this.state.data.bills.filter(bill => bill.paid === false).setState(this.state.outstandingBills)
+  //   console.log(this.state.outstandingBills)
+  // }
+
+  // outstandingTasks = () => {
+  //   if (this.state.outstandingTasks === undefined){
+  //     this.state.data.task.filter(task => task.completed === false).setState(this.state.outstandingTasks)
+  //     console.log(this.state.outstandingTasks)}
+  //   else 
+  //   console.log(this.state.outstandingTasks)
+  // }
 
   ///////// LOGIN/SIGNUP
   signUp = user => {
@@ -163,7 +179,6 @@ class App extends React.Component {
     //have to update user home_id
   }
 
-
   render() {
     return (
       <div>
@@ -172,13 +187,13 @@ class App extends React.Component {
             <Route exact path="/dashboard" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Dashboard user={this.state.user} data={this.state.data}/>
+                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile}/>
               </div>
             } />
             <Route exact path="/profile" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Profile user={this.state.user} redirectToHomeProfile={this.redirectToHomeProfile} submit={this.updateUser} deleteUser={this.deleteUser}/>
+                <Profile user={this.state.user} submit={this.updateUser} deleteUser={this.deleteUser}/>
               </div>
             } />
             <Route exact path="/home" render={() => 

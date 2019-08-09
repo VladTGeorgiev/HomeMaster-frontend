@@ -1,7 +1,7 @@
 import React from 'react'
-import { Card, Icon, Image, Label } from 'semantic-ui-react'
+import { Card, Icon, Image, Label, Button } from 'semantic-ui-react'
 
-const UsersCard = ({home}) => (
+const HomeCard = ({home, redirectToHomeProfile}) => (
         <Card>
             {/* <Image src={} wrapped ui={false} /> */}
             <Card.Content>
@@ -22,12 +22,13 @@ const UsersCard = ({home}) => (
             <Card.Content extra>
             <Card.Meta>
                 <Label>
-                    <Icon name='lock' />
+                    <Icon name='lock' /> Home key
                 </Label>
                 <span className='date'>{home.id}</span>
             </Card.Meta>
             </Card.Content>
+            <Button color='teal' fluid size='small' onClick={() => redirectToHomeProfile()}>Change your home details</Button>
         </Card>
 )
 
-export default UsersCard
+export default HomeCard

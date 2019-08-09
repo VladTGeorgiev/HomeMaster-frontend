@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 
-const Profile = ({ user, submit, redirectToHomeProfile, deleteUser }) => {
+const Profile = ({ user, submit, deleteUser }) => {
 
     const [first_name, setFirstName] = useState('')
     const [last_name, setLastName] = useState('')
@@ -32,9 +32,6 @@ const Profile = ({ user, submit, redirectToHomeProfile, deleteUser }) => {
             </Form>
             <Message> 
                 <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'>Delete</Button>
-            </Message>
-            <Message >
-                <Button color='teal' fluid size='large' onClick={() => redirectToHomeProfile()}>Change your home details</Button>
             </Message>
           </Grid.Column>
         </Grid>
