@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Checkbox, Label} from 'semantic-ui-react'
+import { Card, Table, Checkbox, Label } from 'semantic-ui-react'
 
 class Outstanding extends Component{
     render() {
@@ -7,13 +7,11 @@ class Outstanding extends Component{
         const uncompletedTasks = this.props.data.tasks.filter(task => task.completed === false)
 
         const unpaidBillSplits = this.props.data.bill_splits.filter(bill_split => bill_split.paid === false)
+        // const som = unpaidBillSplits.map(uB => uB.bill_id)
 
-        const billNames1 = this.props.data.bills.filter(bill => bill.id === unpaidBillSplits[1].id)
-        // const billNames = this.props.data.bills.filter(bill => unpaidBillSplits.includes(bill.home_id))
-        console.log(unpaidBillSplits)
-        console.log(this.props.data.bills)
-        console.log(billNames1)
-        // console.log(billNames)
+        // const billNames1 = this.props.data.bills.filter(bill => bill.id === unpaidBillSplits[0].bill_id)
+        // const billNames2 = this.props.data.bills.filter(bill => unpaidBillSplits.includes(bill.id))
+
         return (
             <Card>
                 <Card.Header as='h2'>Outstanding</Card.Header>
@@ -28,8 +26,24 @@ class Outstanding extends Component{
                         <Table.Row>
                             <Table.Cell>
                                 <Label ribbon>Bills</Label>
-                                    <div>{billNames1.map(bill => <p>{bill.name}</p>)}</div>
-                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p>{unpaid_bill_split.amount}</p>)}</div>
+                                    <Table.Body>
+                                        <Table.Row>
+                                                {unpaidBillSplits.map(unpaid_bill_split => <>
+                                            <Table.Cell>
+                                                {this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name}
+                                                £{unpaid_bill_split.amount}
+                                            </Table.Cell>
+                                            </>
+                                            )}
+                                        </Table.Row>
+                                    </Table.Body>
+                                    {/* <div>
+                                        {unpaidBillSplits.map(unpaid_bill_split => <>
+                                        <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name}</p>
+                                        <p>£{unpaid_bill_split.amount}</p>
+                                        </>
+                                        )}
+                                    </div> */}
                                 <Label ribbon>Tasks</Label>
                                     <div>{uncompletedTasks.map(false_task => <p>{false_task.name}</p>)}</div>
                             </Table.Cell>

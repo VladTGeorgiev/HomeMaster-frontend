@@ -25,8 +25,6 @@ class Dashboard extends Component {
                             </Grid.Column>
                             <Grid.Column>
                                 <Outstanding data={this.props.data}/>
-                                {/* ADD OUTSTANDING */}
-                                {/* <div>{this.props.data.tasks.filter(task => task.completed === false).map(false_task => <p>{false_task.name}</p>)}</div> */}
                             </Grid.Column>                  
                         </Grid>
                     </Container>
@@ -46,7 +44,7 @@ class Dashboard extends Component {
                     </Container>
                     <Divider />
                     <Container>
-                        <Grid container>
+                        <Grid columns={4}>
                             {this.props.data.users.map(user => <Grid.Column mobile={16} tablet={8} computer={4}><UsersCard key={user.id} user={user}/></Grid.Column>)}
                         </Grid>
                     </Container>

@@ -23,7 +23,7 @@ const BillsCard= ({bills, bill_splits}) => (
                         </Header>
                     </Table.Cell>
                     <Table.Cell>
-                        {bill_splits.map(bill_split => <p>{bill_split.amount}</p>)}
+                        {bill_splits.map(bill_split => <p>£{bill_split.amount}</p>)}
                     </Table.Cell>
                     <Table.Cell>
                         {bills.map(bill => <p>{bill.date_due}</p>)}
