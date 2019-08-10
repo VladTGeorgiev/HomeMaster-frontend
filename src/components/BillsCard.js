@@ -1,37 +1,46 @@
 import React from 'react';
-import { Card, Table, Header} from 'semantic-ui-react'
+import { Table, Header, Image, Grid} from 'semantic-ui-react'
 
 const BillsCard= ({bills, bill_splits}) => (
-    <Card>
-        <Card.Header as='h2'>Bills</Card.Header>
-        <Table basic='very' celled collapsing>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell></Table.HeaderCell>
-                    <Table.HeaderCell>Amount</Table.HeaderCell>
-                    <Table.HeaderCell>Due date</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
+    <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
+        <Grid.Column style={{ width: '80vw' }}>
+            <Table basic='very' celled collapsing>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell>Household total</Table.HeaderCell>
+                        <Table.HeaderCell>Your share</Table.HeaderCell>
+                        <Table.HeaderCell>Due date</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
 
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Header.Content>
-                                {bills.map(bill => <p>{bill.name}</p>)}
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>
-                        {bill_splits.map(bill_split => <p>£{bill_split.amount}</p>)}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {bills.map(bill => <p>{bill.date_due}</p>)}
-                    </Table.Cell>
-                </Table.Row>
-            </Table.Body>
-        </Table>
-    </Card>
+                <Table.Body>
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as='h4'>
+                                <Header.Content>
+                                    {bills.map(bill => <>
+                                    <Image src={bill.img} size='small' />
+                                    <p>{bill.name}</p>
+                                    </>
+                                    )}
+                                </Header.Content>
+                            </Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {bills.map(bill => <p>£{bill.total}</p>)}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {bill_splits.map(bill_split => <p>£{bill_split.amount}</p>)}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {bills.map(bill => <p>{bill.date_due}</p>)}
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Body>
+            </Table>
+        </Grid.Column>
+    </Grid>
 )
 
 export default BillsCard;

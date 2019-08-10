@@ -9,7 +9,7 @@ const Profile = ({ user, submit, deleteUser }) => {
     // const [avatar, setAvatar] = useState('')
 
     return (
-        <Grid textAlign='center' style={{ height: '50vh' }} verticalAlign='top'>
+        <Grid textAlign='center' style={{ height: '50vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             <Image src='../media/user.png' /> Change your account details

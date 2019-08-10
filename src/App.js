@@ -18,9 +18,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       user: undefined,
-      data: [],
-      // outstandingBills: [],
-      // outstandingTasks: []
+      data: []
     }
   }
 
@@ -42,19 +40,6 @@ class App extends React.Component {
       )
       // .then(this.outstandingTasks())
   }
-
-  // outstandingBills = () => {
-  //   this.state.data.bills.filter(bill => bill.paid === false).setState(this.state.outstandingBills)
-  //   console.log(this.state.outstandingBills)
-  // }
-
-  // outstandingTasks = () => {
-  //   if (this.state.outstandingTasks === undefined){
-  //     this.state.data.task.filter(task => task.completed === false).setState(this.state.outstandingTasks)
-  //     console.log(this.state.outstandingTasks)}
-  //   else 
-  //   console.log(this.state.outstandingTasks)
-  // }
 
   ///////// LOGIN/SIGNUP
   signUp = user => {

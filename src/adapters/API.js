@@ -3,6 +3,7 @@ const endpoint = 'http://localhost:3000/api/v1'
 const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
+const essentialsUrl = `${endpoint}/essentials`
 const validateUrl = `${endpoint}/validate`
 const dataUrl = `${endpoint}/data`
 const token = () => localStorage.getItem("token");
@@ -113,6 +114,43 @@ const updateThisHome = (current_user, user) => ///edit to suit the purpose
         })
         .catch(handleServerError)
 
+
+const addNewEssential = (home, name) =>
+    fetch(essentialsUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token() 
+        },
+        body: JSON.stringify({ 
+            name: name,
+            more: false,
+            home_id: home
+         })
+        }).then(jsonify)
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have created a new hosehold item!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .catch(handleServerError)
+
+const deleteThisEssential = (essential) => {
+    fetch(`${essentialsUrl}/${essential.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token() 
+        },
+        body: JSON.stringify({ essential })
+        })
+}
+
+
 export default {
     signUp,
     logIn,
@@ -122,5 +160,7 @@ export default {
     fetchData,
     updateUser,
     deleteThisUser,
-    updateThisHome
+    updateThisHome,
+    addNewEssential,
+    deleteThisEssential
 }

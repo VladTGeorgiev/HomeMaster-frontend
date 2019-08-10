@@ -1,19 +1,32 @@
-import React from 'react'
+import React, { Component } from 'react'
 import logo from '../media/favicon.png'
 import avatar from '../media/user.png'
-import { Button } from 'semantic-ui-react'
+import { Button, Menu } from 'semantic-ui-react'
 
-const Navbar = ({ user, logOut, redirectToDashboard, redirectToUserProfile}) => {
-    return (
-        <div className='navbar'>
-            <img className='logo' src={logo} alt="Logo" onClick={() => redirectToDashboard()}/>
+export default class Navbar extends Component {
+    state = { 
+        activeItem: '' 
+    }
+
+    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+    render() {
+        const { activeItem } = this.state
+
+        return (
+        <Menu>
+            <Menu.Item name='dashboard' active={activeItem === 'dashboard'} onClick={this.handleItemClick}>
+                <img className='logo' src={logo} alt="Logo" onClick={() => this.props.redirectToDashboard()}/>  
+            </Menu.Item>
             <p className='welcome-message'>HomeMaster</p>
-            <p className='welcome-message'>Hello, {user.first_name}!</p>
-            <img className='logo' src={avatar} alt="Logo" onClick={() => redirectToUserProfile()}/>
-            {/* <button onClick={logOut}>Log Out</button> */}
-            <Button color='teal' fluid size='small' onClick={logOut}>Log Out</Button>
-        </div>
-    )
-}
 
-export default Navbar
+            <p className='welcome-message'>Hello, {this.props.user.first_name}!</p>
+            <Menu.Item name='PROFILE' active={activeItem === 'PROFILE'} onClick={this.handleItemClick}>
+            <img className='logo' src={avatar} alt="Logo" onClick={() => this.props.redirectToUserProfile()}/>
+            </Menu.Item>
+
+            <Button color='teal' fluid size='small' onClick={this.props.logOut}>Log Out</Button>
+        </Menu>
+        )
+    }
+}

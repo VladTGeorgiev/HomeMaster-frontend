@@ -76,7 +76,7 @@ const SugnUpForm = ({ data, submitNewHomeDetails, submitNewHomeId, submitBillUpd
                                         setHomeId('')
                                     }}>
                                 <Segment stacked>
-                                    <Message>Enter your new home key:</Message>
+                                    <Message>Enter your new home key below</Message>
                                     <Form.Input fluid icon='lock' iconPosition='left' placeholder="Home key" type="number" name="home_id" value={home_id} onChange={e => setHomeId(e.target.value)}/>
                                     <Button color='teal' fluid size='large' type='submit'>Move in to your new home!</Button>
                                 </Segment>
