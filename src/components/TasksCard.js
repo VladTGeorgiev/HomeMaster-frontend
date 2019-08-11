@@ -21,11 +21,12 @@ class TasksCard extends React.Component {
 
     render() {
         const tasks = this.props.tasks
-        const all_tasks = this.props.all_tasks
-        const otherTasks = all_tasks.filter(task => task.user_id !== this.props.user.id)
+        // const all_tasks = this.props.all_tasks
+        const otherTasks = this.props.all_tasks.filter(task => task.user_id !== this.props.user.id)
         const addNewTask = this.props.addNewTask
         const updateTask = this.props.updateTask
         const removeTask = this.props.removeTask
+        const users = this.props.users
 
         return (
             <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
@@ -76,7 +77,7 @@ class TasksCard extends React.Component {
                                         <Header.Content>
                                             {/* {all_tasks.map(task => <Image src={task.img} size='small' />)} */}
                                             {otherTasks.map(task => <p>{task.name}</p>)}
-                                            <Button color='olive' size='medium' onClick={() => addNewTask()} >Add more tasks</Button>
+                                            <Button color='olive' size='medium' onClick={() => this.props.addNewTaskForm()} >Add more tasks</Button>
                                         </Header.Content>
                                     </Header>
                                 </Table.Cell>
@@ -87,7 +88,7 @@ class TasksCard extends React.Component {
                                     {otherTasks.map(task => <p><Checkbox toggle onChange={this.message} checked={task.completed}/></p>)} 
                                 </Table.Cell>
                                 <Table.Cell>
-                                    {otherTasks.map(task => <p>{this.props.users.find(user => user.id === task.id).first_name}</p>)} 
+                                    {/* {otherTasks.map(task => <p>{users.find(user => user.id === task.id).first_name}</p>)}  */}
                                 </Table.Cell>
                                 <Table.Cell>
                                     {otherTasks.map(task => <p>{task.day}</p>)}

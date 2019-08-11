@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Loader, Image, Segment, Container, Divider, Menu, Message, Label } from 'semantic-ui-react'
+import { Grid, Loader, Image, Segment, Container, Divider, Menu, Label } from 'semantic-ui-react'
 import UsersCard from './UsersCard'
 import HomeCard from '../components/HomeCard'
 import BillsCard from '../components/BillsCard'
@@ -8,6 +8,7 @@ import EssentialsCard from '../components/EssentialsCard'
 import Outstanding from '../components/Outstanding'
 import API from '../adapters/API';
 import swal from '@sweetalert/with-react'
+import NewTask from '../components/NewTask'
 
 class Dashboard extends Component {
     state = { 
@@ -108,13 +109,43 @@ class Dashboard extends Component {
         });
     }
 
-    addNewTask = () => {
-        swal(
-            <div>
-              <h1>Hello!</h1>        
-              <p>I am a React component inside a SweetAlert modal.</p>
-            </div>
-          )
+    addNewTaskForm = () => {
+          swal({
+            buttons: {
+            },
+            content: (
+              <div>
+                <NewTask user={this.props.user} home={this.props.data.home} addNewTask={this.addNewTask}/>
+                </div>
+            )
+          })
+    }
+
+
+
+    addNewTask = (task) => {
+
+    fetch(API.tasksUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            task
+         })
+        }).then(API.jsonify)
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have added a new task!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .catch(API.handleServerError)
+
     }
 
     updateTask = (newTask) => {
@@ -172,7 +203,7 @@ class Dashboard extends Component {
                 displayedCard = <BillsCard bills={this.props.data.bills} bill_splits={this.props.data.bill_splits}/>
                 break;
             case 'tasks':
-                displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} removeTask={this.removeTask} addNewTask={this.addNewTask} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>
+                displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>
                 break;
             case 'Household essentials':
                 displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.updateEssential}/>
