@@ -1,12 +1,24 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label } from 'semantic-ui-react'
 
-const Profile = ({ user, submit, deleteUser }) => {
+const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
 
-    const [first_name, setFirstName] = useState('')
-    const [last_name, setLastName] = useState('')
-    const [password, setPassword] = useState('')
-    // const [avatar, setAvatar] = useState('')
+  const options = [
+    { key: 'agree', text: 'Agree', value: true },
+    { key: 'disagree', text: 'Disagree', value: false },
+  ]
+
+  const [first_name, setFirstName] = useState('')
+  const [last_name, setLastName] = useState('')
+  const [password, setPassword] = useState('')
+  // const [avatar, setAvatar] = useState('')
+
+
+  let cookie_policy = user.cookie_policy
+  const setCookiePolicy = () => {
+    cookie_policy = !cookie_policy
+    return cookie_policy
+  }
 
     return (
         <Grid textAlign='center' style={{ height: '50vh' }} verticalAlign='middle'>
@@ -16,7 +28,7 @@ const Profile = ({ user, submit, deleteUser }) => {
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
-                    submit({first_name, last_name, password}) //add avatar
+                    updateUser({first_name, last_name, password, cookie_policy}) //add avatar
                     setFirstName('')
                     setLastName('')
                     setPassword('')
@@ -27,11 +39,17 @@ const Profile = ({ user, submit, deleteUser }) => {
                 <Form.Input fluid icon='user' iconPosition='left' placeholder={user.last_name}  type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
                 <Form.Input fluid icon='lock' iconPosition='left' required placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 {/* <Form.Input fluid icon='photo' iconPosition='left' placeholder="Avatar" type="img" name="avatar" value={avatar} onChange={e => setAvatar(e.target.value)}/> */}
+                <Label> Cookie Policy Agreement: 
+                  <Dropdown onChange={e => setCookiePolicy()} defaultValue={ user.cookie_policy} options={options} />
+                </Label>
                 <Button color='teal' fluid size='large' type='submit'>Submit</Button>
             </Segment>
             </Form>
             <Message> 
-                <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'>Delete</Button>
+                <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'>Delete your profile</Button>
+            </Message>
+            <Message> 
+                <Button onClick={() => redirectToCookiePolicy()} color='yellow' fluid size='large' type='submit'>View our Cookie Policy</Button>
             </Message>
           </Grid.Column>
         </Grid>

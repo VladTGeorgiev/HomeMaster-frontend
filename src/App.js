@@ -2,15 +2,16 @@ import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import API from './adapters/API';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
 import SignUpForm from './components/SignUpForm'
 import LogInForm from './components/LogInForm';
 import Dashboard from './components/Dashboard';
-import swal from 'sweetalert';
+import swal from '@sweetalert/with-react'
 import {Route} from 'react-router-dom';
 import {withRouter} from 'react-router-dom'
 import Profile from './components/Profile'
 import Home from './components/Home'
+import CookiePolicy from './components/CookiePolicy';
+import { thisExpression } from '@babel/types';
 
 class App extends React.Component {
   constructor(props)
@@ -36,6 +37,11 @@ class App extends React.Component {
           this.setState({ user: data.user })
           this.props.history.push(`/dashboard`)
           API.fetchData().then(data => this.setState({data: data}))
+          if (this.state.user === undefined) {
+console.log('No user')
+          } else {
+            setTimeout(this.checkCookiePolicyAgreement, 3000);
+          }
         }}
       )
       // .then(this.outstandingTasks())
@@ -53,6 +59,8 @@ class App extends React.Component {
         timer: 1500,
         buttons: false
         });
+      setTimeout(this.checkCookiePolicyAgreement, 3000);
+
   }
 
   logIn = user => {
@@ -73,6 +81,7 @@ class App extends React.Component {
           });
         }
       })
+      setTimeout(this.checkCookiePolicyAgreement, 3000);
   }
 
   logOut = () => {
@@ -88,6 +97,39 @@ class App extends React.Component {
       });
   }
 
+  checkCookiePolicyAgreement = () => {
+    if (this.state.user.cookie_policy === false) {
+      swal({
+        title: "Cookie Policy",
+        text: "This website uses cookies to improve service and provide tailored ads.",
+        icon: "info",
+        buttons: ["Cookie policy", "Agree"]
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            fetch(`${API.usersUrl}/${this.state.user.id}`, {
+              method: 'PATCH',
+              headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: localStorage.getItem("token") 
+              },
+              body: JSON.stringify({ 
+                cookie_policy: true
+               })
+              }).then(API.jsonify)
+              .then(data => {
+                  return data.user
+              })
+              .catch(API.handleServerError)
+          } else {
+            this.redirectToCookiePolicy()
+          }
+        });
+    } else {
+      this.redirectToDashboard()
+    }
+  }
+
   ///////// REDIRECTS
   redirectToDashboard = () => {
     this.props.history.push(`/dashboard`)
@@ -101,11 +143,15 @@ class App extends React.Component {
     this.props.history.push(`/home`)
   }
 
+  redirectToCookiePolicy = () => {
+    this.props.history.push(`/cookie-policy`)
+  }
+
   ///////// UPDATE - DELETE
 
   // USER
   updateUser = userNewInfo => {
-    API.updateUser(this.state.user, userNewInfo)
+    API.updateThisUser(this.state.user, userNewInfo)
     .then(user => this.setState({ user }))
     this.props.history.push(`/dashboard`)
     swal({
@@ -178,13 +224,19 @@ class App extends React.Component {
             <Route exact path="/profile" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Profile user={this.state.user} submit={this.updateUser} deleteUser={this.deleteUser}/>
+                <Profile user={this.state.user} updateUser={this.updateUser} deleteUser={this.deleteUser} redirectToCookiePolicy={this.redirectToCookiePolicy}/>
               </div>
             } />
             <Route exact path="/home" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
                 <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.updateHome} submitNewHomeId={this.submitNewHomeId} submitBillUpdate={this.updateHomeBills}/>
+              </div>
+            } />
+            <Route exact path="/cookie-policy" render={() => 
+              <div>
+                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
+                <CookiePolicy/>
               </div>
             } />
           </div>

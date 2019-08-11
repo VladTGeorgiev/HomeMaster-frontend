@@ -22,21 +22,16 @@ class Outstanding extends Component{
                             <Table.Row>
                                 <Table.Cell>
                                     <Label ribbon color="yellow">Bills</Label>
-                                        {/* <Table.Body> */}
                                             <Table.Row>
                                                 {unpaidBillSplits.map(unpaid_bill_split => <>
-                                                    <Table.Cell key={unpaid_bill_split.id}>
-                                                        <img src={this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).img} size='small' />
-                                                        {this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name}
-                                                        <p>£{unpaid_bill_split.amount}</p>
-                                                    </Table.Cell>
+                                                        {/* <img src={this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).img} size='small' /> */}
+                                                        <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name} ( £{unpaid_bill_split.amount} )</p>
                                                 </>)}
                                             </Table.Row>
-                                        {/* </Table.Body> */}
                                     <Label ribbon color="olive">Tasks</Label>
                                         <Table.Row>
                                             <div>{uncompletedTasks.map(false_task => <>
-                                                <img key={false_task.id} src={false_task.img} size='small' />
+                                                {/* <img key={false_task.id} src={false_task.img} size='small' /> */}
                                                 <p>{false_task.name}</p>
                                             </>
                                             )}</div>
@@ -50,9 +45,9 @@ class Outstanding extends Component{
                                         </Table.Row>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <Checkbox key={unpaid_bill_split.id} slider />)}</div>
-                                    <div>{uncompletedTasks.map(false_task => <Checkbox key={false_task.id} slider />)}</div>
-                                    <div>{neededEssentials.map(false_essentail => <Checkbox key={false_essentail.id} slider />)}</div>
+                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle key={unpaid_bill_split.id} slider /></p>)}</div>
+                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle key={false_task.id} slider /></p>)}</div>
+                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle key={false_essentail.id} slider /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>
                         </Table.Body>

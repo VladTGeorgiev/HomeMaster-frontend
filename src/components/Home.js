@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Label, Segment, Dimmer, Loader } from 'semantic-ui-react'
 import { setServers } from 'dns';
 
 const SugnUpForm = ({ data, submitNewHomeDetails, submitNewHomeId, submitBillUpdate }) => {
@@ -9,10 +9,6 @@ const SugnUpForm = ({ data, submitNewHomeDetails, submitNewHomeId, submitBillUpd
     const [address_two, setAddressTwo] = useState('')
     const [city, setCity] = useState('')
     const [postcode, setPostcode] = useState('')
-
-    const [billName, setBillName] = useState('')
-    const [billDate, setBillDate] = useState('')
-    const [billTotal, setBillTotal] = useState('')
 
     const [home_id, setHomeId] = useState('')
 
@@ -40,26 +36,7 @@ const SugnUpForm = ({ data, submitNewHomeDetails, submitNewHomeId, submitBillUpd
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.address_two} type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.city} type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.postcode} type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
-                                    <Form.Input fluid icon='lock' iconPosition='left' placeholder={data.home.id} type="text" readOnly/>
-                                    <Button color='teal' fluid size='large' type='submit'>Submit</Button>
-                                </Segment>
-                            </Form>
-                        </Grid.Column>
-                        <Grid.Column style={{ maxWidth: 450, width: '50vw' }}>
-                            <Header as='h2' color='teal' textAlign='center'>
-                                <Image src='../media/user.png' /> Bill dates and amount
-                            </Header>
-                            <Form size='large' className='sign-up' onSubmit={e => {
-                                        e.preventDefault();
-                                        submitBillUpdate({billName, billDate, billTotal})
-                                        setBillName('')
-                                        setBillDate('')
-                                        setBillTotal('')
-                                    }}>
-                                <Segment stacked>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.bills.name} type="text" name="billName" value={billName} onChange={e => setBillName(e.target.value)} />
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.bills.date_due} type="date" name="billDate" value={billDate} onChange={e => setBillDate(e.target.value)}/>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.bills.total} type="number" name="billTotal" value={billTotal} onChange={e => setBillTotal(e.target.value)}/>
+                                    {/* <Form.Input fluid icon='lock' iconPosition='left' placeholder={data.home.id} type="text" readOnly/> */}
                                     <Button color='teal' fluid size='large' type='submit'>Submit</Button>
                                 </Segment>
                             </Form>
@@ -76,7 +53,7 @@ const SugnUpForm = ({ data, submitNewHomeDetails, submitNewHomeId, submitBillUpd
                                         setHomeId('')
                                     }}>
                                 <Segment stacked>
-                                    <Message>Enter your new home key below</Message>
+                                    <Label>Enter your new home key below</Label>
                                     <Form.Input fluid icon='lock' iconPosition='left' placeholder="Home key" type="number" name="home_id" value={home_id} onChange={e => setHomeId(e.target.value)}/>
                                     <Button color='teal' fluid size='large' type='submit'>Move in to your new home!</Button>
                                 </Segment>

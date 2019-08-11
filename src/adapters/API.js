@@ -3,6 +3,7 @@ const endpoint = 'http://localhost:3000/api/v1'
 const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
+const tasksUrl = `${endpoint}/tasks`
 const essentialsUrl = `${endpoint}/essentials`
 const validateUrl = `${endpoint}/validate`
 const dataUrl = `${endpoint}/data`
@@ -73,7 +74,7 @@ const fetchData = () => {
   };
 
 // USER
-const updateUser = (current_user, user) =>
+const updateThisUser = (current_user, user) =>
     fetch(`${usersUrl}/${current_user.id}`, {
         method: 'PATCH',
         headers: {
@@ -114,7 +115,7 @@ const updateThisHome = (current_user, user) => ///edit to suit the purpose
         })
         .catch(handleServerError)
 
-
+// ESSENTIALS
 const addNewEssential = (home, name) =>
     fetch(essentialsUrl, {
         method: 'POST',
@@ -150,17 +151,67 @@ const deleteThisEssential = (essential) => {
         })
 }
 
+// TASKS
+const addNewTask = (user, home, name) => {
+    console.log(user)
+    console.log(home)
+    console.log(name)
+}
+    // fetch(tasksUrl, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         Authorization: token() 
+    //     },
+    //     body: JSON.stringify({ 
+    //         name: name,
+    //          description: ,
+    //          date_due: ,
+    //         completed: false,
+    //         home_id: home,
+    //         user_id: user,
+    //          img: ''
+    //      })
+    //     }).then(jsonify)
+    //     .then(
+    //     swal({
+    //         title: "Success!",
+    //         text: "You have created a new task!",
+    //         icon: "success",
+    //         timer: 1500,
+    //         buttons: false
+    //         })
+    //     )
+    //     .catch(handleServerError)
+
+const deleteThisTask = (task) => {
+    fetch(`${essentialsUrl}/${task.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token() 
+        },
+        body: JSON.stringify({ task })
+        })
+}
+
 
 export default {
     signUp,
     logIn,
     validateUser,
     clearToken,
+    token,
     homesUrl,
+    usersUrl,
     fetchData,
-    updateUser,
+    essentialsUrl,
+    tasksUrl,
+    updateThisUser,
     deleteThisUser,
     updateThisHome,
     addNewEssential,
-    deleteThisEssential
+    deleteThisEssential,
+    addNewTask,
+    deleteThisTask
 }

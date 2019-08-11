@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Header, Image, Grid} from 'semantic-ui-react'
+import { Table, Header, Image, Grid, Button} from 'semantic-ui-react'
 
-const BillsCard= ({bills, bill_splits}) => (
+const BillsCard= ({bills, bill_splits, addNewBill, removeBill}) => (
     <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
         <Grid.Column style={{ width: '80vw' }}>
             <Table basic='very' celled collapsing>
@@ -11,6 +11,7 @@ const BillsCard= ({bills, bill_splits}) => (
                         <Table.HeaderCell>Household total</Table.HeaderCell>
                         <Table.HeaderCell>Your share</Table.HeaderCell>
                         <Table.HeaderCell>Due date</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -24,6 +25,7 @@ const BillsCard= ({bills, bill_splits}) => (
                                     <p>{bill.name}</p>
                                     </>
                                     )}
+                                    <Button color='yellow' size='medium' onClick={() => addNewBill()} >Add more bills</Button>
                                 </Header.Content>
                             </Header>
                         </Table.Cell>
@@ -35,6 +37,9 @@ const BillsCard= ({bills, bill_splits}) => (
                         </Table.Cell>
                         <Table.Cell>
                             {bills.map(bill => <p>{bill.date_due}</p>)}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {bills.map(bill => <Button color='red' fluid size='small' onClick={(e) => removeBill(e, bill)}>Remove</Button>)} 
                         </Table.Cell>
                     </Table.Row>
                 </Table.Body>
