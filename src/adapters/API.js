@@ -4,6 +4,7 @@ const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
 const tasksUrl = `${endpoint}/tasks`
+const billsplitsUrl = `${endpoint}/billsplits`
 const essentialsUrl = `${endpoint}/essentials`
 const validateUrl = `${endpoint}/validate`
 const dataUrl = `${endpoint}/data`
@@ -17,7 +18,6 @@ const jsonify = res => {
 }
 
 const handleServerError = response => {
-    console.error(response)
     swal({
         title: "Error!",
         text: "Something didn't go as planned. Please, try again!",
@@ -98,22 +98,19 @@ const deleteThisUser = (user) => {
         },
         body: JSON.stringify({ user })
         })
+        // this.assignTasksToOtherUsers
 }
 
 // HOME
-const updateThisHome = (current_user, user) => ///edit to suit the purpose
-    fetch(`${homesUrl}/${current_user.id}`, {
+const updateThisHome = (home) => 
+    fetch(`${homesUrl}/${home.id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             Authorization: token() 
         },
-        body: JSON.stringify({ user })
+        body: JSON.stringify({ home })
         }).then(jsonify)
-        .then(data => {
-            console.log(data)
-        })
-        .catch(handleServerError)
 
 // ESSENTIALS
 const addNewEssential = (home, name) =>
@@ -152,37 +149,6 @@ const deleteThisEssential = (essential) => {
 }
 
 // TASKS
-const addNewTask = (user, home, name) => {
-    console.log(user)
-    console.log(home)
-    console.log(name)
-}
-    // fetch(tasksUrl, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: token() 
-    //     },
-    //     body: JSON.stringify({ 
-    //         name: name,
-    //          description: ,
-    //          date_due: ,
-    //         completed: false,
-    //         home_id: home,
-    //         user_id: user,
-    //          img: ''
-    //      })
-    //     }).then(jsonify)
-    //     .then(
-    //     swal({
-    //         title: "Success!",
-    //         text: "You have created a new task!",
-    //         icon: "success",
-    //         timer: 1500,
-    //         buttons: false
-    //         })
-    //     )
-    //     .catch(handleServerError)
 
 const deleteThisTask = (task) => {
     fetch(`${essentialsUrl}/${task.id}`, {
@@ -207,11 +173,11 @@ export default {
     fetchData,
     essentialsUrl,
     tasksUrl,
+    billsplitsUrl,
     updateThisUser,
     deleteThisUser,
     updateThisHome,
     addNewEssential,
     deleteThisEssential,
-    addNewTask,
     deleteThisTask
 }

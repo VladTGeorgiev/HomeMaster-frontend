@@ -124,28 +124,26 @@ class Dashboard extends Component {
 
 
     addNewTask = (task) => {
-
-    fetch(API.tasksUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: API.token() 
-        },
-        body: JSON.stringify({ 
-            task
-         })
-        }).then(API.jsonify)
-        .then(
-        swal({
-            title: "Success!",
-            text: "You have added a new task!",
-            icon: "success",
-            timer: 1500,
-            buttons: false
+        fetch(API.tasksUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: API.token() 
+            },
+            body: JSON.stringify({ 
+                task
             })
-        )
-        .catch(API.handleServerError)
-
+            }).then(API.jsonify)
+            .then(
+            swal({
+                title: "Success!",
+                text: "You have added a new task!",
+                icon: "success",
+                timer: 1500,
+                buttons: false
+                })
+            )
+            .catch(API.handleServerError)
     }
 
     updateTask = (newTask) => {
@@ -191,13 +189,34 @@ class Dashboard extends Component {
                 });
     }
 
+// BILLSPLITS
+    updateBillSplit = (billSplit) => {
+        console.log(billSplit)
+        const bill_split = {
+            id: billSplit.id,
+            paid: !billSplit.completed
+        }
+        fetch(`${API.billsplitsUrl}/${billSplit.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: API.token() 
+            },
+            body: JSON.stringify({
+                bill_split
+            })
+            }).then(API.jsonify).then(API.fetchData())
+            .catch(API.handleServerError)
+    }
+
+
     render() {
         const { activeItem } = this.state
         let displayedCard
 
         switch (this.state.activeItem) {
             case 'outstanding':
-                displayedCard = <Outstanding data={this.props.data}/>
+                displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.updateTask} updateBillSplit={this.updateBillSplit} updateEssential={this.updateEssential}/>
                 break;
             case 'bills':
                 displayedCard = <BillsCard bills={this.props.data.bills} bill_splits={this.props.data.bill_splits}/>

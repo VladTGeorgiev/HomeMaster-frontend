@@ -21,7 +21,6 @@ class TasksCard extends React.Component {
 
     render() {
         const tasks = this.props.tasks
-        // const all_tasks = this.props.all_tasks
         const otherTasks = this.props.all_tasks.filter(task => task.user_id !== this.props.user.id)
         const addNewTask = this.props.addNewTask
         const updateTask = this.props.updateTask

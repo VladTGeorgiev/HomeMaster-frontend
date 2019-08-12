@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label } from 'semantic-ui-react'
 
-const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
+const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy, moveToNewHome }) => {
 
   const options = [
     { key: 'agree', text: 'Agree', value: true },
@@ -12,6 +12,7 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
   const [last_name, setLastName] = useState('')
   const [password, setPassword] = useState('')
   // const [avatar, setAvatar] = useState('')
+  const [home_key, setHomeKey] = useState('')
 
 
   let cookie_policy = user.cookie_policy
@@ -45,6 +46,22 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
                 <Button color='teal' fluid size='large' type='submit'>Submit</Button>
             </Segment>
             </Form>
+                        <Grid.Column style={{ maxWidth: 450 }}>
+                            <Header as='h2' color='teal' textAlign='center'>
+                                <Image src='../media/favicon.png' /> Moving home?
+                            </Header>
+                            <Form size='large' className='sign-up' onSubmit={e => {
+                                        e.preventDefault();
+                                        moveToNewHome(home_key)
+                                        setHomeKey('')
+                                    }}>
+                                <Segment stacked>
+                                    <Label>Enter your new home key below</Label>
+                                    <Form.Input fluid icon='lock' iconPosition='left' placeholder="Home key" type="number" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
+                                    <Button color='teal' fluid size='large' type='submit'>Move in to your new home!</Button>
+                                </Segment>
+                            </Form>
+                        </Grid.Column>
             <Message> 
                 <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'>Delete your profile</Button>
             </Message>

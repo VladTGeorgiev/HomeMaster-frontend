@@ -2,11 +2,25 @@ import React, { Component } from 'react';
 import { Card, Table, Checkbox, Label, Grid } from 'semantic-ui-react'
 
 class Outstanding extends Component{
+
+    state = { 
+        checked: '',
+        checkedTask: '',
+        checkedEssential: ''
+    }
+    
+    toggle = () => this.setState(prevState => ({ checked: !prevState.checked }))
+    toggleTask = () => this.setState(prevState => ({ checkedTask: !prevState.checked }))
+    toggleEssential = () => this.setState(prevState => ({ checkedEssential: !prevState.checked }))
+
     render() {
 
         const unpaidBillSplits = this.props.data.bill_splits.filter(bill_split => bill_split.paid === false)
         const uncompletedTasks = this.props.data.tasks.filter(task => task.completed === false)
         const neededEssentials = this.props.data.essentials.filter(essential => essential.more === false)
+        const updateTask = this.props.updateTask
+        const updateBillSplit = this.props.updateBillSplit
+        const updateEssential = this.props.updateEssential
 
         return (
             <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
@@ -23,10 +37,10 @@ class Outstanding extends Component{
                                 <Table.Cell>
                                     <Label ribbon color="yellow">Bills</Label>
                                             <Table.Row>
-                                                {unpaidBillSplits.map(unpaid_bill_split => <>
+                                                {/* {unpaidBillSplits.map(unpaid_bill_split => <> */}
                                                         {/* <img src={this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).img} size='small' /> */}
-                                                        <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name} ( £{unpaid_bill_split.amount} )</p>
-                                                </>)}
+                                                        {/* <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name} ( £{unpaid_bill_split.amount} )</p>
+                                                </>)} */}
                                             </Table.Row>
                                     <Label ribbon color="olive">Tasks</Label>
                                         <Table.Row>
@@ -45,9 +59,9 @@ class Outstanding extends Component{
                                         </Table.Row>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle key={unpaid_bill_split.id} slider /></p>)}</div>
-                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle key={false_task.id} slider /></p>)}</div>
-                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle key={false_essentail.id} slider /></p>)}</div>
+                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle onChange={this.toggle} checked={unpaid_bill_split.completed} onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
+                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle onChange={this.toggleTask} checked={false_task.completed} onChange={() => updateTask(false_task, this.props.user)} /></p>)}</div>
+                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle onChange={this.toggleTask} checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>
                         </Table.Body>
