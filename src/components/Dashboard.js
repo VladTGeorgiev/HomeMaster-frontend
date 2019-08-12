@@ -9,6 +9,7 @@ import Outstanding from '../components/Outstanding'
 import API from '../adapters/API';
 import swal from '@sweetalert/with-react'
 import NewTask from '../components/NewTask'
+import NewBill from '../components/NewBill'
 
 class Dashboard extends Component {
     state = { 
@@ -191,7 +192,6 @@ class Dashboard extends Component {
 
 // BILLSPLITS
     updateBillSplit = (billSplit) => {
-        console.log(billSplit)
         const bill_split = {
             id: billSplit.id,
             paid: !billSplit.completed
@@ -209,6 +209,67 @@ class Dashboard extends Component {
             .catch(API.handleServerError)
     }
 
+    addNewBillForm = () => {
+        swal({
+          buttons: {
+          },
+          content: (
+            <div>
+              <NewBill user={this.props.user} home={this.props.data.home} addNewBill={this.addNewBill}/>
+              </div>
+          )
+        })
+  }
+
+  addNewBill = (bill) => {
+      console.log(bill)
+    fetch(API.billsUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            bill
+        })
+        }).then(API.jsonify)
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have added a new Bill!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .catch(API.handleServerError)
+}
+
+removeBill = (e, bill) => {
+    swal({
+        title: "Are you sure?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        })
+        .then((willDelete) => {
+        if (willDelete) {
+            API.deleteThisBill(bill)
+            swal({
+            title: "Success!",
+            text: "You have deleted the bill!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+            API.fetchData()
+            // this.props.history.push(`/dashboard`)
+        } else {
+        //   this.props.history.push(`/dashboard`)
+        }
+    });
+}
+
 
     render() {
         const { activeItem } = this.state
@@ -219,7 +280,9 @@ class Dashboard extends Component {
                 displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.updateTask} updateBillSplit={this.updateBillSplit} updateEssential={this.updateEssential}/>
                 break;
             case 'bills':
-                displayedCard = <BillsCard bills={this.props.data.bills} bill_splits={this.props.data.bill_splits}/>
+                displayedCard = <BillsCard bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} removeBill={this.removeBill} addNewBillForm={this.addNewBillForm} 
+                // updateBill={this.updateBill}
+                />
                 break;
             case 'tasks':
                 displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>

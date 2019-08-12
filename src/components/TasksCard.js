@@ -13,7 +13,7 @@ class TasksCard extends React.Component {
     message = () => {
         swal({
             title: "Error!",
-            text: "You cannot complete taks that are not assigned to you",
+            text: "You cannot complete tasks that are not assigned to you",
             icon: "info",
             button: "OK",
           });

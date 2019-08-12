@@ -4,6 +4,7 @@ const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
 const tasksUrl = `${endpoint}/tasks`
+const billsUrl = `${endpoint}/bills`
 const billsplitsUrl = `${endpoint}/billsplits`
 const essentialsUrl = `${endpoint}/essentials`
 const validateUrl = `${endpoint}/validate`
@@ -151,13 +152,26 @@ const deleteThisEssential = (essential) => {
 // TASKS
 
 const deleteThisTask = (task) => {
-    fetch(`${essentialsUrl}/${task.id}`, {
+    fetch(`${tasksUrl}/${task.id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             Authorization: token() 
         },
         body: JSON.stringify({ task })
+        })
+}
+
+// BILLS
+
+const deleteThisBill = (bill) => {
+    fetch(`${billsUrl}/${bill.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token() 
+        },
+        body: JSON.stringify({ bill })
         })
 }
 
@@ -174,10 +188,12 @@ export default {
     essentialsUrl,
     tasksUrl,
     billsplitsUrl,
+    billsUrl,
     updateThisUser,
     deleteThisUser,
     updateThisHome,
     addNewEssential,
     deleteThisEssential,
-    deleteThisTask
+    deleteThisTask,
+    deleteThisBill
 }

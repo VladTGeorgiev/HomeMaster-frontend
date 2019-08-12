@@ -37,10 +37,10 @@ class Outstanding extends Component{
                                 <Table.Cell>
                                     <Label ribbon color="yellow">Bills</Label>
                                             <Table.Row>
-                                                {/* {unpaidBillSplits.map(unpaid_bill_split => <> */}
+                                                {unpaidBillSplits.map(unpaid_bill_split => <>
                                                         {/* <img src={this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).img} size='small' /> */}
-                                                        {/* <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name} ( £{unpaid_bill_split.amount} )</p>
-                                                </>)} */}
+                                                        <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name} ( £{unpaid_bill_split.amount} )</p>
+                                                </>)}
                                             </Table.Row>
                                     <Label ribbon color="olive">Tasks</Label>
                                         <Table.Row>

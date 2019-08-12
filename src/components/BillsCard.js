@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Header, Image, Grid, Button} from 'semantic-ui-react'
 
-const BillsCard= ({bills, bill_splits, addNewBill, removeBill}) => (
+const BillsCard= ({bills, bill_splits, addNewBillForm, removeBill}) => (
     <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
         <Grid.Column style={{ width: '80vw' }}>
             <Table basic='very' celled collapsing>
@@ -21,11 +21,11 @@ const BillsCard= ({bills, bill_splits, addNewBill, removeBill}) => (
                             <Header as='h4'>
                                 <Header.Content>
                                     {bills.map(bill => <>
-                                    <Image src={bill.img} size='small' />
+                                    {/* <Image src={bill.img} size='small' /> */}
                                     <p>{bill.name}</p>
                                     </>
                                     )}
-                                    <Button color='yellow' size='medium' onClick={() => addNewBill()} >Add more bills</Button>
+                                    <Button color='yellow' size='medium' onClick={() => addNewBillForm()} >Add more bills</Button>
                                 </Header.Content>
                             </Header>
                         </Table.Cell>
