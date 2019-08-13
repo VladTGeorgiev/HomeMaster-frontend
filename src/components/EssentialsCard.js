@@ -45,6 +45,7 @@ class EssentailsCard extends React.Component {
                                             <Button color='red' fluid size='small' onClick={(e) => removeEssential(e, essential)}>Remove</Button>)}           
                                 </Table.Cell>
                             </Table.Row>
+                            <Divider hidden/>
                             <Table.Row>
                                 <Button color='pink' size='medium' onClick={() => addNewEssential()} >Add more items</Button>
                             </Table.Row>

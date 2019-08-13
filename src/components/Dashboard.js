@@ -162,10 +162,14 @@ class Dashboard extends Component {
                     <Divider />
                     <Divider hidden/>
                     <Container >
-                        <Label ribbon color="teal" size="large">Your housemates</Label>
+                        {this.props.data.users.length - 1 === 1 ? 
+                            <Label ribbon color="teal" size="large">There is one other person living with you</Label>
+                        :
+                            <Label ribbon color="teal" size="large">There are {this.props.data.users.length-1} other people living with you</Label>
+                        }
                         <Divider hidden/>
                         <Grid columns={4}>
-                            {this.props.data.users.map(user => <Grid.Column key={user.id} mobile={16} tablet={8} computer={4}><UsersCard  user={user}/></Grid.Column>)}
+                            {this.props.data.users.filter(user => user.id !== this.props.user.id).map(user => <Grid.Column key={user.id} mobile={16} tablet={8} computer={4}><UsersCard  user={user}/></Grid.Column>)}
                         </Grid>
                     </Container>
                 </Container>

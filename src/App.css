@@ -12,6 +12,15 @@
   color: #008080;
 }
 
+.logo-main-page{
+  font-family: 'Lobster', cursive;
+  font-size: 6rem;
+  color: #008080;
+  text-align: center;
+  padding-top: 15%;
+  padding-bottom: 5%;
+}
+
 .welcome-message {
   display: flex;
   float: right;

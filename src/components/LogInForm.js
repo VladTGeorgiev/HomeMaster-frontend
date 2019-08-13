@@ -8,7 +8,10 @@ const LogInForm = ({ submit}) => {
     const [password, setPassword] = useState('')
 
     return (
-      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <div>
+        <div className='logo-main-page'>Home Sweet Home</div>
+
+      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='top'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             <Image src={logo} size='small' /> Log in to your account
@@ -28,6 +31,7 @@ const LogInForm = ({ submit}) => {
             <Message color='blue'>New to us?<a href='/signup'> <Button color='blue' size='mini'>Sign Up</Button></a></Message>
           </Grid.Column>
         </Grid>
+        </div>
     )
 }
 

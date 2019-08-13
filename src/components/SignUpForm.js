@@ -12,7 +12,9 @@ const SugnUpForm = ({ submit }) => {
     const cookie_policy = false
 
     return (
-        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <div>
+      <div className='logo-main-page'>Home Sweet Home</div>
+        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='top'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='blue' textAlign='center'>
             <Image src={logo} /> Sign up for a new account
@@ -38,6 +40,7 @@ const SugnUpForm = ({ submit }) => {
             <Message color='teal'>Already have an account?<a href='/login'> <Button color='teal' size='mini'>Log In</Button></a></Message>
           </Grid.Column>
         </Grid>
+        </div>
     )
 }
 

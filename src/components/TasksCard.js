@@ -94,6 +94,7 @@ class TasksCard extends React.Component {
                                     {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}>Assign to yourself</Button>)} 
                                 </Table.Cell>
                             </Table.Row>
+                            <Divider hidden/>
                             <Table.Row>
                                 <Button color='olive' size='medium' onClick={() => this.props.addNewTaskForm()} >Add more tasks</Button>
                             </Table.Row>

@@ -67,6 +67,7 @@ class BillsCard extends React.Component {
                             {userBills.map(bill => <Button color='red' fluid size='small' onClick={(e) => removeBill(e, bill)}>Remove</Button>)} 
                         </Table.Cell>
                     </Table.Row>
+                    <Divider hidden/>
                     <Table.Row>
                         <Button color='yellow' size='medium' onClick={() => addNewBillForm()} >Add more bills</Button>
                     </Table.Row>
