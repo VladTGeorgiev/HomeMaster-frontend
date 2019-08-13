@@ -13,6 +13,11 @@ class Outstanding extends Component{
     toggleTask = () => this.setState(prevState => ({ checkedTask: !prevState.checked }))
     toggleEssential = () => this.setState(prevState => ({ checkedEssential: !prevState.checked }))
 
+
+    delay = (task) => {
+        setTimeout( () => this.props.updateTask(task, this.props.user),1000)
+    }
+
     render() {
 
         const unpaidBillSplits = this.props.data.bill_splits.filter(bill_split => bill_split.paid === false)
@@ -29,7 +34,7 @@ class Outstanding extends Component{
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell></Table.HeaderCell>
-                                <Table.HeaderCell>Actioned?</Table.HeaderCell>
+                                <Table.HeaderCell>Complete</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -61,7 +66,7 @@ class Outstanding extends Component{
                                 <Table.Cell>
                                     <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle onChange={this.toggle} checked={unpaid_bill_split.paid} 
                                     onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
-                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle onChange={this.toggleTask} checked={false_task.completed} onChange={() => updateTask(false_task, this.props.user)} /></p>)}</div>
+                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle onChange={this.toggleTask} checked={false_task.completed} onChange={() => this.delay(false_task)} /></p>)}</div>
                                     <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle onChange={this.toggleTask} checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>

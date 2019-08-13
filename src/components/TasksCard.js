@@ -5,10 +5,9 @@ import swal from '@sweetalert/with-react'
 class TasksCard extends React.Component {
 
     state = { 
-        checked: ''
     }
     
-    toggle = () => this.setState(prevState => ({ checked: !prevState.checked }))
+    toggle = (taskId) => this.setState(prevState => ({ [taskId]: !prevState[taskId] }))
 
     message = () => {
         swal({
@@ -22,7 +21,6 @@ class TasksCard extends React.Component {
     render() {
         const tasks = this.props.tasks
         const otherTasks = this.props.all_tasks.filter(task => task.user_id !== this.props.user.id)
-        const addNewTask = this.props.addNewTask
         const updateTask = this.props.updateTask
         const removeTask = this.props.removeTask
         const users = this.props.users
@@ -57,7 +55,7 @@ class TasksCard extends React.Component {
                                     {tasks.map(task => <p>{task.description}</p>)}
                                 </Table.Cell>
                                 <Table.Cell>
-                                    {tasks.map(task => <p><Checkbox toggle onChange={this.toggle} checked={task.completed} onChange={() => updateTask(task, this.props.user)}/></p>)}           
+                                    {tasks.map(task => <p><Checkbox toggle checked={task.completed} onChange={() => updateTask(task, this.props.user)}/></p>)}           
                                 </Table.Cell>
                                 <Table.Cell>
                                     {tasks.map(task => <p>{this.props.user.first_name}</p>)} 

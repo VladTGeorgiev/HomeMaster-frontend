@@ -50,28 +50,31 @@ class App extends React.Component {
   ///////// LOGIN/SIGNUP
   signUp = user => {
       API.signUp(user)
-      .then(user => this.setState({ user }))
-      if (user) {
-        this.props.history.push(`/dashboard`)
-        swal({
-          title: "Success!",
-          text: "You have signed up!",
-          icon: "success",
-          timer: 1500,
-          buttons: false
-          })
-        setTimeout(this.checkCookiePolicyAgreement, 3000)
-        API.fetchData().then(data => this.setState({data: data}))
-      } else {
-        swal({
-          title: "Error!",
-          text: "Sign up unsuccesful!",
-          icon: "warnig",
-          timer: 1500,
-          buttons: false
-          })
-          this.props.history.push(`/signup`)
-      }
+      .then(user => {
+        this.setState({ user })
+        if (user) {
+          this.props.history.push(`/dashboard`)
+          swal({
+            title: "Success!",
+            text: "You have signed up!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+          setTimeout(this.checkCookiePolicyAgreement, 3000)
+          API.fetchData().then(data => this.setState({data: data}))
+        } else {
+          swal({
+            title: "Error!",
+            text: "Sign up unsuccesful!",
+            icon: "warnig",
+            timer: 1500,
+            buttons: false
+            })
+            this.props.history.push(`/signup`)
+        }
+      })
+      
 
   }
 
@@ -243,29 +246,6 @@ class App extends React.Component {
     });
   }
 
-  assignTasksToOtherUsers = (oldUser) => {
-    let otherUser = this.state.data.users.find(user => user.id !== oldUser.id)
-    let oldUserTasks = this.state.data.all_tasks.filter(task => task.user_id === oldUser.id)
-    oldUserTasks.map(oldTask => this.assignTask(oldTask, otherUser))
-  }
-
-  assignTask = (oldTask, otherUser) => {
-    const task = {
-      id: oldTask.id,
-      user_id: otherUser.id
-    }
-    fetch(`${API.tasksUrl}/${oldTask.id}`, {
-      method: 'PATCH',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({
-          task
-      })
-      })
-  }
-
   removeBillSplits = (user) => {
     let bill_splits = this.state.data.all_bill_splits
     bill_splits.map(bill_split =>     
@@ -349,6 +329,122 @@ createBillSplit = (user, bill, amount) => {
       });
   }
 
+// TASKS
+
+addNewTask = (task) => {
+  fetch(API.tasksUrl, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ 
+          task
+      })
+      }).then(API.jsonify)
+      .then(
+      swal({
+          title: "Success!",
+          text: "You have added a new task!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          })
+      )
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
+      .catch(API.handleServerError)
+}
+
+assignTasksToOtherUsers = (oldUser) => {
+  let otherUser = this.state.data.users.find(user => user.id !== oldUser.id)
+  let oldUserTasks = this.state.data.all_tasks.filter(task => task.user_id === oldUser.id)
+  oldUserTasks.map(oldTask => this.assignTask(oldTask, otherUser))
+}
+
+assignTask = (oldTask, otherUser) => {
+  const task = {
+    id: oldTask.id,
+    user_id: otherUser.id
+  }
+  fetch(`${API.tasksUrl}/${oldTask.id}`, {
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: API.token() 
+    },
+    body: JSON.stringify({
+        task
+    })
+    })
+    .then(() => {
+      API.fetchData().then(data => this.setState({data: data}))
+    })
+}
+
+deleteTask = (task) => {
+  fetch(`${API.tasksUrl}/${task.id}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ task })
+      })
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
+}
+
+updateTask = (newTask) => {
+  const task = {
+      id: newTask.id,
+      completed: !newTask.completed
+  }
+  fetch(`${API.tasksUrl}/${newTask.id}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({
+          task
+      })
+      }).then(API.jsonify)
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
+      .catch(API.handleServerError)
+}
+
+addTaskToCurrentUser = (oldTask, user) => {
+  const task = {
+      id: oldTask.id,
+      user_id: user.id
+  }
+  fetch(`${API.tasksUrl}/${oldTask.id}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({
+          task
+      })
+      }).then(API.jsonify)
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
+      .catch(API.handleServerError)
+      swal({
+          title: "Success!",
+          text: "You have added the task to your list!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          })
+}
 
 // ESSENTIALS
 
@@ -374,8 +470,10 @@ addNewEssential = (home, name) => {
           buttons: false
           })
       )
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
       .catch(API.handleServerError)
-      API.fetchData().then(data => this.setState({data: data}))
 }
 
 deleteEssential = (essential) => {
@@ -387,7 +485,9 @@ deleteEssential = (essential) => {
       },
       body: JSON.stringify({ essential })
       })
-      API.fetchData().then(data => this.setState({data: data}))
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
 }
 
 updateEssential = (newEssential) => {
@@ -404,9 +504,11 @@ updateEssential = (newEssential) => {
       body: JSON.stringify({
           essential
       })
-      }).then(API.jsonify).then(API.fetchData())
+      }).then(API.jsonify)
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
       .catch(API.handleServerError)
-      API.fetchData().then(data => this.setState({data: data}))
 }
 
   render() {
@@ -417,7 +519,7 @@ updateEssential = (newEssential) => {
             <Route exact path="/dashboard" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential}/>
+                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential} deleteTask={this.deleteTask} addNewTask={this.addNewTask} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>
               </div>
             } />
             <Route exact path="/profile" render={() => 

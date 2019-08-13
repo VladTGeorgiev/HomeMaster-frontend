@@ -157,16 +157,16 @@ const updateThisHome = (home) =>
 
 // TASKS
 
-const deleteThisTask = (task) => {
-    fetch(`${tasksUrl}/${task.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ task })
-        })
-}
+// const deleteThisTask = (task) => {
+//     fetch(`${tasksUrl}/${task.id}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ task })
+//         })
+// }
 
 //BIllSPLITS
 
@@ -209,6 +209,5 @@ export default {
     updateThisUser,
     deleteThisUser,
     updateThisHome,
-    deleteThisTask,
     deleteThisBill
 }

@@ -19,12 +19,14 @@ class Dashboard extends Component {
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-    buyFromAmazon = (e, name) => {
-        window.open(
-            'https://www.amazon.co.uk/s?k='+name, '_blank'
-          );
-      }
 // ESSENTIALS
+
+buyFromAmazon = (e, name) => {
+    window.open(
+        'https://www.amazon.co.uk/s?k='+name, '_blank'
+      );
+  }
+
     removeEssential = (e, essential) => {
         swal({
             title: "Are you sure?",
@@ -67,24 +69,6 @@ class Dashboard extends Component {
             // .then(this.props.fetchData())
     }
 
-    // updateEssential = (newEssential) => {
-    //     const essential = {
-    //         id: newEssential.id,
-    //         more: !newEssential.more
-    //     }
-    //     fetch(`${API.essentialsUrl}/${newEssential.id}`, {
-    //         method: 'PATCH',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             Authorization: API.token() 
-    //         },
-    //         body: JSON.stringify({
-    //             essential
-    //         })
-    //         }).then(API.jsonify).then(API.fetchData())
-    //         .catch(API.handleServerError)
-    // }
-
 // TASKS
     removeTask = (e, task) => {
         swal({
@@ -95,7 +79,7 @@ class Dashboard extends Component {
             })
             .then((willDelete) => {
             if (willDelete) {
-                API.deleteThisTask(task)
+                this.props.deleteTask(task)
                 swal({
                 title: "Success!",
                 text: "You have deleted the task!",
@@ -103,7 +87,6 @@ class Dashboard extends Component {
                 timer: 1500,
                 buttons: false
                 })
-                API.fetchData()
                 // this.props.history.push(`/dashboard`)
             } else {
             //   this.props.history.push(`/dashboard`)
@@ -117,79 +100,12 @@ class Dashboard extends Component {
             },
             content: (
               <div>
-                <NewTask user={this.props.user} home={this.props.data.home} addNewTask={this.addNewTask}/>
+                <NewTask user={this.props.user} home={this.props.data.home} addNewTask={this.props.addNewTask}/>
                 </div>
             )
           })
     }
 
-
-
-    addNewTask = (task) => {
-        fetch(API.tasksUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: API.token() 
-            },
-            body: JSON.stringify({ 
-                task
-            })
-            }).then(API.jsonify)
-            .then(
-            swal({
-                title: "Success!",
-                text: "You have added a new task!",
-                icon: "success",
-                timer: 1500,
-                buttons: false
-                })
-            )
-            .catch(API.handleServerError)
-    }
-
-    updateTask = (newTask) => {
-        const task = {
-            id: newTask.id,
-            completed: !newTask.completed
-        }
-        fetch(`${API.tasksUrl}/${newTask.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: API.token() 
-            },
-            body: JSON.stringify({
-                task
-            })
-            }).then(API.jsonify).then(API.fetchData())
-            .catch(API.handleServerError)
-    }
-
-    addTaskToCurrentUser = (oldTask, user) => {
-        const task = {
-            id: oldTask.id,
-            user_id: user.id
-        }
-        fetch(`${API.tasksUrl}/${oldTask.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: API.token() 
-            },
-            body: JSON.stringify({
-                task
-            })
-            }).then(API.jsonify).then(API.fetchData())
-            .catch(API.handleServerError)
-            swal({
-                title: "Success!",
-                text: "You have added the task to your list!",
-                icon: "success",
-                timer: 1500,
-                buttons: false
-                });
-    }
 
 // BILLSPLITS
     updateBillSplit = (billSplit) => {
@@ -324,7 +240,7 @@ q
 
         switch (this.state.activeItem) {
             case 'outstanding':
-                displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.updateTask} updateBillSplit={this.updateBillSplit} updateEssential={this.updateEssential}/>
+                displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.props.updateTask} updateBillSplit={this.updateBillSplit} updateEssential={this.props.updateEssential}/>
                 break;
             case 'bills':
                 displayedCard = <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplit} addOtherBillsToCurrentUser={this.addOtherBillsToCurrentUser}
@@ -332,13 +248,13 @@ q
                 />
                 break;
             case 'tasks':
-                displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>
+                displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
                 break;
             case 'Household essentials':
                 displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
                 break;
             default:
-                displayedCard = <Outstanding data={this.props.data}/>
+                displayedCard = <Outstanding/>
         }
 
         return (
