@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import billicon from '../media/credit-card.png'
 import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
 
 const NewBill = ({ home, addNewBill }) => {
@@ -11,7 +12,7 @@ const NewBill = ({ home, addNewBill }) => {
     return (
         <>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src='../media/user.png' /> Add new bill
+            <Image src={billicon} size='small'/> Add new bill
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();

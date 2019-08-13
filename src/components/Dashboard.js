@@ -11,6 +11,7 @@ import swal from '@sweetalert/with-react'
 import NewTask from '../components/NewTask'
 import NewBill from '../components/NewBill'
 import { thisExpression } from '@babel/types';
+import essentialsicon from '../media/check.png'
 
 class Dashboard extends Component {
     state = { 
@@ -59,11 +60,10 @@ class Dashboard extends Component {
                 text: "Add Item!",
                 closeModal: false,
                 },
-                color: 'pink'
+                // icon: essentialsicon
             })
             .then(name => {
                 if (!name) throw null;
-            
                 return this.props.addNewEssential(this.props.data.home.id, name);
             })
             // .then(this.props.fetchData())

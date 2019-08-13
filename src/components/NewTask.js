@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import taskicon from '../media/tools.png'
 import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
 
 const NewTask = ({ user, home, addNewTask }) => {
@@ -13,7 +14,7 @@ const NewTask = ({ user, home, addNewTask }) => {
     return (
         <>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src='../media/user.png' /> Add new task
+            <Image src={taskicon} size='small'/> Add new task
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
