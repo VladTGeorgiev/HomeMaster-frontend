@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
 
-const NewBill = ({ user, home, addNewBill }) => {
+const NewBill = ({ home, addNewBill }) => {
 
   const [name, setName] = useState('')
   const [total, setTotal] = useState('')

@@ -15,7 +15,7 @@ class EssentailsCard extends React.Component {
         const removeEssential = this.props.removeEssential
         const buyFromAmazon = this.props.buyFromAmazon
         return (
-            <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
+            <Grid textAlign='center' verticalAlign='top'>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
                         <Table.Header>
@@ -29,8 +29,7 @@ class EssentailsCard extends React.Component {
                         <Table.Body>
                             <Table.Row>
                                 <Table.Cell>
-                                    {essentials.map(essential => <p>{essential.name}</p>)}
-                                    <Button color='pink' size='medium' onClick={() => addNewEssential()} >Add more items</Button>
+                                    {essentials.map(essential => <p>{essential.name}</p>)}                       
                                 </Table.Cell>
                                 <Table.Cell>
                                     {essentials.map(essential => <p><Checkbox toggle onChange={this.toggle} checked={essential.more} onChange={() => updateEssential(essential)} /></p>)}           
@@ -43,6 +42,9 @@ class EssentailsCard extends React.Component {
                                     {essentials.map(essential => 
                                             <Button color='red' fluid size='small' onClick={(e) => removeEssential(e, essential)}>Remove</Button>)}           
                                 </Table.Cell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Button color='pink' size='medium' onClick={() => addNewEssential()} >Add more items</Button>
                             </Table.Row>
                         </Table.Body>
                     </Table>

@@ -11,6 +11,7 @@ import {withRouter} from 'react-router-dom'
 import Profile from './components/Profile'
 import Home from './components/Home'
 import CookiePolicy from './components/CookiePolicy';
+import { thisExpression } from 'babel-types';
 
 class App extends React.Component {
   constructor(props)
@@ -37,7 +38,7 @@ class App extends React.Component {
           this.props.history.push(`/dashboard`)
           API.fetchData().then(data => this.setState({data: data}))
           if (this.state.user === undefined) {
-console.log('No user')
+            console.log('No user')
           } else {
             setTimeout(this.checkCookiePolicyAgreement, 3000);
           }
@@ -48,25 +49,35 @@ console.log('No user')
 
   ///////// LOGIN/SIGNUP
   signUp = user => {
-    // fetch(API.homesUrl, {
-    //   headers: {'Authorization': localStorage.getItem('token')}
-    //   }).then(res => res.json())
-    //   .then(data => data.find(home => home.home_key === user.home_key))
-    //   .then(home => this.updateUserHomeSignUp(home, user))
-    //   .then(data => console.log(data))
       API.signUp(user)
       .then(user => this.setState({ user }))
-      this.props.history.push(`/dashboard`)
-      swal({
-        title: "Success!",
-        text: "You have signed up!",
-        icon: "success",
-        timer: 1500,
-        buttons: false
-        });
-      setTimeout(this.checkCookiePolicyAgreement, 3000);
+      if (user) {
+        this.props.history.push(`/dashboard`)
+        swal({
+          title: "Success!",
+          text: "You have signed up!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          })
+        setTimeout(this.checkCookiePolicyAgreement, 3000)
+        API.fetchData().then(data => this.setState({data: data}))
+      } else {
+        swal({
+          title: "Error!",
+          text: "Sign up unsuccesful!",
+          icon: "warnig",
+          timer: 1500,
+          buttons: false
+          })
+          this.props.history.push(`/signup`)
+      }
 
   }
+
+//   updateBillSplits = (users, bills) => {
+// console.log(users, bills)
+//   }
 
   logIn = user => {
     API.logIn(user)
@@ -215,6 +226,7 @@ console.log('No user')
     .then((willDelete) => {
       if (willDelete) {
         this.assignTasksToOtherUsers(this.state.user)
+        this.removeBillSplits(this.state.user)
         API.deleteThisUser(this.state.user)
         API.clearToken()
         swal({
@@ -254,6 +266,52 @@ console.log('No user')
       })
   }
 
+  removeBillSplits = (user) => {
+    let bill_splits = this.state.data.all_bill_splits
+    bill_splits.map(bill_split =>     
+      fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ bill_split })
+      }))
+      this.createNewBillSplitsForOtherUsers(user)
+  }
+
+  createNewBillSplitsForOtherUsers = (user) => {
+    let bills = this.state.data.bills
+    let allUsers = this.state.data.users
+    let otherUsers = allUsers.filter(otherUser => otherUser.id !== user.id)
+    otherUsers.map(leftUser => bills.map(bill => this.createBillSplitsFromNewBill(bill, otherUsers)))
+  }
+
+  createBillSplitsFromNewBill = (bill, otherUsers) => {
+    let amount = (parseInt(bill.total)/parseInt(otherUsers.length))
+    otherUsers.map(user => this.createBillSplit(user, bill, amount))
+}
+
+createBillSplit = (user, bill, amount) => {
+    const bill_split = {
+        user_id: user.id,
+        bill_id: bill.id,
+        amount: amount,
+        paid: false
+    }
+    fetch(API.billsplitsUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            bill_split
+        })
+        }).then(API.jsonify).then(API.fetchData())
+        .catch(API.handleServerError)
+  }
+
   // HOME
   updateHome = home => {
     console.log(home)
@@ -291,6 +349,66 @@ console.log('No user')
       });
   }
 
+
+// ESSENTIALS
+
+addNewEssential = (home, name) => {
+  fetch(API.essentialsUrl, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ 
+          name: name,
+          more: false,
+          home_id: home
+       })
+      }).then(API.jsonify)
+      .then(
+      swal({
+          title: "Success!",
+          text: "You have created a new hosehold item!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          })
+      )
+      .catch(API.handleServerError)
+      API.fetchData().then(data => this.setState({data: data}))
+}
+
+deleteEssential = (essential) => {
+  fetch(`${API.essentialsUrl}/${essential.id}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ essential })
+      })
+      API.fetchData().then(data => this.setState({data: data}))
+}
+
+updateEssential = (newEssential) => {
+  const essential = {
+      id: newEssential.id,
+      more: !newEssential.more
+  }
+  fetch(`${API.essentialsUrl}/${newEssential.id}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({
+          essential
+      })
+      }).then(API.jsonify).then(API.fetchData())
+      .catch(API.handleServerError)
+      API.fetchData().then(data => this.setState({data: data}))
+}
+
   render() {
     return (
       <div>
@@ -299,7 +417,7 @@ console.log('No user')
             <Route exact path="/dashboard" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile}/>
+                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential}/>
               </div>
             } />
             <Route exact path="/profile" render={() => 

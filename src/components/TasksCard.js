@@ -28,7 +28,7 @@ class TasksCard extends React.Component {
         const users = this.props.users
 
         return (
-            <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
+            <Grid textAlign='center' verticalAlign='top'>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
                         <Table.Header>
@@ -76,7 +76,6 @@ class TasksCard extends React.Component {
                                         <Header.Content>
                                             {/* {all_tasks.map(task => <Image src={task.img} size='small' />)} */}
                                             {otherTasks.map(task => <p>{task.name}</p>)}
-                                            <Button color='olive' size='medium' onClick={() => this.props.addNewTaskForm()} >Add more tasks</Button>
                                         </Header.Content>
                                     </Header>
                                 </Table.Cell>
@@ -87,7 +86,7 @@ class TasksCard extends React.Component {
                                     {otherTasks.map(task => <p><Checkbox toggle onChange={this.message} checked={task.completed}/></p>)} 
                                 </Table.Cell>
                                 <Table.Cell>
-                                    {/* {otherTasks.map(task => <p>{users.find(user => user.id === task.id).first_name}</p>)}  */}
+                                    {otherTasks.map(task => <p>{users.find(user => user.id === task.user_id).first_name}</p>)} 
                                 </Table.Cell>
                                 <Table.Cell>
                                     {otherTasks.map(task => <p>{task.day}</p>)}
@@ -96,7 +95,9 @@ class TasksCard extends React.Component {
                                     {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}>Assign to yourself</Button>)} 
                                 </Table.Cell>
                             </Table.Row>
-                            
+                            <Table.Row>
+                                <Button color='olive' size='medium' onClick={() => this.props.addNewTaskForm()} >Add more tasks</Button>
+                            </Table.Row>
                         </Table.Body>
                     </Table>
                 </Grid.Column>

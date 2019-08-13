@@ -1,4 +1,5 @@
 import swal from 'sweetalert';
+import App from '../App';
 const endpoint = 'http://localhost:3000/api/v1'
 const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
@@ -71,7 +72,8 @@ const validateUser = () => {
 const fetchData = () => {
     return fetch(dataUrl, {
         headers: {'Authorization': localStorage.getItem('token')}
-    }).then(res => res.json());
+    })
+    .then(res => res.json())
   };
 
 // USER
@@ -99,7 +101,6 @@ const deleteThisUser = (user) => {
         },
         body: JSON.stringify({ user })
         })
-        // this.assignTasksToOtherUsers
 }
 
 // HOME
@@ -114,40 +115,45 @@ const updateThisHome = (home) =>
         }).then(jsonify)
 
 // ESSENTIALS
-const addNewEssential = (home, name) =>
-    fetch(essentialsUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ 
-            name: name,
-            more: false,
-            home_id: home
-         })
-        }).then(jsonify)
-        .then(
-        swal({
-            title: "Success!",
-            text: "You have created a new hosehold item!",
-            icon: "success",
-            timer: 1500,
-            buttons: false
-            })
-        )
-        .catch(handleServerError)
+// const addNewEssential = (home, name) => {
+//     fetch(essentialsUrl, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ 
+//             name: name,
+//             more: false,
+//             home_id: home
+//          })
+//         }).then(jsonify)
+//         .then(
+//         swal({
+//             title: "Success!",
+//             text: "You have created a new hosehold item!",
+//             icon: "success",
+//             timer: 1500,
+//             buttons: false
+//             })
+//         )
+//         .catch(handleServerError)
+//         return fetch(dataUrl, {
+//             headers: {'Authorization': localStorage.getItem('token')}
+//         })
+//         .then(res => res.json()).then(data => App.setNewState({data: data}))
+//         }
 
-const deleteThisEssential = (essential) => {
-    fetch(`${essentialsUrl}/${essential.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ essential })
-        })
-}
+// const deleteThisEssential = (essential) => {
+//     fetch(`${essentialsUrl}/${essential.id}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ essential })
+//         })
+// }
 
 // TASKS
 
@@ -162,9 +168,21 @@ const deleteThisTask = (task) => {
         })
 }
 
+//BIllSPLITS
+
+
 // BILLS
 
-const deleteThisBill = (bill) => {
+const deleteThisBill = (bill_splits, bill) => {
+    bill_splits.map(bill_split => 
+        fetch(`${billsplitsUrl}/${bill_split.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token() 
+            },
+            body: JSON.stringify({ bill_split })
+            }))
     fetch(`${billsUrl}/${bill.id}`, {
         method: 'DELETE',
         headers: {
@@ -174,7 +192,6 @@ const deleteThisBill = (bill) => {
         body: JSON.stringify({ bill })
         })
 }
-
 
 export default {
     signUp,
@@ -192,8 +209,6 @@ export default {
     updateThisUser,
     deleteThisUser,
     updateThisHome,
-    addNewEssential,
-    deleteThisEssential,
     deleteThisTask,
     deleteThisBill
 }

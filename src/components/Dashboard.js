@@ -10,6 +10,7 @@ import API from '../adapters/API';
 import swal from '@sweetalert/with-react'
 import NewTask from '../components/NewTask'
 import NewBill from '../components/NewBill'
+import { thisExpression } from '@babel/types';
 
 class Dashboard extends Component {
     state = { 
@@ -33,7 +34,7 @@ class Dashboard extends Component {
             })
             .then((willDelete) => {
             if (willDelete) {
-                API.deleteThisEssential(essential)
+                this.props.deleteEssential(essential)
                 swal({
                 title: "Success!",
                 text: "You have deleted the item!",
@@ -41,7 +42,6 @@ class Dashboard extends Component {
                 timer: 1500,
                 buttons: false
                 })
-                API.fetchData()
                 // this.props.history.push(`/dashboard`)
             } else {
             //   this.props.history.push(`/dashboard`)
@@ -62,27 +62,28 @@ class Dashboard extends Component {
             .then(name => {
                 if (!name) throw null;
             
-                return API.addNewEssential(this.props.data.home.id, name);
-            }).then(API.fetchData())
+                return this.props.addNewEssential(this.props.data.home.id, name);
+            })
+            // .then(this.props.fetchData())
     }
 
-    updateEssential = (newEssential) => {
-        const essential = {
-            id: newEssential.id,
-            more: !newEssential.more
-        }
-        fetch(`${API.essentialsUrl}/${newEssential.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: API.token() 
-            },
-            body: JSON.stringify({
-                essential
-            })
-            }).then(API.jsonify).then(API.fetchData())
-            .catch(API.handleServerError)
-    }
+    // updateEssential = (newEssential) => {
+    //     const essential = {
+    //         id: newEssential.id,
+    //         more: !newEssential.more
+    //     }
+    //     fetch(`${API.essentialsUrl}/${newEssential.id}`, {
+    //         method: 'PATCH',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: API.token() 
+    //         },
+    //         body: JSON.stringify({
+    //             essential
+    //         })
+    //         }).then(API.jsonify).then(API.fetchData())
+    //         .catch(API.handleServerError)
+    // }
 
 // TASKS
     removeTask = (e, task) => {
@@ -194,7 +195,7 @@ class Dashboard extends Component {
     updateBillSplit = (billSplit) => {
         const bill_split = {
             id: billSplit.id,
-            paid: !billSplit.completed
+            paid: !billSplit.paid
         }
         fetch(`${API.billsplitsUrl}/${billSplit.id}`, {
             method: 'PATCH',
@@ -208,7 +209,41 @@ class Dashboard extends Component {
             }).then(API.jsonify).then(API.fetchData())
             .catch(API.handleServerError)
     }
+    createBillSplitsFromNewBill = (bill) => {
+        let users = this.props.data.users
+        let amount = (parseInt(bill.total)/parseInt(users.length))
+        users.map(user => this.createBillSplit(user, bill, amount))
+    }
 
+    createBillSplitsFromNewBillForUser = (bill) => {
+        let user = this.props.user
+        let amount = bill.total
+        // let amount = (parseInt(bill.total)/parseInt(users.length))
+        this.createBillSplit(user, bill, amount)
+    }
+    
+    createBillSplit = (user, bill, amount) => {
+        const bill_split = {
+            user_id: user.id,
+            bill_id: bill.id,
+            amount: amount,
+            paid: false
+        }
+        fetch(API.billsplitsUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: API.token() 
+            },
+            body: JSON.stringify({
+                bill_split
+            })
+            }).then(API.jsonify).then(API.fetchData())
+            .catch(API.handleServerError)
+      }
+
+    
+// BILLS
     addNewBillForm = () => {
         swal({
           buttons: {
@@ -222,7 +257,6 @@ class Dashboard extends Component {
   }
 
   addNewBill = (bill) => {
-      console.log(bill)
     fetch(API.billsUrl, {
         method: 'POST',
         headers: {
@@ -232,7 +266,8 @@ class Dashboard extends Component {
         body: JSON.stringify({ 
             bill
         })
-        }).then(API.jsonify)
+        }).then(data => data.json())
+        .then(data => this.createBillSplitsFromNewBillForUser(data.bill))
         .then(
         swal({
             title: "Success!",
@@ -254,7 +289,8 @@ removeBill = (e, bill) => {
         })
         .then((willDelete) => {
         if (willDelete) {
-            API.deleteThisBill(bill)
+            let bill_splits = this.props.data.all_bill_splits
+            API.deleteThisBill(bill_splits, bill)
             swal({
             title: "Success!",
             text: "You have deleted the bill!",
@@ -270,6 +306,17 @@ removeBill = (e, bill) => {
     });
 }
 
+addOtherBillsToCurrentUser = (bill, current_user) => {
+    let users = this.props.data.users
+    let all_bill_splits = this.props.data.all_bill_splits
+    let bills_bill_splits = all_bill_splits.filter(split => split.bill_id === bill[0].id)
+    let otherusers = users.filter(user => user.id !== current_user.id)
+    let som = bills_bill_splits.map(split => split.user_id)
+    console.log(som)
+    let usersWithBillSplits = otherusers.filter(otheruser => som.map(s => s) === otheruser.id)
+    console.log(bills_bill_splits, otherusers, usersWithBillSplits)
+}
+q
 
     render() {
         const { activeItem } = this.state
@@ -280,7 +327,7 @@ removeBill = (e, bill) => {
                 displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.updateTask} updateBillSplit={this.updateBillSplit} updateEssential={this.updateEssential}/>
                 break;
             case 'bills':
-                displayedCard = <BillsCard bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} removeBill={this.removeBill} addNewBillForm={this.addNewBillForm} 
+                displayedCard = <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplit} addOtherBillsToCurrentUser={this.addOtherBillsToCurrentUser}
                 // updateBill={this.updateBill}
                 />
                 break;
@@ -288,7 +335,7 @@ removeBill = (e, bill) => {
                 displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>
                 break;
             case 'Household essentials':
-                displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.updateEssential}/>
+                displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
                 break;
             default:
                 displayedCard = <Outstanding data={this.props.data}/>
@@ -298,11 +345,11 @@ removeBill = (e, bill) => {
             this.props.data.home ? 
                 <Container>   
                     <Divider />
-                    <Container style={{ height: '30vh'}}>              
+                    <Container>              
                         <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
                     </Container>
                     <Divider />
-                    <Container style={{ height: '35vh'}}>
+                    <Container >
                         <Menu attached='top' tabular>
                         <Menu.Item color='teal' name='outstanding' active={activeItem === 'outstanding'} onClick={this.handleItemClick} />
                         <Menu.Item color='yellow' name='bills' active={activeItem === 'bills'} onClick={this.handleItemClick}/>
@@ -312,7 +359,7 @@ removeBill = (e, bill) => {
                         <div>{displayedCard}</div>
                     </Container>
                     <Divider />
-                    <Container style={{ height: '30vh'}}>
+                    <Container >
                         <Label ribbon color="teal" size="large">Your housemates</Label>
                         <Grid columns={4}>
                             {this.props.data.users.map(user => <Grid.Column key={user.id} mobile={16} tablet={8} computer={4}><UsersCard  user={user}/></Grid.Column>)}

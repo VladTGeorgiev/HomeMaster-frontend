@@ -23,7 +23,7 @@ class Outstanding extends Component{
         const updateEssential = this.props.updateEssential
 
         return (
-            <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
+            <Grid textAlign='center' verticalAlign='top'>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
                         <Table.Header>
@@ -59,7 +59,8 @@ class Outstanding extends Component{
                                         </Table.Row>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle onChange={this.toggle} checked={unpaid_bill_split.completed} onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
+                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle onChange={this.toggle} checked={unpaid_bill_split.paid} 
+                                    onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
                                     <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle onChange={this.toggleTask} checked={false_task.completed} onChange={() => updateTask(false_task, this.props.user)} /></p>)}</div>
                                     <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle onChange={this.toggleTask} checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
                                 </Table.Cell>

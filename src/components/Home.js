@@ -36,7 +36,7 @@ const SugnUpForm = ({ data, submitNewHomeDetails, }) => {
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.address_two} type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.city} type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.postcode} type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
-                                    <Form.Input fluid icon='lock' iconPosition='left' placeholder={data.home.home_key} type="number" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
+                                    <Form.Input fluid icon='lock' readOnly iconPosition='left' placeholder={data.home.id} type="number" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
                                     {/* <Form.Input fluid icon='lock' iconPosition='left' placeholder={data.home.id} type="text" readOnly/> */}
                                     <Button color='teal' fluid size='large' type='submit'>Submit</Button>
                                 </Segment>
