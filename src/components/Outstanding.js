@@ -3,20 +3,12 @@ import { Card, Table, Checkbox, Label, Grid } from 'semantic-ui-react'
 
 class Outstanding extends Component{
 
-    state = { 
-        checked: '',
-        checkedTask: '',
-        checkedEssential: ''
-    }
+    // state = { 
+    // }
     
-    toggle = () => this.setState(prevState => ({ checked: !prevState.checked }))
-    toggleTask = () => this.setState(prevState => ({ checkedTask: !prevState.checked }))
-    toggleEssential = () => this.setState(prevState => ({ checkedEssential: !prevState.checked }))
-
-
-    delay = (task) => {
-        setTimeout( () => this.props.updateTask(task, this.props.user),1000)
-    }
+    // toggle = (unpaid_bill_splitId) => this.setState(prevState => ({ [unpaid_bill_splitId]: !prevState[unpaid_bill_splitId] }))
+    // toggleTask = (taskId) => this.setState(prevState => ({ [taskId]: !prevState[taskId] }))
+    // toggleEssential = (essentialId) => this.setState(prevState => ({ [essentialId]: !prevState[essentialId] }))
 
     render() {
 
@@ -64,10 +56,16 @@ class Outstanding extends Component{
                                         </Table.Row>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle onChange={this.toggle} checked={unpaid_bill_split.paid} 
+                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle 
+                                    // onChange={this.toggle} 
+                                    checked={unpaid_bill_split.paid} 
                                     onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
-                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle onChange={this.toggleTask} checked={false_task.completed} onChange={() => this.delay(false_task)} /></p>)}</div>
-                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle onChange={this.toggleTask} checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
+                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle 
+                                    // onChange={this.toggleTask} 
+                                    checked={false_task.completed} onChange={() => this.props.updateTask(false_task, this.props.user)} /></p>)}</div>
+                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle 
+                                    // onChange={this.toggleTask} 
+                                    checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>
                         </Table.Body>

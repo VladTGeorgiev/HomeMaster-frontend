@@ -44,7 +44,6 @@ class App extends React.Component {
           }
         }}
       )
-      // .then(this.outstandingTasks())
   }
 
   ///////// LOGIN/SIGNUP
@@ -172,7 +171,7 @@ class App extends React.Component {
     this.props.history.push(`/cookie-policy`)
   }
 
-  ///////// UPDATE - DELETE
+  ///////// CRUD
 
   // USER
   updateUser = userNewInfo => {
@@ -194,7 +193,6 @@ class App extends React.Component {
       }).then(res => res.json())
       .then(homes => this.findHome(homes, home_key))
       .then(home => this.updateUserHome(home))
-    //  update user.home_id to the matching home
   }
 
   findHome = (homes, home_key) => {
@@ -207,6 +205,7 @@ class App extends React.Component {
       id: this.state.user.id,
       home_id: home.id
     }
+    this.assignTasksToOtherUsers(user)
     this.updateUser(user)
     this.logOut()
   }
@@ -270,9 +269,9 @@ class App extends React.Component {
   createBillSplitsFromNewBill = (bill, otherUsers) => {
     let amount = (parseInt(bill.total)/parseInt(otherUsers.length))
     otherUsers.map(user => this.createBillSplit(user, bill, amount))
-}
+  }
 
-createBillSplit = (user, bill, amount) => {
+  createBillSplit = (user, bill, amount) => {
     const bill_split = {
         user_id: user.id,
         bill_id: bill.id,
@@ -292,11 +291,9 @@ createBillSplit = (user, bill, amount) => {
         .catch(API.handleServerError)
   }
 
-  // HOME
+// HOME
   updateHome = home => {
-    console.log(home)
-    API.updateThisHome(home)
-    API.fetchData().then(data => this.setState({data: data}))
+    this.updateThisHome(home)
     this.props.history.push(`/dashboard`)
     swal({
       title: "Success!",
@@ -307,27 +304,41 @@ createBillSplit = (user, bill, amount) => {
       });
   }
 
-  submitNewHomeKey = (home_key) => {
-    let home = {
-      id: this.state.data.home.id,
-      name: this.state.data.home.name,
-      adrress_one: this.state.data.home.adrress_one,
-      adrress_two: this.state.data.home.adrress_two,
-      city: this.state.data.home.city,
-      postcode: this.state.data.home.postcode,
-      home_key: home_key
-    }
-    API.updateThisHome(home)
-    API.fetchData().then(data => this.setState({data: data}))
-    this.props.history.push(`/dashboard`)
-    swal({
-      title: "Success!",
-      text: "You have changed your home details!",
-      icon: "success",
-      timer: 1500,
-      buttons: false
-      });
+  updateThisHome = (home) => {
+    fetch(`${API.homesUrl}/${home.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ home })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
   }
+
+  // submitNewHomeKey = (home_key) => {
+  //   let home = {
+  //     id: this.state.data.home.id,
+  //     name: this.state.data.home.name,
+  //     adrress_one: this.state.data.home.adrress_one,
+  //     adrress_two: this.state.data.home.adrress_two,
+  //     city: this.state.data.home.city,
+  //     postcode: this.state.data.home.postcode,
+  //     home_key: home_key
+  //   }
+  //   API.updateThisHome(home)
+  //   API.fetchData().then(data => this.setState({data: data}))
+  //   this.props.history.push(`/dashboard`)
+  //   swal({
+  //     title: "Success!",
+  //     text: "You have changed your home details!",
+  //     icon: "success",
+  //     timer: 1500,
+  //     buttons: false
+  //     });
+  // }
 
 // TASKS
 
@@ -360,7 +371,24 @@ addNewTask = (task) => {
 assignTasksToOtherUsers = (oldUser) => {
   let otherUser = this.state.data.users.find(user => user.id !== oldUser.id)
   let oldUserTasks = this.state.data.all_tasks.filter(task => task.user_id === oldUser.id)
-  oldUserTasks.map(oldTask => this.assignTask(oldTask, otherUser))
+  oldUserTasks.map(oldTask => this.assignTaskWhenDeletingUser(oldTask, otherUser))
+}
+
+assignTaskWhenDeletingUser = (oldTask, otherUser) => {
+  const task = {
+    id: oldTask.id,
+    user_id: otherUser.id
+  }
+  fetch(`${API.tasksUrl}/${oldTask.id}`, {
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: API.token() 
+    },
+    body: JSON.stringify({
+        task
+    })
+    })
 }
 
 assignTask = (oldTask, otherUser) => {

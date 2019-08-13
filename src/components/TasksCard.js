@@ -4,10 +4,10 @@ import swal from '@sweetalert/with-react'
 
 class TasksCard extends React.Component {
 
-    state = { 
-    }
+    // state = { 
+    // }
     
-    toggle = (taskId) => this.setState(prevState => ({ [taskId]: !prevState[taskId] }))
+    // toggle = (taskId) => this.setState(prevState => ({ [taskId]: !prevState[taskId] }))
 
     message = () => {
         swal({

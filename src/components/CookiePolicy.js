@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Image } from 'semantic-ui-react'
 
 class CookiePolicy extends Component {
     render() {
         return (
             <div>
-                Cookie Policy
+                <img src='../media/cookie.jpeg' />
             </div>
         );
     }

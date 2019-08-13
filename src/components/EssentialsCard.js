@@ -2,11 +2,10 @@ import React from 'react';
 import { Grid, Table, Checkbox, Button} from 'semantic-ui-react'
 class EssentailsCard extends React.Component {
 
-    state = { 
-        checked: ''
-    }
-    
-    toggle = () => this.setState(prevState => ({ checked: !prevState.checked }))
+    // state = { 
+    // }
+
+    // toggle = (essentialId) => this.setState(prevState => ({ [essentialId]: !prevState[essentialId] }))
 
     render() {
         const essentials = this.props.essentials
@@ -32,7 +31,9 @@ class EssentailsCard extends React.Component {
                                     {essentials.map(essential => <p>{essential.name}</p>)}                       
                                 </Table.Cell>
                                 <Table.Cell>
-                                    {essentials.map(essential => <p><Checkbox toggle onChange={this.toggle} checked={essential.more} onChange={() => updateEssential(essential)} /></p>)}           
+                                    {essentials.map(essential => <p><Checkbox toggle 
+                                    // onChange={this.toggle} 
+                                    checked={essential.more} onChange={() => updateEssential(essential)} /></p>)}           
                                 </Table.Cell>
                                 <Table.Cell>
                                     {essentials.map(essential => 
