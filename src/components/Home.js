@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Label, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import logo from '../media/pin.png'
 
 const SugnUpForm = ({ data, submitNewHomeDetails, }) => {
 
@@ -15,10 +16,10 @@ const SugnUpForm = ({ data, submitNewHomeDetails, }) => {
         <div>
             {data.home ? 
                 <div>
-                    <Grid textAlign='center' style={{ height: '50vh'}} verticalAlign='top'>
+                    <Grid textAlign='center' style={{ height: '80vh'}} verticalAlign='middle'>
                         <Grid.Column style={{ maxWidth: 450, width: '50vw' }}>
                             <Header as='h2' color='teal' textAlign='center'>
-                                <Image src='../media/user.png' /> Home details
+                                <Image src={logo} size='small'/> Home details
                             </Header>
                             <Form size='large' className='sign-up' onSubmit={e => {
                                         e.preventDefault();
@@ -32,10 +33,10 @@ const SugnUpForm = ({ data, submitNewHomeDetails, }) => {
                                     }}>
                                 <Segment stacked>
                                     <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.name} type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.address_one} type="text" name="address_one" value={address_one} onChange={e => setAddressOne(e.target.value)}/>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.address_two} type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.city} type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.postcode} type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
+                                    <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.address_one} type="text" name="address_one" value={address_one} onChange={e => setAddressOne(e.target.value)}/>
+                                    <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.address_two} type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
+                                    <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.city} type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>
+                                    <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.postcode} type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
                                     <Form.Input fluid icon='lock' readOnly iconPosition='left' placeholder={data.home.id} type="number" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
                                     {/* <Form.Input fluid icon='lock' iconPosition='left' placeholder={data.home.id} type="text" readOnly/> */}
                                     <Button color='teal' fluid size='large' type='submit'>Submit</Button>

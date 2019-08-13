@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import logo from '../media/smart-house.png'
 
 const LogInForm = ({ submit}) => {
 
@@ -10,7 +11,7 @@ const LogInForm = ({ submit}) => {
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src='../media/favicon.png' /> Log in to your account
+            <Image src={logo} size='small' /> Log in to your account
           </Header>
           <Form size='large' className='log-in' onSubmit={e => {
                     e.preventDefault();
@@ -24,7 +25,7 @@ const LogInForm = ({ submit}) => {
               <Button color='teal' fluid size='large' type='submit'>Log In</Button>
             </Segment>
             </Form>
-            <Message>New to us? <a href='/signup'>Sign Up</a></Message>
+            <Message color='blue'>New to us?<a href='/signup'> <Button color='blue' size='mini'>Sign Up</Button></a></Message>
           </Grid.Column>
         </Grid>
     )

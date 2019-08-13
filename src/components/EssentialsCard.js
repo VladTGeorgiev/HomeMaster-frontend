@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Table, Checkbox, Button} from 'semantic-ui-react'
+import { Grid, Table, Checkbox, Button, Divider} from 'semantic-ui-react'
 class EssentailsCard extends React.Component {
 
     // state = { 
@@ -15,6 +15,7 @@ class EssentailsCard extends React.Component {
         const buyFromAmazon = this.props.buyFromAmazon
         return (
             <Grid textAlign='center' verticalAlign='top'>
+                <Divider hidden/>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
                         <Table.Header>

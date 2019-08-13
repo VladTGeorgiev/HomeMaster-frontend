@@ -12,6 +12,7 @@ import Profile from './components/Profile'
 import Home from './components/Home'
 import CookiePolicy from './components/CookiePolicy';
 import { thisExpression } from 'babel-types';
+import MovingHome from './components/MovingHome';
 
 class App extends React.Component {
   constructor(props)
@@ -171,11 +172,15 @@ class App extends React.Component {
     this.props.history.push(`/cookie-policy`)
   }
 
+  redirectToMovingHome = () => {
+    this.props.history.push(`/moving-home`)
+  }
+
   ///////// CRUD
 
   // USER
   updateUser = userNewInfo => {
-    API.updateThisUser(this.state.user, userNewInfo)
+    this.updateThisUser(this.state.user, userNewInfo)
     .then(user => this.setState({ user }))
     this.props.history.push(`/dashboard`)
     swal({
@@ -186,6 +191,21 @@ class App extends React.Component {
       buttons: false
       });
   }
+
+  updateThisUser = (current_user, user) =>
+    fetch(`${API.usersUrl}/${current_user.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ user })
+        }).then(API.jsonify)
+        .then(data => {
+            localStorage.setItem('token', data.token)
+            return data.user
+        })
+        .catch(API.handleServerError)
 
   moveToNewHome = (home_key) => {
     fetch('http://localhost:3000/api/v1/homes', {
@@ -229,7 +249,7 @@ class App extends React.Component {
       if (willDelete) {
         this.assignTasksToOtherUsers(this.state.user)
         this.removeBillSplits(this.state.user)
-        API.deleteThisUser(this.state.user)
+        this.deleteThisUser(this.state.user)
         API.clearToken()
         swal({
           title: "Success!",
@@ -244,6 +264,17 @@ class App extends React.Component {
       }
     });
   }
+
+  deleteThisUser = (user) => {
+        fetch(`${API.usersUrl}/${user.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: API.token() 
+            },
+            body: JSON.stringify({ user })
+            })
+    }
 
   removeBillSplits = (user) => {
     let bill_splits = this.state.data.all_bill_splits
@@ -692,7 +723,7 @@ updateEssential = (newEssential) => {
           <div>
             <Route exact path="/dashboard" render={() => 
               <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
+                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
                 <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} 
                 
                 addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential} 
@@ -705,20 +736,26 @@ updateEssential = (newEssential) => {
             } />
             <Route exact path="/profile" render={() => 
               <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Profile user={this.state.user} updateUser={this.updateUser} deleteUser={this.deleteUser} redirectToCookiePolicy={this.redirectToCookiePolicy} moveToNewHome={this.moveToNewHome}/>
+                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                <Profile user={this.state.user} updateUser={this.updateUser} deleteUser={this.deleteUser} redirectToCookiePolicy={this.redirectToCookiePolicy} />
               </div>
             } />
             <Route exact path="/home" render={() => 
               <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
+                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
                 <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.updateHome} submitNewHomeKey={this.submitNewHomeKey} />
               </div>
             } />
             <Route exact path="/cookie-policy" render={() => 
               <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
+                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
                 <CookiePolicy/>
+              </div>
+            } />
+            <Route exact path="/moving-home" render={() => 
+              <div>
+                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                <MovingHome moveToNewHome={this.moveToNewHome}/>
               </div>
             } />
           </div>
@@ -727,7 +764,7 @@ updateEssential = (newEssential) => {
             <Route exact path="/login" render={() => 
               <LogInForm user={this.state.user} submit={this.logIn}/>
             } />
-            <Route exact path="/signup" component={() => 
+            <Route exact path="/signup" render={() => 
               <SignUpForm submit={this.signUp}/>
             } />
           </div>

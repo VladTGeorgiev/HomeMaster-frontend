@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label, Divider } from 'semantic-ui-react'
+import userlogo from '../media/smile (1).png'
+import userleaving from '../media/xx.png'
+import legal from '../media/file.png'
 
-const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy, moveToNewHome }) => {
+const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
 
   const options = [
     { key: 'agree', text: 'Agree', value: true },
@@ -12,8 +15,6 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy, moveToN
   const [last_name, setLastName] = useState('')
   const [password, setPassword] = useState('')
   // const [avatar, setAvatar] = useState('')
-  const [home_key, setHomeKey] = useState('')
-
 
   let cookie_policy = user.cookie_policy
   const setCookiePolicy = () => {
@@ -22,10 +23,10 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy, moveToN
   }
 
     return (
-        <Grid textAlign='center' style={{ height: '50vh' }} verticalAlign='middle'>
+        <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src='../media/user.png' /> Change your account details
+            <Image src={userlogo} size='small'/> Change your account details
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
@@ -40,31 +41,24 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy, moveToN
                 <Form.Input fluid icon='user' iconPosition='left' placeholder={user.last_name}  type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
                 <Form.Input fluid icon='lock' iconPosition='left' required placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 {/* <Form.Input fluid icon='photo' iconPosition='left' placeholder="Avatar" type="img" name="avatar" value={avatar} onChange={e => setAvatar(e.target.value)}/> */}
-                <Label> Cookie Policy Agreement: 
+                <Label> <div>Cookie Policy Agreement:</div> 
                   <Dropdown onChange={e => setCookiePolicy()} defaultValue={ user.cookie_policy} options={options} />
                 </Label>
+                <Divider hidden/>
                 <Button color='teal' fluid size='large' type='submit'>Submit</Button>
             </Segment>
             </Form>
-                        <Grid.Column style={{ maxWidth: 450 }}>
-                            <Header as='h2' color='teal' textAlign='center'>
-                                <Image src='../media/favicon.png' /> Moving home?
-                            </Header>
-                            <Form size='large' className='sign-up' onSubmit={e => {
-                                        e.preventDefault();
-                                        moveToNewHome(home_key)
-                                        setHomeKey('')
-                                    }}>
-                                <Segment stacked>
-                                    <Label>Enter your new home key below</Label>
-                                    <Form.Input fluid icon='lock' iconPosition='left' placeholder="Home key" type="number" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
-                                    <Button color='teal' fluid size='large' type='submit'>Move in to your new home!</Button>
-                                </Segment>
-                            </Form>
-                        </Grid.Column>
+            <Divider hidden/>
+            <Header as='h4' color='teal' textAlign='center'>
+              <Image src={userleaving} size='small'/> Thinking of leaving us?
+            </Header>
             <Message> 
                 <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'>Delete your profile</Button>
             </Message>
+            <Divider hidden/>
+            <Header as='h4' color='teal' textAlign='center'>
+              <Image src={legal} size='small'/> The legal stuff
+            </Header>
             <Message> 
                 <Button onClick={() => redirectToCookiePolicy()} color='yellow' fluid size='large' type='submit'>View our Cookie Policy</Button>
             </Message>

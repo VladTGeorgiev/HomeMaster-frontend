@@ -1,27 +1,15 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Comfortaa', cursive;
 }
 
-/* .app {
-  height: 100vh;
-  background-color: #61dafb;
-  text-align: center;
-  display: grid;
-  grid-template-columns: 10 35 10 35 10;
-  grid-template-rows: 10 75 25;
-} */
-
-/* .navbar {
-  min-width: 100%;
-} */
-
 .logo {
-  display: flex;
-  flex: right;
   height: 2rem;
-  margin: 1rem;
-  cursor: pointer;
+  margin-top: 1.5rem;
+  font-family: 'Lobster', cursive;
+  font-size: 3rem;
+  color: #008080;
 }
 
 .welcome-message {
@@ -29,39 +17,17 @@
   float: right;
 }
 
-/* HOME */
+.text {
+  font-size: 1.8rem;
+  font-family: 'Lobster', cursive;
+}
 
-/* .home {
-  display: grid;
-  grid-template-columns: 10 35 10 35 10;
-  grid-template-rows: 10 75 15;
-} */
+.text-home-name {
+  font-size: 1.8rem;
+  font-family: 'Lobster', cursive;
+  color: #008080;
+}
 
-/* WELCOME */
 
-/* .welcome {
-  display: grid;
-  grid-template-columns: 10 35 10 35 10;
-  grid-template-rows: 10 75 15;
-} */
 
-/* LOGIN */
-
-/* .log-in {
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 3;
-} */
-
-/* SIGNUP */
-
-/* .sign-up {
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: 2;
-  grid-row-end: 3;
-} */
-
-/* /////// */
 

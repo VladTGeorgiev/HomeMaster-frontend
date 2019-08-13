@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import logo from '../media/smart-house.png'
 
 const SugnUpForm = ({ submit }) => {
 
@@ -13,8 +14,8 @@ const SugnUpForm = ({ submit }) => {
     return (
         <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='teal' textAlign='center'>
-            <Image src='../media/favicon.png' /> Sign up for a new your account
+          <Header as='h2' color='blue' textAlign='center'>
+            <Image src={logo} /> Sign up for a new account
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
@@ -31,10 +32,10 @@ const SugnUpForm = ({ submit }) => {
                 <Form.Input required fluid icon='mail' iconPosition='left' placeholder='E-mail address' type="email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                 <Form.Input required fluid icon='lock' iconPosition='left' placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 <Form.Input required fluid icon='lock' iconPosition='left' placeholder="Home Key" type="text" name="home_id" value={home_id} onChange={e => setHomeId(e.target.value)}/>
-                <Button color='teal' fluid size='large' type='submit'>Sign Up</Button>
+                <Button color='blue' fluid size='large' type='submit'>Sign Up</Button>
             </Segment>
             </Form>
-            <Message>Already have an account? <a href='/login'>Log In</a></Message>
+            <Message color='teal'>Already have an account?<a href='/login'> <Button color='teal' size='mini'>Log In</Button></a></Message>
           </Grid.Column>
         </Grid>
     )

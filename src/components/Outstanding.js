@@ -21,6 +21,7 @@ class Outstanding extends Component{
 
         return (
             <Grid textAlign='center' verticalAlign='top'>
+                <Divider hidden/>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
                         <Table.Header>
@@ -39,6 +40,7 @@ class Outstanding extends Component{
                                                         <p>{this.props.data.bills.find(bill => bill.id === unpaid_bill_split.bill_id).name} ( £{unpaid_bill_split.amount} )</p>
                                                 </>)}
                                             </Table.Row>
+                                    <Divider hidden/>
                                     <Label ribbon color="olive">Tasks</Label>
                                         <Table.Row>
                                             <div>{uncompletedTasks.map(false_task => <>
@@ -47,6 +49,7 @@ class Outstanding extends Component{
                                             </>
                                             )}</div>
                                         </Table.Row>
+                                    <Divider hidden/>
                                     <Label ribbon color="pink">Household essentials</Label>
                                         <Table.Row>
                                             <div>{neededEssentials.map(false_essentail=> <>
@@ -56,16 +59,16 @@ class Outstanding extends Component{
                                         </Table.Row>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <Divider />
+                                    <Divider hidden/>
                                     <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle 
                                     // onChange={this.toggle} 
                                     checked={unpaid_bill_split.paid} 
                                     onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
-                                    <Divider />
+                                    <Divider hidden/>
                                     <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle 
                                     // onChange={this.toggleTask} 
                                     checked={false_task.completed} onChange={() => this.props.updateTask(false_task, this.props.user)} /></p>)}</div>
-                                    <Divider />
+                                    <Divider hidden/>
                                     <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle 
                                     // onChange={this.toggleTask} 
                                     checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>

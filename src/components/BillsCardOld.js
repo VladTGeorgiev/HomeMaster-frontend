@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Header, Image, Grid, Button, Checkbox, Label} from 'semantic-ui-react'
+import { Table, Header, Image, Grid, Button, Checkbox, Label, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 // const BillsCard= ({bills, bill_splits, addNewBillForm, removeBill}) => (
@@ -28,6 +28,7 @@ class BillsCard extends React.Component {
         return (
             <>
     <Grid textAlign='center' verticalAlign='top'>
+    <Divider hidden/>
         <Grid.Column style={{ width: '80vw' }}>
             <Table basic='very' celled collapsing>
                 <Table.Header>

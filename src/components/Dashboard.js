@@ -145,11 +145,11 @@ class Dashboard extends Component {
         return (
             this.props.data.home ? 
                 <Container>   
-                    <Divider />
                     <Container>              
                         <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
                     </Container>
-                    <Divider />
+                    <Divider hidden/>
+                    <Divider hidden/>
                     <Container >
                         <Menu attached='top' tabular>
                         <Menu.Item color='teal' name='outstanding' active={activeItem === 'outstanding'} onClick={this.handleItemClick} />
@@ -160,8 +160,10 @@ class Dashboard extends Component {
                         <div>{displayedCard}</div>
                     </Container>
                     <Divider />
+                    <Divider hidden/>
                     <Container >
                         <Label ribbon color="teal" size="large">Your housemates</Label>
+                        <Divider hidden/>
                         <Grid columns={4}>
                             {this.props.data.users.map(user => <Grid.Column key={user.id} mobile={16} tablet={8} computer={4}><UsersCard  user={user}/></Grid.Column>)}
                         </Grid>

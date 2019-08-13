@@ -67,7 +67,7 @@ const validateUser = () => {
         .catch(handleServerError)
 }
 
- /////////  FETCH REQUESTS
+/////////  FETCH REQUEST
 
 const fetchData = () => {
     return fetch(dataUrl, {
@@ -75,123 +75,6 @@ const fetchData = () => {
     })
     .then(res => res.json())
   };
-
-// USER
-// const updateThisUser = (current_user, user) =>
-//     fetch(`${usersUrl}/${current_user.id}`, {
-//         method: 'PATCH',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ user })
-//         }).then(jsonify)
-//         .then(data => {
-//             localStorage.setItem('token', data.token)
-//             return data.user
-//         })
-//         .catch(handleServerError)
-
-// const deleteThisUser = (user) => {
-//     fetch(`${usersUrl}/${user.id}`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ user })
-//         })
-// }
-
-// HOME
-// const updateThisHome = (home) => 
-//     fetch(`${homesUrl}/${home.id}`, {
-//         method: 'PATCH',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ home })
-//         }).then(jsonify)
-
-// ESSENTIALS
-// const addNewEssential = (home, name) => {
-//     fetch(essentialsUrl, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ 
-//             name: name,
-//             more: false,
-//             home_id: home
-//          })
-//         }).then(jsonify)
-//         .then(
-//         swal({
-//             title: "Success!",
-//             text: "You have created a new hosehold item!",
-//             icon: "success",
-//             timer: 1500,
-//             buttons: false
-//             })
-//         )
-//         .catch(handleServerError)
-//         return fetch(dataUrl, {
-//             headers: {'Authorization': localStorage.getItem('token')}
-//         })
-//         .then(res => res.json()).then(data => App.setNewState({data: data}))
-//         }
-
-// const deleteThisEssential = (essential) => {
-//     fetch(`${essentialsUrl}/${essential.id}`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ essential })
-//         })
-// }
-
-// TASKS
-
-// const deleteThisTask = (task) => {
-//     fetch(`${tasksUrl}/${task.id}`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ task })
-//         })
-// }
-
-//BIllSPLITS
-
-
-// BILLS
-
-// const deleteThisBill = (bill_splits, bill) => {
-//     bill_splits.map(bill_split => 
-//         fetch(`${billsplitsUrl}/${bill_split.id}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: token() 
-//             },
-//             body: JSON.stringify({ bill_split })
-//             }))
-//     fetch(`${billsUrl}/${bill.id}`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: token() 
-//         },
-//         body: JSON.stringify({ bill })
-//         })
-// }
 
 export default {
     signUp,
@@ -206,8 +89,4 @@ export default {
     tasksUrl,
     billsplitsUrl,
     billsUrl,
-    // updateThisUser,
-    // deleteThisUser,
-    // updateThisHome,
-    // deleteThisBill
 }

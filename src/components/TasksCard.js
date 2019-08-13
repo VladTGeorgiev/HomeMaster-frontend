@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Table, Header, Image, Checkbox, Button, Label} from 'semantic-ui-react'
+import { Grid, Table, Header, Image, Checkbox, Button, Label, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 class TasksCard extends React.Component {
@@ -27,6 +27,7 @@ class TasksCard extends React.Component {
 
         return (
             <Grid textAlign='center' verticalAlign='top'>
+                <Divider hidden/>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
                         <Table.Header>

@@ -1,11 +1,12 @@
 import React from 'react'
-import { Card, Icon, Image, Label, Button } from 'semantic-ui-react'
+import { Card, Icon, Image, Label, Button, Divider } from 'semantic-ui-react'
 
 const HomeCard = ({home, redirectToHomeProfile}) => (
         <Card>
             {/* <Image src={} wrapped ui={false} /> */}
             <Card.Content>
-            <Card.Header as='h1'>{home.name}</Card.Header>
+            <Card.Header><div className='text-home-name'>{home.name}</div></Card.Header>
+            <Divider hidden />
             <Card.Meta>
                 <span className='date'>{home.address_one}</span>
             </Card.Meta>
@@ -27,7 +28,7 @@ const HomeCard = ({home, redirectToHomeProfile}) => (
                 <span className='date'>{home.id}</span>
             </Card.Meta>
             </Card.Content>
-            <Button color='teal' fluid size='small' onClick={() => redirectToHomeProfile()}>Change your home details</Button>
+            <Button color='teal' fluid size='small' onClick={() => redirectToHomeProfile()}>Change home details</Button>
         </Card>
 )
 
