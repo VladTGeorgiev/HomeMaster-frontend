@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Checkbox, Label, Grid } from 'semantic-ui-react'
+import { Card, Table, Checkbox, Label, Grid, Divider } from 'semantic-ui-react'
 
 class Outstanding extends Component{
 
@@ -56,13 +56,16 @@ class Outstanding extends Component{
                                         </Table.Row>
                                 </Table.Cell>
                                 <Table.Cell>
+                                    <Divider />
                                     <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle 
                                     // onChange={this.toggle} 
                                     checked={unpaid_bill_split.paid} 
                                     onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
+                                    <Divider />
                                     <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle 
                                     // onChange={this.toggleTask} 
                                     checked={false_task.completed} onChange={() => this.props.updateTask(false_task, this.props.user)} /></p>)}</div>
+                                    <Divider />
                                     <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle 
                                     // onChange={this.toggleTask} 
                                     checked={false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>

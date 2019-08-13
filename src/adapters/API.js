@@ -77,42 +77,42 @@ const fetchData = () => {
   };
 
 // USER
-const updateThisUser = (current_user, user) =>
-    fetch(`${usersUrl}/${current_user.id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ user })
-        }).then(jsonify)
-        .then(data => {
-            localStorage.setItem('token', data.token)
-            return data.user
-        })
-        .catch(handleServerError)
+// const updateThisUser = (current_user, user) =>
+//     fetch(`${usersUrl}/${current_user.id}`, {
+//         method: 'PATCH',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ user })
+//         }).then(jsonify)
+//         .then(data => {
+//             localStorage.setItem('token', data.token)
+//             return data.user
+//         })
+//         .catch(handleServerError)
 
-const deleteThisUser = (user) => {
-    fetch(`${usersUrl}/${user.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ user })
-        })
-}
+// const deleteThisUser = (user) => {
+//     fetch(`${usersUrl}/${user.id}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ user })
+//         })
+// }
 
 // HOME
-const updateThisHome = (home) => 
-    fetch(`${homesUrl}/${home.id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ home })
-        }).then(jsonify)
+// const updateThisHome = (home) => 
+//     fetch(`${homesUrl}/${home.id}`, {
+//         method: 'PATCH',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ home })
+//         }).then(jsonify)
 
 // ESSENTIALS
 // const addNewEssential = (home, name) => {
@@ -173,25 +173,25 @@ const updateThisHome = (home) =>
 
 // BILLS
 
-const deleteThisBill = (bill_splits, bill) => {
-    bill_splits.map(bill_split => 
-        fetch(`${billsplitsUrl}/${bill_split.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: token() 
-            },
-            body: JSON.stringify({ bill_split })
-            }))
-    fetch(`${billsUrl}/${bill.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: token() 
-        },
-        body: JSON.stringify({ bill })
-        })
-}
+// const deleteThisBill = (bill_splits, bill) => {
+//     bill_splits.map(bill_split => 
+//         fetch(`${billsplitsUrl}/${bill_split.id}`, {
+//             method: 'DELETE',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: token() 
+//             },
+//             body: JSON.stringify({ bill_split })
+//             }))
+//     fetch(`${billsUrl}/${bill.id}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: token() 
+//         },
+//         body: JSON.stringify({ bill })
+//         })
+// }
 
 export default {
     signUp,
@@ -206,8 +206,8 @@ export default {
     tasksUrl,
     billsplitsUrl,
     billsUrl,
-    updateThisUser,
-    deleteThisUser,
-    updateThisHome,
-    deleteThisBill
+    // updateThisUser,
+    // deleteThisUser,
+    // updateThisHome,
+    // deleteThisBill
 }

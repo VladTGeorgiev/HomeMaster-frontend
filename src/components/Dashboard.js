@@ -6,7 +6,7 @@ import BillsCard from '../components/BillsCard'
 import TasksCard from '../components/TasksCard'
 import EssentialsCard from '../components/EssentialsCard'
 import Outstanding from '../components/Outstanding'
-import API from '../adapters/API';
+import BillsCardOld from '../components/BillsCardOld'
 import swal from '@sweetalert/with-react'
 import NewTask from '../components/NewTask'
 import NewBill from '../components/NewBill'
@@ -21,11 +21,11 @@ class Dashboard extends Component {
 
 // ESSENTIALS
 
-buyFromAmazon = (e, name) => {
+    buyFromAmazon = (e, name) => {
     window.open(
         'https://www.amazon.co.uk/s?k='+name, '_blank'
       );
-  }
+    }
 
     removeEssential = (e, essential) => {
         swal({
@@ -106,58 +106,6 @@ buyFromAmazon = (e, name) => {
           })
     }
 
-
-// BILLSPLITS
-    updateBillSplit = (billSplit) => {
-        const bill_split = {
-            id: billSplit.id,
-            paid: !billSplit.paid
-        }
-        fetch(`${API.billsplitsUrl}/${billSplit.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: API.token() 
-            },
-            body: JSON.stringify({
-                bill_split
-            })
-            }).then(API.jsonify).then(API.fetchData())
-            .catch(API.handleServerError)
-    }
-    createBillSplitsFromNewBill = (bill) => {
-        let users = this.props.data.users
-        let amount = (parseInt(bill.total)/parseInt(users.length))
-        users.map(user => this.createBillSplit(user, bill, amount))
-    }
-
-    createBillSplitsFromNewBillForUser = (bill) => {
-        let user = this.props.user
-        let amount = bill.total
-        // let amount = (parseInt(bill.total)/parseInt(users.length))
-        this.createBillSplit(user, bill, amount)
-    }
-    
-    createBillSplit = (user, bill, amount) => {
-        const bill_split = {
-            user_id: user.id,
-            bill_id: bill.id,
-            amount: amount,
-            paid: false
-        }
-        fetch(API.billsplitsUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: API.token() 
-            },
-            body: JSON.stringify({
-                bill_split
-            })
-            }).then(API.jsonify).then(API.fetchData())
-            .catch(API.handleServerError)
-      }
-
     
 // BILLS
     addNewBillForm = () => {
@@ -166,73 +114,11 @@ buyFromAmazon = (e, name) => {
           },
           content: (
             <div>
-              <NewBill user={this.props.user} home={this.props.data.home} addNewBill={this.addNewBill}/>
+              <NewBill user={this.props.user} home={this.props.data.home} addNewBill={this.props.addNewBill}/>
               </div>
           )
         })
   }
-
-  addNewBill = (bill) => {
-    fetch(API.billsUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: API.token() 
-        },
-        body: JSON.stringify({ 
-            bill
-        })
-        }).then(data => data.json())
-        .then(data => this.createBillSplitsFromNewBillForUser(data.bill))
-        .then(
-        swal({
-            title: "Success!",
-            text: "You have added a new Bill!",
-            icon: "success",
-            timer: 1500,
-            buttons: false
-            })
-        )
-        .catch(API.handleServerError)
-}
-
-removeBill = (e, bill) => {
-    swal({
-        title: "Are you sure?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-        })
-        .then((willDelete) => {
-        if (willDelete) {
-            let bill_splits = this.props.data.all_bill_splits
-            API.deleteThisBill(bill_splits, bill)
-            swal({
-            title: "Success!",
-            text: "You have deleted the bill!",
-            icon: "success",
-            timer: 1500,
-            buttons: false
-            })
-            API.fetchData()
-            // this.props.history.push(`/dashboard`)
-        } else {
-        //   this.props.history.push(`/dashboard`)
-        }
-    });
-}
-
-addOtherBillsToCurrentUser = (bill, current_user) => {
-    let users = this.props.data.users
-    let all_bill_splits = this.props.data.all_bill_splits
-    let bills_bill_splits = all_bill_splits.filter(split => split.bill_id === bill[0].id)
-    let otherusers = users.filter(user => user.id !== current_user.id)
-    let som = bills_bill_splits.map(split => split.user_id)
-    console.log(som)
-    let usersWithBillSplits = otherusers.filter(otheruser => som.map(s => s) === otheruser.id)
-    console.log(bills_bill_splits, otherusers, usersWithBillSplits)
-}
-q
 
     render() {
         const { activeItem } = this.state
@@ -240,11 +126,10 @@ q
 
         switch (this.state.activeItem) {
             case 'outstanding':
-                displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.props.updateTask} updateBillSplit={this.updateBillSplit} updateEssential={this.props.updateEssential}/>
+                displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.props.updateTask} updateBillSplit={this.props.updateBillSplit} updateEssential={this.props.updateEssential}/>
                 break;
             case 'bills':
-                displayedCard = <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplit} addOtherBillsToCurrentUser={this.addOtherBillsToCurrentUser}
-                // updateBill={this.updateBill}
+                displayedCard = <BillsCardOld user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.props.updateBillSplit} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
                 />
                 break;
             case 'tasks':

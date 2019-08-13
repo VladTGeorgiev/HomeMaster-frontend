@@ -271,25 +271,28 @@ class App extends React.Component {
     otherUsers.map(user => this.createBillSplit(user, bill, amount))
   }
 
-  createBillSplit = (user, bill, amount) => {
-    const bill_split = {
-        user_id: user.id,
-        bill_id: bill.id,
-        amount: amount,
-        paid: false
-    }
-    fetch(API.billsplitsUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: API.token() 
-        },
-        body: JSON.stringify({
-            bill_split
-        })
-        }).then(API.jsonify).then(API.fetchData())
-        .catch(API.handleServerError)
-  }
+  // createBillSplit = (user, bill, amount) => {
+  //   const bill_split = {
+  //       user_id: user.id,
+  //       bill_id: bill.id,
+  //       amount: amount,
+  //       paid: false
+  //   }
+  //   fetch(API.billsplitsUrl, {
+  //       method: 'POST',
+  //       headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: API.token() 
+  //       },
+  //       body: JSON.stringify({
+  //           bill_split
+  //       })
+  //       }).then(API.jsonify)
+  //       .then(() => {
+  //         API.fetchData().then(data => this.setState({data: data}))
+  //       })
+  //       .catch(API.handleServerError)
+  // }
 
 // HOME
   updateHome = home => {
@@ -339,6 +342,149 @@ class App extends React.Component {
   //     buttons: false
   //     });
   // }
+
+// BILLS
+
+addNewBill = (bill) => {
+  fetch(API.billsUrl, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ 
+          bill
+      })
+      }).then(data => data.json())
+      .then(data => this.createBillSplitsFromNewBillForUser(data.bill))
+      .then(
+      swal({
+          title: "Success!",
+          text: "You have added a new Bill!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          })
+      )
+      .catch(API.handleServerError)
+}
+
+createBillSplitsFromNewBillForUser = (bill) => {
+  let user = this.state.user
+  let amount = bill.total
+  // let amount = (parseInt(bill.total)/parseInt(users.length))
+  this.createBillSplit(user, bill, amount)
+}
+
+// createBillSplitsForParticipatingUsers = (bill) => {
+//   let users = this.props.data.users
+//   let amount = (parseInt(bill.total)/parseInt(users.length))
+//   users.map(user => this.createBillSplit(user, bill, amount))
+// }
+
+createBillSplit = (user, bill, amount) => {
+  const bill_split = {
+      user_id: user.id,
+      bill_id: bill.id,
+      amount: amount,
+      paid: false
+  }
+  fetch(API.billsplitsUrl, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({
+          bill_split
+      })
+      }).then(API.jsonify)
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
+      .catch(API.handleServerError)
+}
+
+removeBill = (e, incomingData) => {
+  let bill = incomingData
+  swal({
+      title: "Are you sure?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      })
+      .then((willDelete) => {
+      if (willDelete) {
+          let bill_splits = this.state.data.bill_splits.filter(bill_split => bill_split.bill_id === bill.id)
+          this.deleteThisBill(bill_splits, bill)
+          swal({
+          title: "Success!",
+          text: "You have deleted the bill!",
+          icon: "success",
+          timer: 1500,
+          buttons: false
+          })
+          .then(() => {
+            API.fetchData().then(data => this.setState({data: data}))
+          })
+          // this.props.history.push(`/dashboard`)
+      } else {
+      //   this.props.history.push(`/dashboard`)
+      }
+  });
+}
+
+deleteThisBill = (bill_splits, bill) => {
+  bill_splits.map(bill_split => 
+      fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json',
+              Authorization: API.token() 
+          },
+          body: JSON.stringify({ bill_split })
+          }))
+  fetch(`${API.billsUrl}/${bill.id}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ bill })
+      })
+}
+
+updateBillSplit = (billSplit) => {
+  const bill_split = {
+      id: billSplit.id,
+      paid: !billSplit.paid
+  }
+  fetch(`${API.billsplitsUrl}/${billSplit.id}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({
+          bill_split
+      })
+      }).then(API.jsonify)
+      .then(() => {
+        API.fetchData().then(data => this.setState({data: data}))
+      })
+      .catch(API.handleServerError)
+}
+
+addOtherBillsToCurrentUser = (bill, current_user) => {
+  let users = this.state.data.users
+  let all_bill_splits = this.state.data.all_bill_splits
+  let bills_bill_splits = all_bill_splits.filter(split => split.bill_id === bill[0].id)
+  let otherusers = users.filter(user => user.id !== current_user.id)
+  let som = bills_bill_splits.map(split => split.user_id)
+  console.log(som)
+  let usersWithBillSplits = otherusers.filter(otheruser => som.map(s => s) === otheruser.id)
+  console.log(bills_bill_splits, otherusers, usersWithBillSplits)
+}
 
 // TASKS
 
@@ -547,7 +693,14 @@ updateEssential = (newEssential) => {
             <Route exact path="/dashboard" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile}/>
-                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential} deleteTask={this.deleteTask} addNewTask={this.addNewTask} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}/>
+                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} 
+                
+                addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential} 
+                
+                deleteTask={this.deleteTask} addNewTask={this.addNewTask} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}
+                
+                addNewBill={this.addNewBill} removeBill={this.removeBill} updateBillSplit={this.updateBillSplit} addOtherBillsToCurrentUser={this.addOtherBillsToCurrentUser}
+                />
               </div>
             } />
             <Route exact path="/profile" render={() => 
