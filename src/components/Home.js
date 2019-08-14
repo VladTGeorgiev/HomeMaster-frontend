@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Label, Segment, Dimmer, Loader, Divider } from 'semantic-ui-react'
 import logo from '../media/pin.png'
 
-const SugnUpForm = ({ data, submitNewHomeDetails, }) => {
+const SugnUpForm = ({ data, submitNewHomeDetails }) => {
 
     const [name, setName] = useState('')
     const [address_one, setAddressOne] = useState('')

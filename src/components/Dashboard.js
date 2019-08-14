@@ -126,7 +126,7 @@ class Dashboard extends Component {
 
         switch (this.state.activeItem) {
             case 'outstanding':
-                displayedCard = <Outstanding user={this.props.user} data={this.props.data} updateTask={this.props.updateTask} updateBillSplit={this.props.updateBillSplit} updateEssential={this.props.updateEssential}/>
+                displayedCard = <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} updateBillSplit={this.props.updateBillSplit} updateEssential={this.props.updateEssential}/>
                 break;
             case 'bills':
                 displayedCard = <BillsCardOld user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.props.updateBillSplit} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
@@ -144,7 +144,7 @@ class Dashboard extends Component {
 
         return (
             this.props.data.home ? 
-                <Container>   
+                <Container >   
                     <Container>              
                         <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
                     </Container>

@@ -39,7 +39,13 @@ class App extends React.Component {
           this.props.history.push(`/dashboard`)
           API.fetchData().then(data => this.setState({data: data}))
           if (this.state.user === undefined) {
-            console.log('No user')
+            swal({
+              title: "Error!",
+              text: "These details doesn't seem to match any records. Please try again",
+              icon: "warning",
+              timer: 1500,
+              buttons: false
+              });
           } else {
             setTimeout(this.checkCookiePolicyAgreement, 3000);
           }
@@ -86,7 +92,13 @@ class App extends React.Component {
     API.logIn(user)
       .then(user => {
         if (user === undefined) {
-          console.log('no user')
+          swal({
+            title: "Error!",
+            text: "These details doesn't seem to match any records. Please try again",
+            icon: "warning",
+            timer: 1500,
+            buttons: false
+            });
         } else {
           this.setState({ user })
           API.fetchData().then(data => this.setState({data: data}))
@@ -181,8 +193,7 @@ class App extends React.Component {
   // USER
   updateUser = userNewInfo => {
     this.updateThisUser(this.state.user, userNewInfo)
-    .then(user => this.setState({ user }))
-    this.props.history.push(`/dashboard`)
+    .then(user => this.setState({ user },this.componentDidMount(), this.props.history.push(`/dashboard`)))
     swal({
       title: "Success!",
       text: "You have changed your details!",
@@ -202,7 +213,7 @@ class App extends React.Component {
         body: JSON.stringify({ user })
         }).then(API.jsonify)
         .then(data => {
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('token', API.token())
             return data.user
         })
         .catch(API.handleServerError)
@@ -226,8 +237,21 @@ class App extends React.Component {
       home_id: home.id
     }
     this.assignTasksToOtherUsers(user)
-    this.updateUser(user)
-    this.logOut()
+    this.updateUserAfterMovingHome(user)
+    // this.componentDidMount()
+  }
+
+  updateUserAfterMovingHome = userNewInfo => {
+    this.updateThisUser(this.state.user, userNewInfo)
+    // .then(user => this.setState({ user }))
+    .then(user => this.setState({ user },this.componentDidMount(), this.props.history.push(`/dashboard`)))
+    swal({
+      title: "Success!",
+      text: "You have changed your home!",
+      icon: "success",
+      timer: 1500,
+      buttons: false
+      })
   }
 
   updateUserHomeSignUp = (home, newUser) => {
@@ -373,6 +397,10 @@ class App extends React.Component {
   //     buttons: false
   //     });
   // }
+
+  createNewHome = (home) => {
+    console.log(home)
+  }
 
 // BILLS
 
@@ -755,7 +783,7 @@ updateEssential = (newEssential) => {
             <Route exact path="/moving-home" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <MovingHome moveToNewHome={this.moveToNewHome}/>
+                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.createNewHome}/>
               </div>
             } />
           </div>

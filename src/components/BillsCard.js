@@ -121,6 +121,7 @@ class BillsCard extends React.Component {
                     <Divider hidden/>
                     <Grid.Column style={{ width: '80vw' }}>
                         <Table basic='very' celled collapsing>
+                        <Divider hidden/>
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell></Table.HeaderCell>

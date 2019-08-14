@@ -40,6 +40,13 @@
   font-family: 'Lobster', cursive;
   color: #02b5ac;
 }
+.swal-text {
+  text-align: center;
+}
+
+.swal-title {
+  color: #02b5ac;
+}
 
 
 

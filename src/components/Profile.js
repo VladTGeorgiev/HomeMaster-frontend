@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label, Divider } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label, Divider, Container } from 'semantic-ui-react'
 import userlogo from '../media/smile (1).png'
 import userleaving from '../media/xx.png'
 import legal from '../media/file.png'
@@ -23,7 +23,8 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
   }
 
     return (
-        <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle'>
+     
+        <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle' columns={2} relaxed='very'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             <Image src={userlogo} size='small'/>
@@ -50,6 +51,9 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
                 <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Submit</div></Button>
             </Segment>
             </Form>
+            </Grid.Column>
+            
+        <Grid.Column style={{ maxWidth: 450 }}>
             <Divider hidden/>
             <Header as='h4' color='teal' textAlign='center'>
               <Image src={userleaving} size='small'/>
@@ -69,6 +73,7 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
                 <Button onClick={() => redirectToCookiePolicy()} color='yellow' fluid size='large' type='submit'><div className='comfortaa'>View our Cookie Policy</div></Button>
             </Message>
           </Grid.Column>
+          
         </Grid>
     )
 }

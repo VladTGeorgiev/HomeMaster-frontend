@@ -30,14 +30,15 @@ class TasksCard extends React.Component {
                 <Divider hidden/>
                 <Grid.Column style={{ width: '80vw' }}>
                     <Table basic='very' celled collapsing>
+                    <Divider hidden/>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell></Table.HeaderCell>
                                 <Table.HeaderCell>Description</Table.HeaderCell>
                                 <Table.HeaderCell>Completed?</Table.HeaderCell>
-                                <Table.HeaderCell>By</Table.HeaderCell>
-                                <Table.HeaderCell>Due day</Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
+                                <Table.HeaderCell>Who's responsible</Table.HeaderCell>
+                                <Table.HeaderCell>When</Table.HeaderCell>
+                                <Table.HeaderCell>You could also...</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
@@ -45,7 +46,7 @@ class TasksCard extends React.Component {
                         <Label ribbon color="olive">Your taks</Label>
                             <Table.Row>
                                 <Table.Cell>
-                                    <Header as='h4'>
+                                    <Header as='h5'>
                                         <Header.Content>
                                             {/* {tasks.map(task => <Image src={task.img} size='small' />)} */}
                                             {tasks.map(task => <p>{task.name}</p>)}
@@ -71,7 +72,7 @@ class TasksCard extends React.Component {
                         <Label ribbon color="olive">All other tasks</Label>
                             <Table.Row>
                                 <Table.Cell>
-                                    <Header as='h4'>
+                                    <Header as='h5'>
                                         <Header.Content>
                                             {/* {all_tasks.map(task => <Image src={task.img} size='small' />)} */}
                                             {otherTasks.map(task => <p>{task.name}</p>)}

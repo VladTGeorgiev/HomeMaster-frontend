@@ -37,7 +37,7 @@ class BillsCard extends React.Component {
                         <Table.HeaderCell>Amount</Table.HeaderCell>
                         <Table.HeaderCell>Paid?</Table.HeaderCell>
                         <Table.HeaderCell>Due date</Table.HeaderCell>
-                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell>You could also...</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 

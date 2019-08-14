@@ -53,7 +53,8 @@ export default class Navbar extends Component {
             </Menu.Item>
             <div className='logo'>Home Sweet Home</div>
             <Menu.Item position='right' name='PROFILE' active={activeItem === 'PROFILE'} onClick={this.handleItemClick} onClick={() => this.userMenu()}>
-              <img src={user} alt="Logo"/>
+              <Item><div className='comfortaa'>Hello, {this.props.user.first_name}!</div></Item>
+            <img src={user} alt="Logo"/>
             </Menu.Item>
         </Menu>
         )
