@@ -26,7 +26,9 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
         <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src={userlogo} size='small'/> Change your account details
+            <Image src={userlogo} size='small'/>
+            <Divider hidden/>
+            <div className='comfortaa'> Change your account details</div>
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
@@ -45,22 +47,26 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
                   <Dropdown onChange={e => setCookiePolicy()} defaultValue={ user.cookie_policy} options={options} />
                 </Label>
                 <Divider hidden/>
-                <Button color='teal' fluid size='large' type='submit'>Submit</Button>
+                <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Submit</div></Button>
             </Segment>
             </Form>
             <Divider hidden/>
             <Header as='h4' color='teal' textAlign='center'>
-              <Image src={userleaving} size='small'/> Thinking of leaving us?
+              <Image src={userleaving} size='small'/>
+              <Divider hidden/>
+              <div className='comfortaa'> Thinking of leaving us?</div>
             </Header>
             <Message> 
-                <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'>Delete your profile</Button>
+                <Button onClick={() => deleteUser()} color='red' fluid size='large' type='submit'><div className='comfortaa'>Delete your profile</div></Button>
             </Message>
             <Divider hidden/>
             <Header as='h4' color='teal' textAlign='center'>
-              <Image src={legal} size='small'/> The legal stuff
+              <Image src={legal} size='small'/>
+              <Divider hidden/>
+              <div className='comfortaa'> The legal stuff</div>
             </Header>
             <Message> 
-                <Button onClick={() => redirectToCookiePolicy()} color='yellow' fluid size='large' type='submit'>View our Cookie Policy</Button>
+                <Button onClick={() => redirectToCookiePolicy()} color='yellow' fluid size='large' type='submit'><div className='comfortaa'>View our Cookie Policy</div></Button>
             </Message>
           </Grid.Column>
         </Grid>

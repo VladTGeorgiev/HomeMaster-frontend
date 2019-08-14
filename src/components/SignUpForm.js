@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment, Divider } from 'semantic-ui-react'
 import logo from '../media/smart-house.png'
 
 const SugnUpForm = ({ submit }) => {
@@ -17,7 +17,9 @@ const SugnUpForm = ({ submit }) => {
         <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='top'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='blue' textAlign='center'>
-            <Image src={logo} /> Sign up for a new account
+            <Image src={logo} size='small'/>
+            <Divider hidden/>
+            <div className='comfortaa'> Sign up for a new account</div>
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
@@ -34,10 +36,10 @@ const SugnUpForm = ({ submit }) => {
                 <Form.Input required fluid icon='mail' iconPosition='left' placeholder='E-mail address' type="email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                 <Form.Input required fluid icon='lock' iconPosition='left' placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 <Form.Input required fluid icon='lock' iconPosition='left' placeholder="Home Key" type="text" name="home_id" value={home_id} onChange={e => setHomeId(e.target.value)}/>
-                <Button color='blue' fluid size='large' type='submit'>Sign Up</Button>
+                <Button color='blue' fluid size='large' type='submit'><div className='comfortaa'>Sign Up</div></Button>
             </Segment>
             </Form>
-            <Message color='teal'>Already have an account?<a href='/login'> <Button color='teal' size='mini'>Log In</Button></a></Message>
+            <Message color='teal'>Already have an account?<a href='/login'> <Button color='teal' size='mini'><div className='comfortaa'>Log in</div></Button></a></Message>
           </Grid.Column>
         </Grid>
         </div>

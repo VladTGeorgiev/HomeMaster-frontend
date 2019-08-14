@@ -64,12 +64,12 @@ class BillsCard extends React.Component {
                             {userBills.map(bill => <p>{bill.date_due}</p>)}
                         </Table.Cell>
                         <Table.Cell>
-                            {userBills.map(bill => <Button color='red' fluid size='small' onClick={(e) => removeBill(e, bill)}>Remove</Button>)} 
+                            {userBills.map(bill => <Button color='red' fluid size='small' onClick={(e) => removeBill(e, bill)}><div className='comfortaa'>Remove</div></Button>)} 
                         </Table.Cell>
                     </Table.Row>
                     <Divider hidden/>
                     <Table.Row>
-                        <Button color='yellow' size='medium' onClick={() => addNewBillForm()} >Add more bills</Button>
+                        <Button color='yellow' size='medium' onClick={() => addNewBillForm()} ><div className='comfortaa'>Add more bills</div></Button>
                     </Table.Row>
                 </Table.Body>
             </Table>

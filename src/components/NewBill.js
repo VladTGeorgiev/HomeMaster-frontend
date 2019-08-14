@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import billicon from '../media/credit-card.png'
-import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
+import { Button, Form, Header, Image, Segment, Divider } from 'semantic-ui-react'
 
 const NewBill = ({ home, addNewBill }) => {
 
@@ -12,7 +12,7 @@ const NewBill = ({ home, addNewBill }) => {
     return (
         <>
           <Header as='h2' color='teal' textAlign='center'>
-            <Image src={billicon} size='small'/> Add new bill
+            <Image src={billicon} size='small'/><Divider hidden/><div className='comfortaa'> Add new bill</div>
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
@@ -25,7 +25,7 @@ const NewBill = ({ home, addNewBill }) => {
                 <Form.Input fluid icon='user' iconPosition='left' required placeholder='Name' type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
                 <Form.Input fluid icon='user' iconPosition='left' placeholder='Total'  type="text" name="total" value={total} onChange={e => setTotal(e.target.value)}/>
                 <Form.Input fluid icon='time' iconPosition='left' placeholder='Date Due' type="date" name="date_due" value={date_due} onChange={e => setDateDue(e.target.value)}/>
-                <Button color='teal' fluid size='large' type='submit'>Submit</Button>
+                <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Submit</div></Button>
             </Segment>
             </Form>
             </>

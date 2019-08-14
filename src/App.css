@@ -9,21 +9,25 @@
   margin-top: 1.5rem;
   font-family: 'Lobster', cursive;
   font-size: 3rem;
-  color: #008080;
+  color: #02b5ac;
 }
 
 .logo-main-page{
   font-family: 'Lobster', cursive;
   font-size: 6rem;
-  color: #008080;
+  color: #02b5ac;
   text-align: center;
   padding-top: 15%;
-  padding-bottom: 5%;
+  padding-bottom: 3%;
 }
 
 .welcome-message {
   display: flex;
   float: right;
+}
+
+.comfortaa {
+  font-family: 'Comfortaa', cursive;
 }
 
 .text {
@@ -34,7 +38,7 @@
 .text-home-name {
   font-size: 1.8rem;
   font-family: 'Lobster', cursive;
-  color: #008080;
+  color: #02b5ac;
 }
 
 
