@@ -408,7 +408,15 @@ class App extends React.Component {
 
 // HOME
 
-  updateHome = home => {
+  updateHome = newHome => {
+    let home = {
+      id: this.state.data.home.id,
+      name: newHome.name,
+      address_one: newHome.address_one,
+      address_two: newHome.address_two,
+      city: newHome.city,
+      postcode: newHome.postcode
+    }
     this.updateThisHome(home)
     this.props.history.push(`/dashboard`)
     swal({

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Segment, Label, Divider } from 'semantic-ui-react'
-import logo from '../media/compass.png'
+import compass from '../media/compass.png'
+import logoNewHome from '../media/pin-new-home.png'
 
 const MovingHome = ({ moveToNewHome, data, createNewHome }) => {
 
@@ -16,7 +17,7 @@ const MovingHome = ({ moveToNewHome, data, createNewHome }) => {
         <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle' columns={2} relaxed='very'>
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Header as='h2' color='teal' textAlign='center'>
-                    <Image src={logo} size='small'/>
+                    <Image src={compass} size='small'/>
                     <Divider hidden/>
                     <div className='comfortaa'> Moving to an existing home?</div>                  
                 </Header>
@@ -36,7 +37,7 @@ const MovingHome = ({ moveToNewHome, data, createNewHome }) => {
 
             <Grid.Column style={{ maxWidth: 450, width: '50vw' }}>
                             <Header as='h2' color='teal' textAlign='center'>
-                                <Image src={logo} size='small'/>
+                                <Image src={logoNewHome} size='small'/>
                                 <Divider hidden/>
                                 <div className='comfortaa'>Create a new home!</div>
                             </Header>
