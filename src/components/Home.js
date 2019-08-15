@@ -34,7 +34,7 @@ const Home = ({ data, submitNewHomeDetails }) => {
                                         // setHomeKey('')
                                     }}>
                                 <Segment stacked>
-                                    <Form.Input fluid icon='user' iconPosition='left' placeholder={data.home.name} type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
+                                    <Form.Input fluid requied icon='user' iconPosition='left' placeholder={data.home.name} type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.address_one} type="text" name="address_one" value={address_one} onChange={e => setAddressOne(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.address_two} type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder={data.home.city} type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>

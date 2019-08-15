@@ -36,10 +36,7 @@ class App extends React.Component {
             this.props.history.push(`/login`)
         } else {
           this.setState({ user: data.user })
-          if (this.state.user.home_id === 1) {
-            this.props.history.push(`/join-a-home`)
-          } else {
-            this.props.history.push(`/dashboard`)
+          this.props.history.push(`/dashboard`)
             API.fetchData().then(data => this.setState({data: data}))
             if (this.state.user === undefined) {
               swal({
@@ -53,7 +50,7 @@ class App extends React.Component {
               setTimeout(this.checkCookiePolicyAgreement, 3000);
             }
           }
-        }}
+        }
       )
   }
 
@@ -63,7 +60,7 @@ class App extends React.Component {
       .then(user => {
         this.setState({ user })
         if (user) {
-          this.props.history.push(`/dashboard`)
+          this.props.history.push(`/join-a-home`)
           swal({
             title: "Success!",
             text: "You have signed up!",
@@ -71,7 +68,6 @@ class App extends React.Component {
             timer: 1500,
             buttons: false
             })
-          setTimeout(this.checkCookiePolicyAgreement, 3000)
           API.fetchData().then(data => this.setState({data: data}))
         } else {
           swal({
@@ -84,8 +80,6 @@ class App extends React.Component {
             this.props.history.push(`/signup`)
         }
       })
-      
-
   }
 
 //   updateBillSplits = (users, bills) => {
@@ -465,6 +459,29 @@ class App extends React.Component {
   // }
 
   createNewHome = (home) => {
+    if (this.state.data.bill_splits === undefined) {
+      fetch(API.homesUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            home
+        })
+        }).then(data => data.json())
+        .then(home => this.updateUserHome(home))
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have created a new home!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .catch(API.handleServerError)
+    } else {
     if (this.state.data.bill_splits.length > 0) {
       swal({
         title: "Error!",
@@ -496,6 +513,8 @@ class App extends React.Component {
         )
         .catch(API.handleServerError)
     }
+    }
+
   }
 
 // BILLS

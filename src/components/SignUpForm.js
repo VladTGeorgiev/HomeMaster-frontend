@@ -32,8 +32,8 @@ const SugnUpForm = ({ submit }) => {
                     // setHomeId('')
                 }}>
             <Segment stacked>
-                <Form.Input fluid icon='user' iconPosition='left' placeholder="First Name" type="text" name="first_name" value={first_name} onChange={e => setFirstName(e.target.value)} />
-                <Form.Input fluid icon='user' iconPosition='left' placeholder="Last Name" type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
+                <Form.Input required fluid icon='user' iconPosition='left' placeholder="First Name" type="text" name="first_name" value={first_name} onChange={e => setFirstName(e.target.value)} />
+                <Form.Input required fluid icon='user' iconPosition='left' placeholder="Last Name" type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
                 <Form.Input required fluid icon='mail' iconPosition='left' placeholder='E-mail address' type="email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                 <Form.Input required fluid icon='lock' iconPosition='left' placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 {/* <Form.Input fluid icon='lock' iconPosition='left' placeholder="Home Key" type="text" name="home_id" value={home_id} onChange={e => setHomeId(e.target.value)}/> */}

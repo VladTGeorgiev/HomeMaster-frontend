@@ -26,7 +26,7 @@ const NewTask = ({ user, home, addNewTask }) => {
                     setDay('')
                 }}>
             <Segment stacked>
-                <Form.Input fluid icon='user' iconPosition='left' required placeholder='Name' type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
+                <Form.Input fluid required icon='user' iconPosition='left' required placeholder='Name' type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
                 <Form.Input fluid icon='user' iconPosition='left' placeholder='Description'  type="text" name="description" value={description} onChange={e => setDescription(e.target.value)}/>
                 <Form.Input fluid icon='time' iconPosition='left' placeholder='Day' type="text" name="day" value={day} onChange={e => setDay(e.target.value)}/>
                 <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Submit</div></Button>
