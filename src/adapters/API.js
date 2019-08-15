@@ -12,6 +12,8 @@ const validateUrl = `${endpoint}/validate`
 const dataUrl = `${endpoint}/data`
 const token = () => localStorage.getItem("token");
 
+/////////  HELPERS
+
 const jsonify = res => {
     if (res.ok)
         return res.json()
@@ -29,7 +31,7 @@ const handleServerError = response => {
         });
 }
 
-const clearToken = () => localStorage.removeItem('token')
+/////////  USER AUTHENTICATION/AUTHORISATION
 
 const signUp = (user) =>fetch(usersUrl, {
     method: 'POST',
@@ -66,6 +68,8 @@ const validateUser = () => {
         })
         .catch(handleServerError)
 }
+
+const clearToken = () => localStorage.removeItem('token')
 
 /////////  FETCH REQUEST
 

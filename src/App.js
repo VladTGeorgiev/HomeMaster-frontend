@@ -36,18 +36,22 @@ class App extends React.Component {
             this.props.history.push(`/login`)
         } else {
           this.setState({ user: data.user })
-          this.props.history.push(`/dashboard`)
-          API.fetchData().then(data => this.setState({data: data}))
-          if (this.state.user === undefined) {
-            swal({
-              title: "Error!",
-              text: "These details doesn't seem to match any records. Please try again",
-              icon: "warning",
-              timer: 1500,
-              buttons: false
-              });
+          if (this.state.user.home_id === 1) {
+            this.props.history.push(`/join-a-home`)
           } else {
-            setTimeout(this.checkCookiePolicyAgreement, 3000);
+            this.props.history.push(`/dashboard`)
+            API.fetchData().then(data => this.setState({data: data}))
+            if (this.state.user === undefined) {
+              swal({
+                title: "Error!",
+                text: "These details doesn't seem to match any records. Please try again",
+                icon: "warning",
+                timer: 2000,
+                buttons: false
+                });
+            } else {
+              setTimeout(this.checkCookiePolicyAgreement, 3000);
+            }
           }
         }}
       )
@@ -74,7 +78,7 @@ class App extends React.Component {
             title: "Error!",
             text: "Sign up unsuccesful!",
             icon: "warnig",
-            timer: 1500,
+            timer: 2000,
             buttons: false
             })
             this.props.history.push(`/signup`)
@@ -96,7 +100,7 @@ class App extends React.Component {
             title: "Error!",
             text: "These details doesn't seem to match any records. Please try again",
             icon: "warning",
-            timer: 1500,
+            timer: 2000,
             buttons: false
             });
         } else {
@@ -219,16 +223,46 @@ class App extends React.Component {
         .catch(API.handleServerError)
 
   moveToNewHome = (home_key) => {
-    fetch('http://localhost:3000/api/v1/homes', {
-      headers: {Authorization: API.token()}
-      }).then(res => res.json())
-      .then(homes => this.findHome(homes, home_key))
-      .then(home => this.updateUserHome(home))
+    if (this.state.data.bill_splits === undefined) {
+      fetch('http://localhost:3000/api/v1/homes', {
+        headers: {Authorization: API.token()}
+        }).then(res => res.json())
+        .then(homes => this.findHome(homes, home_key))
+        // .then(home => this.updateUserHome(home))
+    } else {
+      if (this.state.data.bill_splits.length > 0) {
+        swal({
+          title: "Error!",
+          text: "You must delete all your bills first",
+          icon: "warning",
+          timer: 2000,
+          buttons: false
+          })
+      } else {
+        fetch('http://localhost:3000/api/v1/homes', {
+          headers: {Authorization: API.token()}
+          }).then(res => res.json())
+          .then(homes => this.findHome(homes, home_key))
+          // .then(home => this.updateUserHome(home))
+      }
+    }
+
   }
+
 
   findHome = (homes, home_key) => {
     let newHome = homes.find(home => home.id === parseInt(home_key))
-    return newHome
+    if (newHome === undefined || home_key === '1') {
+      swal({
+        title: "Error!",
+        text: "The home key you entered in not valid. Please check the key and try again.",
+        icon: "warning",
+        timer: 2000,
+        buttons: false
+        })
+    } else {
+      this.updateUserHome(newHome)
+    }
   }
 
   updateUserHome = (home) => {
@@ -236,14 +270,24 @@ class App extends React.Component {
       id: this.state.user.id,
       home_id: home.id
     }
-    this.assignTasksToOtherUsers(user)
-    this.updateUserAfterMovingHome(user)
-    // this.componentDidMount()
+    if (this.state.data.users !== undefined) {
+      if (this.state.data.users.length === 1) {
+        // let bills = this.state.data.bills
+        let tasks = this.state.data.tasks
+        // bills.map(bill => this.deleteThisBill(bill))
+        tasks.map(task => this.deleteTask(task))
+        this.updateUserAfterMovingHome(user)
+      } else {
+        this.assignTasksToOtherUsers(user)
+        this.updateUserAfterMovingHome(user)
+      }
+    } else {
+      this.updateUserAfterMovingHome(user)
+    }
   }
 
   updateUserAfterMovingHome = userNewInfo => {
     this.updateThisUser(this.state.user, userNewInfo)
-    // .then(user => this.setState({ user }))
     .then(user => this.setState({ user },this.componentDidMount(), this.props.history.push(`/dashboard`)))
     swal({
       title: "Success!",
@@ -270,22 +314,35 @@ class App extends React.Component {
       dangerMode: true,
     })
     .then((willDelete) => {
-      if (willDelete) {
-        this.assignTasksToOtherUsers(this.state.user)
-        this.removeBillSplits(this.state.user)
-        this.deleteThisUser(this.state.user)
-        API.clearToken()
-        swal({
-          title: "Success!",
-          text: "You have deleted your profile!",
-          icon: "success",
-          timer: 1500,
-          buttons: false
-          });
-          this.props.history.push(`/signup`)
+      if (willDelete) { 
+        if (this.state.data.bill_splits.length > 0) {
+          swal({
+            title: "Error!",
+            text: "You must delete all your bills first",
+            icon: "warning",
+            timer: 2000,
+            buttons: false
+            })
+        } else {
+          if (this.state.data.users.length === 1) {
+            let tasks = this.state.data.tasks
+            tasks.map(task => this.deleteTask(task))
+          } else {
+            this.assignTasksToOtherUsers(this.state.user)
+          }
+          this.deleteThisUser(this.state.user)
+          API.clearToken()
+          swal({
+            title: "Success!",
+            text: "You have deleted your profile!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            });
+            this.props.history.push(`/signup`)}
       } else {
-        this.props.history.push(`/profile`)
-      }
+          this.props.history.push(`/profile`)
+        }
     });
   }
 
@@ -301,7 +358,7 @@ class App extends React.Component {
     }
 
   removeBillSplits = (user) => {
-    let bill_splits = this.state.data.all_bill_splits
+    let bill_splits = this.state.data.bill_splits
     bill_splits.map(bill_split =>     
       fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
       method: 'DELETE',
@@ -350,6 +407,7 @@ class App extends React.Component {
   // }
 
 // HOME
+
   updateHome = home => {
     this.updateThisHome(home)
     this.props.history.push(`/dashboard`)
@@ -399,7 +457,37 @@ class App extends React.Component {
   // }
 
   createNewHome = (home) => {
-    console.log(home)
+    if (this.state.data.bill_splits.length > 0) {
+      swal({
+        title: "Error!",
+        text: "You must delete all your bills first",
+        icon: "warning",
+        timer: 2000,
+        buttons: false
+        })
+    } else {
+      fetch(API.homesUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            home
+        })
+        }).then(data => data.json())
+        .then(home => this.updateUserHome(home))
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have created a new home!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .catch(API.handleServerError)
+    }
   }
 
 // BILLS
@@ -419,7 +507,7 @@ addNewBill = (bill) => {
       .then(
       swal({
           title: "Success!",
-          text: "You have added a new Bill!",
+          text: "You have added a new bill!",
           icon: "success",
           timer: 1500,
           buttons: false
@@ -474,8 +562,9 @@ removeBill = (e, incomingData) => {
       })
       .then((willDelete) => {
       if (willDelete) {
-          let bill_splits = this.state.data.bill_splits.filter(bill_split => bill_split.bill_id === bill.id)
-          this.deleteThisBill(bill_splits, bill)
+          // let bill_splits = this.state.data.bill_splits.filter(bill_split => bill_split.bill_id === bill.id)
+          this.removeBillSplits(this.state.user)
+          this.deleteThisBill(bill)
           swal({
           title: "Success!",
           text: "You have deleted the bill!",
@@ -493,16 +582,18 @@ removeBill = (e, incomingData) => {
   });
 }
 
-deleteThisBill = (bill_splits, bill) => {
-  bill_splits.map(bill_split => 
-      fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
-          method: 'DELETE',
-          headers: {
-              'Content-Type': 'application/json',
-              Authorization: API.token() 
-          },
-          body: JSON.stringify({ bill_split })
-          }))
+
+
+deleteThisBill = (bill, bill_splits) => {
+  // bill_splits.map(bill_split => 
+  //     fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
+  //         method: 'DELETE',
+  //         headers: {
+  //             'Content-Type': 'application/json',
+  //             Authorization: API.token() 
+  //         },
+  //         body: JSON.stringify({ bill_split })
+  //         }))
   fetch(`${API.billsUrl}/${bill.id}`, {
       method: 'DELETE',
       headers: {
@@ -783,6 +874,12 @@ updateEssential = (newEssential) => {
             <Route exact path="/moving-home" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.createNewHome}/>
+              </div>
+            } />
+            <Route exact path="/join-a-home" render={() => 
+              <div>
+                {/* <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/> */}
                 <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.createNewHome}/>
               </div>
             } />
