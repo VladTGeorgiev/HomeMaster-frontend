@@ -2,14 +2,7 @@ import React from 'react';
 import { Table, Header, Image, Grid, Button, Checkbox, Label, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
-// const BillsCard= ({bills, bill_splits, addNewBillForm, removeBill}) => (
 class BillsCard extends React.Component {
-
-    // state = { 
-    //     checked: ''
-    // }
-    
-    // toggle = () => this.setState(prevState => ({ checked: !prevState.checked }))
 
     message = () => {
         swal({
@@ -23,19 +16,24 @@ class BillsCard extends React.Component {
     render() {
         const user = this.props.user
         const bills = this.props.bills
-        const all_bill_splits = this.props.all_bill_splits
-        const user_bill_splits = this.props.bill_splits
 
-        const other_bill_splits = this.props.all_bill_splits.filter(bill_split => bill_split.user_id !== user.id)
+        const all_bill_splits = this.props.all_bill_splits
+
+
+        const user_bill_splits = this.props.bill_splits
         const userBills = user_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
-        const otherBills = all_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id !== bill.id))[0]
+
+
+        const other_bill_splits = all_bill_splits.filter(bill_split => bill_split.user_id !== user.id)
+
+        const otherBills = other_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
 
         const addNewBillForm = this.props.addNewBillForm
         const removeBill = this.props.removeBill
         const updateBillSplit = this.props.updateBillSplit
         const addOtherBillsToCurrentUser = this.props.addOtherBillsToCurrentUser
 
-        console.log(userBills, otherBills)
+        // console.log(userBills, other_bill_splits, otherBills)
         return (
             <div>
             { otherBills === undefined ?

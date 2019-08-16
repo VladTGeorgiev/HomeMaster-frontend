@@ -13,8 +13,10 @@ import Home from './components/Home'
 import CookiePolicy from './components/CookiePolicy';
 import { thisExpression } from 'babel-types';
 import MovingHome from './components/MovingHome';
+import { parse } from '@babel/core';
 
 class App extends React.Component {
+
   constructor(props)
   {
     super(props)
@@ -81,10 +83,6 @@ class App extends React.Component {
         }
       })
   }
-
-//   updateBillSplits = (users, bills) => {
-// console.log(users, bills)
-//   }
 
   logIn = user => {
     API.logIn(user)
@@ -351,55 +349,6 @@ class App extends React.Component {
             })
     }
 
-  removeBillSplits = (user) => {
-    let bill_splits = this.state.data.bill_splits
-    bill_splits.map(bill_split =>     
-      fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({ bill_split })
-      }))
-      this.createNewBillSplitsForOtherUsers(user)
-  }
-
-  createNewBillSplitsForOtherUsers = (user) => {
-    let bills = this.state.data.bills
-    let allUsers = this.state.data.users
-    let otherUsers = allUsers.filter(otherUser => otherUser.id !== user.id)
-    otherUsers.map(leftUser => bills.map(bill => this.createBillSplitsFromNewBill(bill, otherUsers)))
-  }
-
-  createBillSplitsFromNewBill = (bill, otherUsers) => {
-    let amount = (parseInt(bill.total)/parseInt(otherUsers.length))
-    otherUsers.map(user => this.createBillSplit(user, bill, amount))
-  }
-
-  // createBillSplit = (user, bill, amount) => {
-  //   const bill_split = {
-  //       user_id: user.id,
-  //       bill_id: bill.id,
-  //       amount: amount,
-  //       paid: false
-  //   }
-  //   fetch(API.billsplitsUrl, {
-  //       method: 'POST',
-  //       headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: API.token() 
-  //       },
-  //       body: JSON.stringify({
-  //           bill_split
-  //       })
-  //       }).then(API.jsonify)
-  //       .then(() => {
-  //         API.fetchData().then(data => this.setState({data: data}))
-  //       })
-  //       .catch(API.handleServerError)
-  // }
-
 // HOME
 
   updateHome = newHome => {
@@ -519,79 +468,71 @@ class App extends React.Component {
 
 // BILLS
 
-addNewBill = (bill) => {
-  fetch(API.billsUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({ 
-          bill
-      })
-      }).then(data => data.json())
-      .then(data => this.createBillSplitsFromNewBillForUser(data.bill))
-      .then(
-      swal({
-          title: "Success!",
-          text: "You have added a new bill!",
-          icon: "success",
-          timer: 1500,
-          buttons: false
-          })
-      )
-      .catch(API.handleServerError)
-}
-
-createBillSplitsFromNewBillForUser = (bill) => {
-  let user = this.state.user
-  let amount = bill.total
-  // let amount = (parseInt(bill.total)/parseInt(users.length))
-  this.createBillSplit(user, bill, amount)
-}
-
-// createBillSplitsForParticipatingUsers = (bill) => {
-//   let users = this.props.data.users
-//   let amount = (parseInt(bill.total)/parseInt(users.length))
-//   users.map(user => this.createBillSplit(user, bill, amount))
-// }
-
-createBillSplit = (user, bill, amount) => {
-  const bill_split = {
-      user_id: user.id,
-      bill_id: bill.id,
-      amount: amount,
-      paid: false
+  addNewBill = (bill) => {
+    fetch(API.billsUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            bill
+        })
+        }).then(data => data.json())
+        .then(data => this.createBillSplitsFromNewBillForUser(data.bill))
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have added a new bill!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .catch(API.handleServerError)
   }
-  fetch(API.billsplitsUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({
-          bill_split
-      })
-      }).then(API.jsonify)
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-      .catch(API.handleServerError)
-}
 
-removeBill = (e, incomingData) => {
-  let bill = incomingData
-  swal({
-      title: "Are you sure?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-      })
-      .then((willDelete) => {
-      if (willDelete) {
-          // let bill_splits = this.state.data.bill_splits.filter(bill_split => bill_split.bill_id === bill.id)
-          this.removeBillSplits(this.state.user)
-          this.deleteThisBill(bill)
+  createBillSplitsFromNewBillForUser = (bill) => {
+    let user = this.state.user
+    let amount = bill.total
+    // let amount = (parseInt(bill.total)/parseInt(users.length))
+    this.createBillSplit(user, bill, amount)
+  }
+
+  createBillSplit = (user, bill, amount) => {
+    const bill_split = {
+        user_id: user.id,
+        bill_id: bill.id,
+        amount: amount,
+        paid: false
+    }
+    fetch(API.billsplitsUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            bill_split
+        })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+  }
+
+  removeBill = (e, incomingData) => {
+    let bill = incomingData
+    swal({
+        title: "Are you sure?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+        })
+        .then((willDelete) => {
+        if (willDelete) {
+          this.checkIfOtherBillSplitsExist(bill)
           swal({
           title: "Success!",
           text: "You have deleted the bill!",
@@ -602,179 +543,151 @@ removeBill = (e, incomingData) => {
           .then(() => {
             API.fetchData().then(data => this.setState({data: data}))
           })
-          // this.props.history.push(`/dashboard`)
-      } else {
-      //   this.props.history.push(`/dashboard`)
-      }
-  });
-}
+            // this.props.history.push(`/dashboard`)
+        } else {
+        //   this.props.history.push(`/dashboard`)
+        }
+    });
+  }
 
+  checkIfOtherBillSplitsExist = (bill) => {
+    let bills_bill_splits = this.state.data.all_bill_splits.filter(split => split.bill_id === bill.id) 
+    if (bills_bill_splits.length - 1 === 0) {
+      this.removeBillSplit(this.state.user, bill)
+      setTimeout(this.deleteThisBill(bill), 1000)
+    } else {
+      this.removeBillSplit(this.state.user, bill)
+      setTimeout(this.updateBillSplitsForOtherUsers(bill), 1000)
+    }
+  }
 
-
-deleteThisBill = (bill, bill_splits) => {
-  // bill_splits.map(bill_split => 
-  //     fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
-  //         method: 'DELETE',
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //             Authorization: API.token() 
-  //         },
-  //         body: JSON.stringify({ bill_split })
-  //         }))
-  fetch(`${API.billsUrl}/${bill.id}`, {
+  removeBillSplit = (user, bill) => {
+    let bill_splits = this.state.data.bill_splits
+    let current_bill_split = bill_splits.find(bill_split => bill_split.bill_id === bill.id)
+    fetch(`${API.billsplitsUrl}/${current_bill_split.id}`, {
       method: 'DELETE',
       headers: {
           'Content-Type': 'application/json',
           Authorization: API.token() 
       },
-      body: JSON.stringify({ bill })
+      body: JSON.stringify({ current_bill_split })
       })
-}
-
-updateBillSplit = (billSplit) => {
-  const bill_split = {
-      id: billSplit.id,
-      paid: !billSplit.paid
   }
-  fetch(`${API.billsplitsUrl}/${billSplit.id}`, {
-      method: 'PATCH',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({
-          bill_split
-      })
-      }).then(API.jsonify)
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-      .catch(API.handleServerError)
-}
 
-addOtherBillsToCurrentUser = (bill, current_user) => {
-  let users = this.state.data.users
-  let all_bill_splits = this.state.data.all_bill_splits
-  let bills_bill_splits = all_bill_splits.filter(split => split.bill_id === bill[0].id)
-  let otherusers = users.filter(user => user.id !== current_user.id)
-  let som = bills_bill_splits.map(split => split.user_id)
-  console.log(som)
-  let usersWithBillSplits = otherusers.filter(otheruser => som.map(s => s) === otheruser.id)
-  console.log(bills_bill_splits, otherusers, usersWithBillSplits)
-}
-
-// TASKS
-
-addNewTask = (task) => {
-  fetch(API.tasksUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({ 
-          task
-      })
-      }).then(API.jsonify)
-      .then(
-      swal({
-          title: "Success!",
-          text: "You have added a new task!",
-          icon: "success",
-          timer: 1500,
-          buttons: false
-          })
-      )
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-      .catch(API.handleServerError)
-}
-
-assignTasksToOtherUsers = (oldUser) => {
-  let otherUser = this.state.data.users.find(user => user.id !== oldUser.id)
-  let oldUserTasks = this.state.data.all_tasks.filter(task => task.user_id === oldUser.id)
-  oldUserTasks.map(oldTask => this.assignTaskWhenDeletingUser(oldTask, otherUser))
-}
-
-assignTaskWhenDeletingUser = (oldTask, otherUser) => {
-  const task = {
-    id: oldTask.id,
-    user_id: otherUser.id
+  updateBillSplitsForOtherUsers = (bill) => {
+    let bills_bill_splits = this.state.data.all_bill_splits.filter(split => split.bill_id === bill.id)
+    let allUsers = this.state.data.users
+    let allbillUsers = allUsers.filter(user => user.id === bills_bill_splits.map(split => split.user_id))
+    let otherBillUsers = allbillUsers.filter(user => user.id !== this.state.user.id)
+    let users_bill_bill_splits = bills_bill_splits.filter(split => split.user_id !== this.state.user.id)
+    let amount
+    if (otherBillUsers === 0) {
+      amount = bill.total
+    } else {
+      amount = (parseInt(bill.total)/parseInt(otherBillUsers.length))
+    }
+    let updated_bill_splits = users_bill_bill_splits.map(bill_split => bill_split.amount = amount)
+    updated_bill_splits.map(bill_split => this.updateBillSplit(bill_split))
   }
-  fetch(`${API.tasksUrl}/${oldTask.id}`, {
-    method: 'PATCH',
-    headers: {
-        'Content-Type': 'application/json',
-        Authorization: API.token() 
-    },
-    body: JSON.stringify({
-        task
-    })
-    })
-}
 
-assignTask = (oldTask, otherUser) => {
-  const task = {
-    id: oldTask.id,
-    user_id: otherUser.id
+  addOtherBillsToCurrentUser = (bill, current_user) => {
+    let bills_bill_splits = this.state.data.all_bill_splits.filter(split => split.bill_id === bill.id)
+    let number = bills_bill_splits.length
+    let amount = (parseInt(bill.total)/(parseInt(number)+1))
+    let users_bill_bill_splits = bills_bill_splits.filter(split => split.user_id !== this.state.user.id)
+    let updated_bill_splits = users_bill_bill_splits.map(bill_split => bill_split.amount = amount)
+    updated_bill_splits.map(bill_split => this.updateBillSplitForUser(users_bill_bill_splits))
+    console.log(updated_bill_splits, users_bill_bill_splits)
+    this.createBillSplit(current_user, bill, amount)
   }
-  fetch(`${API.tasksUrl}/${oldTask.id}`, {
-    method: 'PATCH',
-    headers: {
-        'Content-Type': 'application/json',
-        Authorization: API.token() 
-    },
-    body: JSON.stringify({
-        task
-    })
-    })
-    .then(() => {
-      API.fetchData().then(data => this.setState({data: data}))
-    })
-}
 
-deleteTask = (task) => {
-  fetch(`${API.tasksUrl}/${task.id}`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({ task })
-      })
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-}
+  updateBillSplitForUser = (new_bill_split) => {
 
-updateTask = (newTask) => {
-  const task = {
-      id: newTask.id,
-      completed: !newTask.completed
+    let bill_split = new_bill_split[0]
+    fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            bill_split
+        })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
   }
-  fetch(`${API.tasksUrl}/${newTask.id}`, {
-      method: 'PATCH',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({
-          task
-      })
-      }).then(API.jsonify)
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-      .catch(API.handleServerError)
-}
 
-addTaskToCurrentUser = (oldTask, user) => {
-  const task = {
+  updateBillSplit = (bill_split) => {
+    fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            bill_split
+        })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+  }
+
+  deleteThisBill = (bill) => {
+    fetch(`${API.billsUrl}/${bill.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ bill })
+        })
+  }
+
+  // TASKS
+
+  addNewTask = (task) => {
+    fetch(API.tasksUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            task
+        })
+        }).then(API.jsonify)
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have added a new task!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+  }
+
+  assignTasksToOtherUsers = (oldUser) => {
+    let otherUser = this.state.data.users.find(user => user.id !== oldUser.id)
+    let oldUserTasks = this.state.data.all_tasks.filter(task => task.user_id === oldUser.id)
+    oldUserTasks.map(oldTask => this.assignTaskWhenDeletingUser(oldTask, otherUser))
+  }
+
+  assignTaskWhenDeletingUser = (oldTask, otherUser) => {
+    const task = {
       id: oldTask.id,
-      user_id: user.id
-  }
-  fetch(`${API.tasksUrl}/${oldTask.id}`, {
+      user_id: otherUser.id
+    }
+    fetch(`${API.tasksUrl}/${oldTask.id}`, {
       method: 'PATCH',
       headers: {
           'Content-Type': 'application/json',
@@ -783,84 +696,156 @@ addTaskToCurrentUser = (oldTask, user) => {
       body: JSON.stringify({
           task
       })
-      }).then(API.jsonify)
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
       })
-      .catch(API.handleServerError)
-      swal({
-          title: "Success!",
-          text: "You have added the task to your list!",
-          icon: "success",
-          timer: 1500,
-          buttons: false
-          })
-}
-
-// ESSENTIALS
-
-addNewEssential = (home, name) => {
-  fetch(API.essentialsUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({ 
-          name: name,
-          more: false,
-          home_id: home
-       })
-      }).then(API.jsonify)
-      .then(
-      swal({
-          title: "Success!",
-          text: "You have created a new hosehold item!",
-          icon: "success",
-          timer: 1500,
-          buttons: false
-          })
-      )
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-      .catch(API.handleServerError)
-}
-
-deleteEssential = (essential) => {
-  fetch(`${API.essentialsUrl}/${essential.id}`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: API.token() 
-      },
-      body: JSON.stringify({ essential })
-      })
-      .then(() => {
-        API.fetchData().then(data => this.setState({data: data}))
-      })
-}
-
-updateEssential = (newEssential) => {
-  const essential = {
-      id: newEssential.id,
-      more: !newEssential.more
   }
-  fetch(`${API.essentialsUrl}/${newEssential.id}`, {
+
+  assignTask = (oldTask, otherUser) => {
+    const task = {
+      id: oldTask.id,
+      user_id: otherUser.id
+    }
+    fetch(`${API.tasksUrl}/${oldTask.id}`, {
       method: 'PATCH',
       headers: {
           'Content-Type': 'application/json',
           Authorization: API.token() 
       },
       body: JSON.stringify({
-          essential
+          task
       })
-      }).then(API.jsonify)
+      })
       .then(() => {
         API.fetchData().then(data => this.setState({data: data}))
       })
-      .catch(API.handleServerError)
-}
+  }
+
+  deleteTask = (task) => {
+    fetch(`${API.tasksUrl}/${task.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ task })
+        })
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+  }
+
+  updateTask = (newTask) => {
+    const task = {
+        id: newTask.id,
+        completed: !newTask.completed
+    }
+    fetch(`${API.tasksUrl}/${newTask.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            task
+        })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+  }
+
+  addTaskToCurrentUser = (oldTask, user) => {
+    const task = {
+        id: oldTask.id,
+        user_id: user.id
+    }
+    fetch(`${API.tasksUrl}/${oldTask.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            task
+        })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+        swal({
+            title: "Success!",
+            text: "You have added the task to your list!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+  }
+
+  // ESSENTIALS
+
+  addNewEssential = (home, name) => {
+    fetch(API.essentialsUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ 
+            name: name,
+            more: false,
+            home_id: home
+        })
+        }).then(API.jsonify)
+        .then(
+        swal({
+            title: "Success!",
+            text: "You have created a new hosehold item!",
+            icon: "success",
+            timer: 1500,
+            buttons: false
+            })
+        )
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+  }
+
+  deleteEssential = (essential) => {
+    fetch(`${API.essentialsUrl}/${essential.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ essential })
+        })
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+  }
+
+  updateEssential = (newEssential) => {
+    const essential = {
+        id: newEssential.id,
+        more: !newEssential.more
+    }
+    fetch(`${API.essentialsUrl}/${newEssential.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({
+            essential
+        })
+        }).then(API.jsonify)
+        .then(() => {
+          API.fetchData().then(data => this.setState({data: data}))
+        })
+        .catch(API.handleServerError)
+  }
 
   render() {
     return (
@@ -906,7 +891,6 @@ updateEssential = (newEssential) => {
             } />
             <Route exact path="/join-a-home" render={() => 
               <div>
-                {/* <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/> */}
                 <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.createNewHome}/>
               </div>
             } />

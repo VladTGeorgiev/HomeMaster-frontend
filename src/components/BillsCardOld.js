@@ -2,7 +2,6 @@ import React from 'react';
 import { Table, Header, Image, Grid, Button, Checkbox, Label, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
-// const BillsCard= ({bills, bill_splits, addNewBillForm, removeBill}) => (
 class BillsCard extends React.Component {
 
     message = () => {
@@ -22,6 +21,7 @@ class BillsCard extends React.Component {
         const other_bill_splits = this.props.all_bill_splits.filter(bill_split => bill_split.user_id !== user.id)
         const userBills = bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
         const otherBills = bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id !== bill.id))
+        
         const addNewBillForm = this.props.addNewBillForm
         const removeBill = this.props.removeBill
         const updateBillSplit = this.props.updateBillSplit

@@ -120,16 +120,24 @@ class Dashboard extends Component {
         })
   }
 
+    updateBillSplitState = (old_bill_split, user) => {
+    let bill_split = {
+        id: old_bill_split.id,
+        paid: !old_bill_split.paid
+    }
+    this.props.updateBillSplit(bill_split, user)
+}
+
     render() {
         const { activeItem } = this.state
         let displayedCard
 
         switch (this.state.activeItem) {
             case 'outstanding':
-                displayedCard = <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} updateBillSplit={this.props.updateBillSplit} updateEssential={this.props.updateEssential}/>
+                displayedCard = <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
                 break;
             case 'bills':
-                displayedCard = <BillsCardOld user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.props.updateBillSplit} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
+                displayedCard = <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
                 />
                 break;
             case 'tasks':
