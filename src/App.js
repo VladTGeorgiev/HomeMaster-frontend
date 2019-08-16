@@ -577,17 +577,17 @@ class App extends React.Component {
   updateBillSplitsForOtherUsers = (bill) => {
     let bills_bill_splits = this.state.data.all_bill_splits.filter(split => split.bill_id === bill.id)
     let allUsers = this.state.data.users
-    let allbillUsers = allUsers.filter(user => user.id === bills_bill_splits.map(split => split.user_id))
+    let allbillUsers =  bills_bill_splits.map(split => allUsers.find(user => user.id === split.user_id))
     let otherBillUsers = allbillUsers.filter(user => user.id !== this.state.user.id)
     let users_bill_bill_splits = bills_bill_splits.filter(split => split.user_id !== this.state.user.id)
     let amount
-    if (otherBillUsers === 0) {
+    if (otherBillUsers === false) {
       amount = bill.total
     } else {
       amount = (parseInt(bill.total)/parseInt(otherBillUsers.length))
     }
-    let updated_bill_splits = users_bill_bill_splits.map(bill_split => bill_split.amount = amount)
-    updated_bill_splits.map(bill_split => this.updateBillSplit(bill_split))
+    users_bill_bill_splits.forEach(bill_split => bill_split.amount = amount)
+    users_bill_bill_splits.map(bill_split => this.updateBillSplit(bill_split))
   }
 
   addOtherBillsToCurrentUser = (bill, current_user) => {
@@ -596,14 +596,15 @@ class App extends React.Component {
     let amount = (parseInt(bill.total)/(parseInt(number)+1))
     let users_bill_bill_splits = bills_bill_splits.filter(split => split.user_id !== this.state.user.id)
     let updated_bill_splits = users_bill_bill_splits.map(bill_split => bill_split.amount = amount)
-    updated_bill_splits.map(bill_split => this.updateBillSplitForUser(users_bill_bill_splits))
-    console.log(updated_bill_splits, users_bill_bill_splits)
+    updated_bill_splits.map(bill_split => this.updateBillSplitsForAllOtherUsers(users_bill_bill_splits))
     this.createBillSplit(current_user, bill, amount)
   }
 
-  updateBillSplitForUser = (new_bill_split) => {
+  updateBillSplitsForAllOtherUsers =(splits) => {
+    splits.map(split => this.updateBillSplitForUser(split))
+  }
 
-    let bill_split = new_bill_split[0]
+  updateBillSplitForUser = (bill_split) => {
     fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
         method: 'PATCH',
         headers: {
@@ -621,6 +622,7 @@ class App extends React.Component {
   }
 
   updateBillSplit = (bill_split) => {
+    console.log(bill_split)
     fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
         method: 'PATCH',
         headers: {
