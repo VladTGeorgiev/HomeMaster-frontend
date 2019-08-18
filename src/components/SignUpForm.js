@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment, Divider } from 'semantic-ui-react'
 import logo from '../media/smart-house.png'
+import defaultAvatar from '../media/user.png'
 
 const SugnUpForm = ({ submit }) => {
 
@@ -11,6 +12,7 @@ const SugnUpForm = ({ submit }) => {
     // const [home_id, setHomeId] = useState('')
     const cookie_policy = false
     const home_id = "1"
+    const avatar = {defaultAvatar}
 
     return (
       <div>
@@ -24,7 +26,7 @@ const SugnUpForm = ({ submit }) => {
           </Header>
           <Form size='large' className='sign-up' onSubmit={e => {
                     e.preventDefault();
-                    submit({first_name, last_name, email, password, home_id, cookie_policy })
+                    submit({first_name, last_name, email, password, home_id, cookie_policy, avatar })
                     setFirstName('')
                     setLastName('')
                     setEmail('')

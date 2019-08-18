@@ -622,7 +622,6 @@ class App extends React.Component {
   }
 
   updateBillSplit = (bill_split) => {
-    console.log(bill_split)
     fetch(`${API.billsplitsUrl}/${bill_split.id}`, {
         method: 'PATCH',
         headers: {

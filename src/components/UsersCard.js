@@ -3,7 +3,7 @@ import { Card, Icon, Image} from 'semantic-ui-react'
 
 const UsersCard = ({user}) => (
     <Card>
-        <Image src={user.avatar} wrapped ui={false} />
+        <Image floated='right' size='mini' src={user.avatar} wrapped ui={false} />
         <Card.Content>
         <Card.Header>{user.first_name}</Card.Header>
         <Card.Meta>
