@@ -10,6 +10,7 @@ const billsplitsUrl = `${endpoint}/billsplits`
 const essentialsUrl = `${endpoint}/essentials`
 const validateUrl = `${endpoint}/validate`
 const dataUrl = `${endpoint}/data`
+const buyFromAmazon = 'https://www.amazon.co.uk/s?k='
 const token = () => localStorage.getItem("token");
 
 /////////  HELPERS
@@ -93,4 +94,5 @@ export default {
     tasksUrl,
     billsplitsUrl,
     billsUrl,
+    buyFromAmazon
 }

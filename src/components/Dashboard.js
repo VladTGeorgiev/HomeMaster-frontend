@@ -10,6 +10,7 @@ import BillsCardOld from '../components/BillsCardOld'
 import swal from '@sweetalert/with-react'
 import NewTask from '../components/NewTask'
 import NewBill from '../components/NewBill'
+import API from '../adapters/API'
 import { thisExpression } from '@babel/types';
 import essentialsicon from '../media/check.png'
 
@@ -24,7 +25,7 @@ class Dashboard extends Component {
 
     buyFromAmazon = (e, name) => {
     window.open(
-        'https://www.amazon.co.uk/s?k='+name, '_blank'
+        API.buyFromAmazon+name, '_blank'
       );
     }
 

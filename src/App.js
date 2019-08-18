@@ -14,6 +14,7 @@ import CookiePolicy from './components/CookiePolicy';
 import { thisExpression } from 'babel-types';
 import MovingHome from './components/MovingHome';
 import { parse } from '@babel/core';
+import { SSL_OP_NETSCAPE_CA_DN_BUG, SSL_OP_MICROSOFT_BIG_SSLV3_BUFFER } from 'constants';
 
 class App extends React.Component {
 
@@ -554,11 +555,23 @@ class App extends React.Component {
     let bills_bill_splits = this.state.data.all_bill_splits.filter(split => split.bill_id === bill.id) 
     if (bills_bill_splits.length - 1 === 0) {
       this.removeBillSplit(this.state.user, bill)
-      setTimeout(this.deleteThisBill(bill), 1000)
     } else {
-      this.removeBillSplit(this.state.user, bill)
-      setTimeout(this.updateBillSplitsForOtherUsers(bill), 1000)
+      this.removeBillSplitWithoutDeletingBill(this.state.user, bill)
+      this.updateBillSplitsForOtherUsers(bill)
     }
+  }
+
+  removeBillSplitWithoutDeletingBill = (user, bill) => {
+    let bill_splits = this.state.data.bill_splits
+    let current_bill_split = bill_splits.find(bill_split => bill_split.bill_id === bill.id)
+    fetch(`${API.billsplitsUrl}/${current_bill_split.id}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: API.token() 
+      },
+      body: JSON.stringify({ current_bill_split })
+      })
   }
 
   removeBillSplit = (user, bill) => {
@@ -571,7 +584,7 @@ class App extends React.Component {
           Authorization: API.token() 
       },
       body: JSON.stringify({ current_bill_split })
-      })
+      }).then(this.deleteThisBill(bill))
   }
 
   updateBillSplitsForOtherUsers = (bill) => {

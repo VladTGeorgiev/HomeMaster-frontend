@@ -2,11 +2,6 @@ import React from 'react';
 import { Grid, Table, Checkbox, Button, Divider, Header, Label} from 'semantic-ui-react'
 class EssentailsCard extends React.Component {
 
-    // state = { 
-    // }
-
-    // toggle = (essentialId) => this.setState(prevState => ({ [essentialId]: !prevState[essentialId] }))
-
     render() {
         const essentials = this.props.essentials
         const neededEssentials = essentials.filter(essential => essential.more === true)
