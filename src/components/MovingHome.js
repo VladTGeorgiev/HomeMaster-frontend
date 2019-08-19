@@ -12,6 +12,7 @@ const MovingHome = ({ moveToNewHome, generateRandomHomeKey, createNewHome }) => 
   const [address_two, setAddressTwo] = useState('')
   const [city, setCity] = useState('')
   const [postcode, setPostcode] = useState('')
+  
 
     return (
         <Grid textAlign='center' style={{ height: '80vh' }} verticalAlign='middle' columns={2} relaxed='very'>
@@ -56,7 +57,7 @@ const MovingHome = ({ moveToNewHome, generateRandomHomeKey, createNewHome }) => 
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='Address line one' type="text" name="address_one" value={address_one} onChange={e => setAddressOne(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='Address line two' type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='City' type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>
-                                    <Form.Input fluid icon='marker' iconPosition='left' placeholder='Postcode' type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
+                                    <Form.Input fluid icon='world' iconPosition='left' placeholder='Postcode' type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
                                     <Form.Input fluid icon='key' iconPosition='left' placeholder="Home key" type="text" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
                                     <Label color='yellow' style={{cursor: 'pointer'}} onClick={() => generateRandomHomeKey()}>Generate random home key</Label>
                                     <Divider hidden/>

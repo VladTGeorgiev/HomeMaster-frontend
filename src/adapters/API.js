@@ -23,9 +23,10 @@ const jsonify = res => {
 }
 
 const handleServerError = response => {
+    const text = ["Something didn't go as planned.", "Please try again!"]
     swal({
         title: "Error!",
-        text: "Something didn't go as planned. Please, try again!",
+        text: text.join('\n\n'),
         icon: "Error",
         timer: 1500,
         buttons: false

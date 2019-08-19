@@ -20,6 +20,7 @@ const SugnUpForm = ({ submit }) => {
         <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='top'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='blue' textAlign='center'>
+            <Divider hidden/>
             <Image src={logo} size='small'/>
             <Divider hidden/>
             <div className='comfortaa'> Sign up for a new account</div>

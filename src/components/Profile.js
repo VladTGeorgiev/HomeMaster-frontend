@@ -40,9 +40,9 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
                     // setAvatar('')
                 }}>
             <Segment stacked>
-                <Form.Input fluid icon='user' iconPosition='left' placeholder={user.first_name} type="text" name="first_name" value={first_name} onChange={e => setFirstName(e.target.value)} />
-                <Form.Input fluid icon='user' iconPosition='left' placeholder={user.last_name}  type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
-                <Form.Input fluid icon='lock' iconPosition='left' required placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
+                <Form.Input required fluid icon='user' iconPosition='left' placeholder={user.first_name} type="text" name="first_name" value={first_name} onChange={e => setFirstName(e.target.value)} />
+                <Form.Input required fluid icon='user' iconPosition='left' placeholder={user.last_name}  type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
+                <Form.Input required fluid icon='lock' iconPosition='left' required placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 {/* <Form.Input fluid icon='photo' iconPosition='left' placeholder="Avatar" type="img" name="avatar" value={avatar} onChange={e => setAvatar(e.target.value)}/> */}
                 <Label>
                     <Icon name='mail' /> e-mail 

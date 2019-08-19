@@ -41,17 +41,19 @@ class BillsCard extends React.Component {
         return (
             <div>
             { otherBills === undefined ?
-                <Grid textAlign='center' verticalAlign='top'>
+                    <Grid textAlign='center' verticalAlign='top'>
                     <Divider hidden/>
                     <Grid.Column style={{ width: '80vw' }}>
                         <Table basic='very' celled collapsing>
+                        <Divider hidden/>
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell></Table.HeaderCell>
-                                    <Table.HeaderCell>Household total</Table.HeaderCell>
                                     <Table.HeaderCell>Your share</Table.HeaderCell>
                                     <Table.HeaderCell>Paid?</Table.HeaderCell>
-                                    <Table.HeaderCell>Due day</Table.HeaderCell>
+                                    <Table.HeaderCell>Household total</Table.HeaderCell>
+                                    <Table.HeaderCell>Provider</Table.HeaderCell>
+                                    <Table.HeaderCell>Due date</Table.HeaderCell>
                                     <Table.HeaderCell></Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
@@ -68,15 +70,17 @@ class BillsCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {userBills.map(userBill => <p>£{userBill.total}</p>)}
-                                    </Table.Cell>
-                                    <Table.Cell>
                                         {user_bill_splits.map(bill_split => <p>£{bill_split.amount}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {user_bill_splits.map(bill_split => <p><Checkbox toggle 
-                                        // onChange={this.toggle} 
                                         checked={bill_split.paid} onChange={() => updateBillSplit(bill_split, this.props.user)}/></p>)}     
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {userBills.map(userBill => <p>£{userBill.total}</p>)}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {userBills.map(bill => <p>{bill.provider}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {userBills.map(bill => <p>{bill.date_due}</p>)}
@@ -96,13 +100,16 @@ class BillsCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {/* {otherBills.map(otherBill => <p>£{otherBill.total}</p>)} */}
-                                    </Table.Cell>
-                                    <Table.Cell>
 
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {/* {other_bill_splits.map(other_bill_split => <p><Checkbox toggle onChange={this.message} checked={other_bill_split.paid}/></p>)}  */}
+                                        {/* {other_bill_splits.map(other_bill_split => <p><Checkbox toggle onChange={this.message} checked={other_bill_split.paid}/></p>)} */}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {/* {otherBills.map(otherBill => <p>£{otherBill.total}</p>)} */}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {/* {userBills.map(bill => <p>{bill.provider}</p>)} */}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {/* {otherBills.map(otherBill => <p>{otherBill.date_due}</p>)} */}
@@ -127,10 +134,11 @@ class BillsCard extends React.Component {
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell></Table.HeaderCell>
-                                    <Table.HeaderCell>Household total</Table.HeaderCell>
                                     <Table.HeaderCell>Your share</Table.HeaderCell>
                                     <Table.HeaderCell>Paid?</Table.HeaderCell>
-                                    <Table.HeaderCell>Due day</Table.HeaderCell>
+                                    <Table.HeaderCell>Household total</Table.HeaderCell>
+                                    <Table.HeaderCell>Provider</Table.HeaderCell>
+                                    <Table.HeaderCell>Due date</Table.HeaderCell>
                                     <Table.HeaderCell></Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
@@ -147,15 +155,17 @@ class BillsCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {userBills.map(userBill => <p>£{userBill.total}</p>)}
-                                    </Table.Cell>
-                                    <Table.Cell>
                                         {user_bill_splits.map(bill_split => <p>£{bill_split.amount}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {user_bill_splits.map(bill_split => <p><Checkbox toggle 
-                                        // onChange={this.toggle} 
                                         checked={bill_split.paid} onChange={() => updateBillSplit(bill_split, this.props.user)}/></p>)}     
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {userBills.map(userBill => <p>£{userBill.total}</p>)}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {userBills.map(bill => <p>{bill.provider}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {userBills.map(bill => <p>{bill.date_due}</p>)}
@@ -175,13 +185,16 @@ class BillsCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {otherBills.map(otherBill => <p>£{otherBill.total}</p>)}
-                                    </Table.Cell>
-                                    <Table.Cell>
 
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {other_bill_splits.map(other_bill_split => <p><Checkbox toggle onChange={this.message} checked={other_bill_split.paid}/></p>)} 
+                                        {other_bill_splits.map(other_bill_split => <p><Checkbox toggle onChange={this.message} checked={other_bill_split.paid}/></p>)}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {otherBills.map(otherBill => <p>£{otherBill.total}</p>)}
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {userBills.map(bill => <p>{bill.provider}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {otherBills.map(otherBill => <p>{otherBill.date_due}</p>)}

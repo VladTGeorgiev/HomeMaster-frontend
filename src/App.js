@@ -16,6 +16,7 @@ import MovingHome from './components/MovingHome';
 import { parse } from '@babel/core';
 import { SSL_OP_NETSCAPE_CA_DN_BUG, SSL_OP_MICROSOFT_BIG_SSLV3_BUFFER } from 'constants';
 
+
 class App extends React.Component {
 
   constructor(props)
@@ -39,12 +40,16 @@ class App extends React.Component {
             this.props.history.push(`/login`)
         } else {
           this.setState({ user: data.user })
-          this.props.history.push(`/dashboard`)
+          if (this.state.user.home_id === 1) {
+            this.props.history.push(`/join-a-home`)
+          } else {
+            this.props.history.push(`/dashboard`)
             API.fetchData().then(data => this.setState({data: data}))
             if (this.state.user === undefined) {
+              const text = ["These details doesn't seem to match any records.", "Please try again!"]
               swal({
                 title: "Error!",
-                text: "These details doesn't seem to match any records. Please try again",
+                text: text.join('\n'),
                 icon: "warning",
                 timer: 2000,
                 buttons: false
@@ -54,7 +59,8 @@ class App extends React.Component {
             }
           }
         }
-      )
+      }
+    )
   }
 
   ///////// LOGIN/SIGNUP
@@ -76,7 +82,7 @@ class App extends React.Component {
           swal({
             title: "Error!",
             text: "Sign up unsuccesful!",
-            icon: "warnig",
+            icon: "warning",
             timer: 2000,
             buttons: false
             })
@@ -89,9 +95,10 @@ class App extends React.Component {
     API.logIn(user)
       .then(user => {
         if (user === undefined) {
+          const text = ["These details doesn't seem to match any records.", "Please try again!"]
           swal({
             title: "Error!",
-            text: "These details doesn't seem to match any records. Please try again",
+            text: text.join('\n'),
             icon: "warning",
             timer: 2000,
             buttons: false
@@ -188,32 +195,6 @@ class App extends React.Component {
   ///////// CRUD
 
   // USER
-  updateUser = userNewInfo => {
-    this.updateThisUser(this.state.user, userNewInfo)
-    .then(user => this.setState({ user },this.componentDidMount(), this.props.history.push(`/dashboard`)))
-    swal({
-      title: "Success!",
-      text: "You have changed your details!",
-      icon: "success",
-      timer: 1500,
-      buttons: false
-      });
-  }
-
-  updateThisUser = (current_user, user) =>
-    fetch(`${API.usersUrl}/${current_user.id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: API.token() 
-        },
-        body: JSON.stringify({ user })
-        }).then(API.jsonify)
-        .then(data => {
-            localStorage.setItem('token', API.token())
-            return data.user
-        })
-        .catch(API.handleServerError)
 
   moveToNewHome = (home_key) => {
     if (this.state.data.bill_splits === undefined) {
@@ -244,9 +225,10 @@ class App extends React.Component {
   findHome = (homes, home_key) => {
     let newHome = homes.find(home => home.home_key === home_key)
     if (newHome === undefined || home_key === '1') {
+      const text = ["The home key you entered in not valid.", "Please check the key and try again."]
       swal({
         title: "Error!",
-        text: "The home key you entered in not valid. Please check the key and try again.",
+        text: text.join('\n'),
         icon: "warning",
         timer: 2000,
         buttons: false
@@ -256,45 +238,35 @@ class App extends React.Component {
     }
   }
 
-  // findHome = (homes, home_key) => {
-  //   let newHome = homes.find(home => home.id === parseInt(home_key))
-  //   if (newHome === undefined || home_key === '1') {
-  //     swal({
-  //       title: "Error!",
-  //       text: "The home key you entered in not valid. Please check the key and try again.",
-  //       icon: "warning",
-  //       timer: 2000,
-  //       buttons: false
-  //       })
-  //   } else {
-  //     this.updateUserHome(newHome)
-  //   }
-  // }
-
   updateUserHome = (home) => {
     let user = {
-      id: this.state.user.id,
+      // id: this.state.user.id,
       home_id: home.id
     }
     if (this.state.data.users !== undefined) {
       if (this.state.data.users.length === 1) {
-        // let bills = this.state.data.bills
         let tasks = this.state.data.tasks
-        // bills.map(bill => this.deleteThisBill(bill))
         tasks.map(task => this.deleteTask(task))
-        this.updateUserAfterMovingHome(user)
+        this.updateUser(user)
       } else {
         this.assignTasksToOtherUsers(user)
-        this.updateUserAfterMovingHome(user)
+        this.updateUser(user)
       }
     } else {
-      this.updateUserAfterMovingHome(user)
+      this.updateUser(user)
     }
   }
 
-  updateUserAfterMovingHome = userNewInfo => {
+  updateUser = userNewInfo => {
     this.updateThisUser(this.state.user, userNewInfo)
     .then(user => this.setState({ user },this.componentDidMount(), this.props.history.push(`/dashboard`)))
+    // .then(user => { 
+    //   this.setState({ user }, () => {
+
+    //     API.fetchData().then(data => this.setState({data: data}, () => this.props.history.push(`/dashboard`)))
+        
+    //   })
+
     swal({
       title: "Success!",
       text: "You have changed your home!",
@@ -302,13 +274,23 @@ class App extends React.Component {
       timer: 1500,
       buttons: false
       })
+    // })
   }
 
-  updateUserHomeSignUp = (home, newUser) => {
-    newUser = {
-      home_id: home.id
-    }
-    this.updateUser(newUser)
+  updateThisUser = (current_user, user) => {
+    return fetch(`${API.usersUrl}/${current_user.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: API.token() 
+        },
+        body: JSON.stringify({ user })
+        }).then(res => res.json())
+        .then(data => {
+            localStorage.setItem('token', API.token())
+            return data.user
+        })
+        .catch(API.handleServerError)
   }
 
   deleteUser = () => {
@@ -518,9 +500,10 @@ class App extends React.Component {
       window.crypto.getRandomValues(arr)
       return Array.from(arr, dec2hex).join('')
     }
+    const text = [generateId(16),"Please copy and then paste the key in the home key field of the form"]
     swal({
       title: "Your secure home key:",
-      text: generateId(16),
+      text: text.join('\n\n'),
       icon: "success",
       // closeOnClickOutside: false,
       buttons: false
@@ -604,9 +587,7 @@ class App extends React.Component {
           .then(() => {
             API.fetchData().then(data => this.setState({data: data}))
           })
-            // this.props.history.push(`/dashboard`)
         } else {
-        //   this.props.history.push(`/dashboard`)
         }
     });
   }

@@ -7,7 +7,7 @@ class BillsCard extends React.Component {
     message = () => {
         swal({
             title: "Error!",
-            text: "You cannot complete otherBillss that are not assigned to you",
+            text: "You cannot complete bills that are not assigned to you",
             icon: "info",
             button: "OK",
           });

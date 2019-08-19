@@ -14,6 +14,7 @@ const LogInForm = ({ submit}) => {
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='top'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
+          <Divider hidden/>
           <Image src={logo} size='small'/>
           <Divider hidden/>
             <div className='comfortaa'>Log in</div>
