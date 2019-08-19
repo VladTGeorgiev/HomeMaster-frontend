@@ -23,17 +23,21 @@ class BillsCard extends React.Component {
         const user_bill_splits = this.props.bill_splits
         const userBills = user_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
 
+        const other_bill_splits_all = all_bill_splits.filter(bill_split => bill_split.user_id !== user.id)
 
-        const other_bill_splits = all_bill_splits.filter(bill_split => bill_split.user_id !== user.id)
+        const other_bill_splits = other_bill_splits_all.filter(obs => !user_bill_splits.map(ubs => ubs.bill_id).includes(obs.bill_id))
 
-        const otherBills = other_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
+        const otherBillsAll = other_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
+
+        const otherBills = otherBillsAll.filter(oB => !userBills.map(uB => uB.id).includes(oB.id))
+
+        
 
         const addNewBillForm = this.props.addNewBillForm
         const removeBill = this.props.removeBill
         const updateBillSplit = this.props.updateBillSplit
         const addOtherBillsToCurrentUser = this.props.addOtherBillsToCurrentUser
 
-        // console.log(userBills, other_bill_splits, otherBills)
         return (
             <div>
             { otherBills === undefined ?
