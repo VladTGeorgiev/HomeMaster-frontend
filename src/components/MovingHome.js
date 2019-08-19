@@ -3,7 +3,7 @@ import { Button, Form, Grid, Header, Image, Segment, Label, Divider } from 'sema
 import compass from '../media/compass.png'
 import logoNewHome from '../media/pin-new-home.png'
 
-const MovingHome = ({ moveToNewHome, data, createNewHome }) => {
+const MovingHome = ({ moveToNewHome, generateRandomHomeKey, createNewHome }) => {
 
   const [home_key, setHomeKey] = useState('')
 
@@ -27,9 +27,9 @@ const MovingHome = ({ moveToNewHome, data, createNewHome }) => {
                             setHomeKey('')
                         }}>
                     <Segment stacked>
-                        <Label>Enter your new home key below</Label>
+                        <Label>Enter the home key you've been given</Label>
                         <Divider hidden/>
-                        <Form.Input fluid icon='lock' iconPosition='left' placeholder="Home key" type="number" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
+                        <Form.Input fluid icon='key' iconPosition='left' placeholder="Home key" type="text" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
                         <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Move in to your new home!</div></Button>
                     </Segment>
                 </Form> 
@@ -49,13 +49,17 @@ const MovingHome = ({ moveToNewHome, data, createNewHome }) => {
                                         setAddressTwo('')
                                         setCity('')
                                         setPostcode('')
+                                        setHomeKey('')
                                     }}>
                                 <Segment stacked>
-                                    <Form.Input fluid required icon='user' iconPosition='left' placeholder='Home name' type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
+                                    <Form.Input fluid required icon='home' iconPosition='left' placeholder='Home name' type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='Address line one' type="text" name="address_one" value={address_one} onChange={e => setAddressOne(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='Address line two' type="text" name="address_two" value={address_two} onChange={e => setAddressTwo(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='City' type="text" name="city" value={city} onChange={e => setCity(e.target.value)}/>
                                     <Form.Input fluid icon='marker' iconPosition='left' placeholder='Postcode' type="text" name="postcode" value={postcode} onChange={e => setPostcode(e.target.value)}/>
+                                    <Form.Input fluid icon='key' iconPosition='left' placeholder="Home key" type="text" name="home_key" value={home_key} onChange={e => setHomeKey(e.target.value)}/>
+                                    <Label color='yellow' style={{cursor: 'pointer'}} onClick={() => generateRandomHomeKey()}>Generate random home key</Label>
+                                    <Divider hidden/>
                                     <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Submit</div></Button>
                                 </Segment>
                             </Form>

@@ -221,7 +221,6 @@ class App extends React.Component {
         headers: {Authorization: API.token()}
         }).then(res => res.json())
         .then(homes => this.findHome(homes, home_key))
-        // .then(home => this.updateUserHome(home))
     } else {
       if (this.state.data.bill_splits.length > 0) {
         swal({
@@ -236,15 +235,14 @@ class App extends React.Component {
           headers: {Authorization: API.token()}
           }).then(res => res.json())
           .then(homes => this.findHome(homes, home_key))
-          // .then(home => this.updateUserHome(home))
+
       }
     }
 
   }
 
-
   findHome = (homes, home_key) => {
-    let newHome = homes.find(home => home.id === parseInt(home_key))
+    let newHome = homes.find(home => home.home_key === home_key)
     if (newHome === undefined || home_key === '1') {
       swal({
         title: "Error!",
@@ -257,6 +255,21 @@ class App extends React.Component {
       this.updateUserHome(newHome)
     }
   }
+
+  // findHome = (homes, home_key) => {
+  //   let newHome = homes.find(home => home.id === parseInt(home_key))
+  //   if (newHome === undefined || home_key === '1') {
+  //     swal({
+  //       title: "Error!",
+  //       text: "The home key you entered in not valid. Please check the key and try again.",
+  //       icon: "warning",
+  //       timer: 2000,
+  //       buttons: false
+  //       })
+  //   } else {
+  //     this.updateUserHome(newHome)
+  //   }
+  // }
 
   updateUserHome = (home) => {
     let user = {
@@ -352,6 +365,56 @@ class App extends React.Component {
 
 // HOME
 
+  getHomesData = (newHome) => {
+    fetch(API.homesUrl, {
+      method: 'GET',
+      headers: {
+          Authorization: API.token() 
+      },
+      }).then(res => res.json())
+      .then(data => this.checkHomeKeyUniqueness(data, newHome))
+  }
+
+  checkHomeKeyUniqueness = (data, newHome) => {
+    let check = data.map(d => d.home_key).includes(newHome.home_key)
+    if (check === false) {
+      this.updateHome(newHome)
+    } else {
+      swal({
+        title: "Error!",
+        text: "Please choose a different home key.",
+        icon: "warning",
+        timer: 2000,
+        buttons: false
+        });
+    }
+  }
+
+  getHomesDataForNewHome = (newHome) => {
+    fetch(API.homesUrl, {
+      method: 'GET',
+      headers: {
+          Authorization: API.token() 
+      },
+      }).then(res => res.json())
+      .then(data => this.checkHomeKeyUniquenessNewHome(data, newHome))
+  }
+
+  checkHomeKeyUniquenessNewHome = (data, newHome) => {
+    let check = data.map(d => d.home_key).includes(newHome.home_key)
+    if (check === false) {
+      this.createNewHome(newHome)
+    } else {
+      swal({
+        title: "Error!",
+        text: "Please choose a different home key.",
+        icon: "warning",
+        timer: 2000,
+        buttons: false
+        });
+    }
+  }
+
   updateHome = newHome => {
     let home = {
       id: this.state.data.home.id,
@@ -359,7 +422,8 @@ class App extends React.Component {
       address_one: newHome.address_one,
       address_two: newHome.address_two,
       city: newHome.city,
-      postcode: newHome.postcode
+      postcode: newHome.postcode,
+      home_key: newHome.home_key
     }
     this.updateThisHome(home)
     this.props.history.push(`/dashboard`)
@@ -385,28 +449,6 @@ class App extends React.Component {
           API.fetchData().then(data => this.setState({data: data}))
         })
   }
-
-  // submitNewHomeKey = (home_key) => {
-  //   let home = {
-  //     id: this.state.data.home.id,
-  //     name: this.state.data.home.name,
-  //     adrress_one: this.state.data.home.adrress_one,
-  //     adrress_two: this.state.data.home.adrress_two,
-  //     city: this.state.data.home.city,
-  //     postcode: this.state.data.home.postcode,
-  //     home_key: home_key
-  //   }
-  //   API.updateThisHome(home)
-  //   API.fetchData().then(data => this.setState({data: data}))
-  //   this.props.history.push(`/dashboard`)
-  //   swal({
-  //     title: "Success!",
-  //     text: "You have changed your home details!",
-  //     icon: "success",
-  //     timer: 1500,
-  //     buttons: false
-  //     });
-  // }
 
   createNewHome = (home) => {
     if (this.state.data.bill_splits === undefined) {
@@ -465,6 +507,24 @@ class App extends React.Component {
     }
     }
 
+  }
+
+  generateRandomHomeKey = () => {
+    function dec2hex (dec) {
+      return ('0' + dec.toString(16)).substr(-2)
+    }
+    function generateId (len) {
+      var arr = new Uint8Array((len || 40) / 2)
+      window.crypto.getRandomValues(arr)
+      return Array.from(arr, dec2hex).join('')
+    }
+    swal({
+      title: "Your secure home key:",
+      text: generateId(16),
+      icon: "success",
+      // closeOnClickOutside: false,
+      buttons: false
+      })
   }
 
 // BILLS
@@ -888,7 +948,7 @@ class App extends React.Component {
             <Route exact path="/home" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.updateHome} submitNewHomeKey={this.submitNewHomeKey} />
+                <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.getHomesData} submitNewHomeKey={this.submitNewHomeKey} generateRandomHomeKey={this.generateRandomHomeKey}/>
               </div>
             } />
             <Route exact path="/cookie-policy" render={() => 
@@ -900,12 +960,12 @@ class App extends React.Component {
             <Route exact path="/moving-home" render={() => 
               <div>
                 <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.createNewHome}/>
+                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.getHomesDataForNewHome} generateRandomHomeKey={this.generateRandomHomeKey}/>
               </div>
             } />
             <Route exact path="/join-a-home" render={() => 
               <div>
-                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.createNewHome}/>
+                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.getHomesDataForNewHome} generateRandomHomeKey={this.generateRandomHomeKey}/>
               </div>
             } />
           </div>

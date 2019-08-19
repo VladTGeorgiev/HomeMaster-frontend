@@ -23,9 +23,9 @@ const HomeCard = ({home, redirectToHomeProfile}) => (
             <Card.Content extra>
             <Card.Meta>
                 <Label>
-                    <Icon name='lock' /> Home key
+                    <Icon name='key' /> Home key
                 </Label>
-                <span className='date'>{home.id}</span>
+                <span className='date'>{home.home_key}</span>
             </Card.Meta>
             </Card.Content>
             <Button color='teal' fluid size='small' onClick={() => redirectToHomeProfile()}><div className='comfortaa'>Change home details</div></Button>

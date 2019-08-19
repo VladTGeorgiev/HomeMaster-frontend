@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label, Divider, Container } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment, Dropdown, Label, Divider, Container, Icon } from 'semantic-ui-react'
 import userlogo from '../media/smile (1).png'
 import userleaving from '../media/xx.png'
 import legal from '../media/file.png'
@@ -44,6 +44,11 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
                 <Form.Input fluid icon='user' iconPosition='left' placeholder={user.last_name}  type="text" name="last_name" value={last_name} onChange={e => setLastName(e.target.value)}/>
                 <Form.Input fluid icon='lock' iconPosition='left' required placeholder='Password' type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 {/* <Form.Input fluid icon='photo' iconPosition='left' placeholder="Avatar" type="img" name="avatar" value={avatar} onChange={e => setAvatar(e.target.value)}/> */}
+                <Label>
+                    <Icon name='mail' /> e-mail 
+                </Label>
+                <span className='date'>{user.email}</span>
+                <Divider hidden/>
                 <Label> <div>Cookie Policy Agreement:</div> 
                   <Dropdown onChange={e => setCookiePolicy()} defaultValue={ user.cookie_policy} options={options} />
                 </Label>
