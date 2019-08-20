@@ -11,11 +11,7 @@ import {withRouter} from 'react-router-dom'
 import Profile from './components/Profile'
 import Home from './components/Home'
 import CookiePolicy from './components/CookiePolicy';
-import { thisExpression } from 'babel-types';
 import MovingHome from './components/MovingHome';
-import { parse } from '@babel/core';
-import { SSL_OP_NETSCAPE_CA_DN_BUG, SSL_OP_MICROSOFT_BIG_SSLV3_BUFFER } from 'constants';
-
 
 class App extends React.Component {
 
@@ -24,11 +20,13 @@ class App extends React.Component {
     super(props)
     this.state = {
       user: undefined,
-      data: []
+      data: [],
+      width: window.innerWidth
     }
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange)
     API.validateUser()
       .then(data => {
         if (!data.user) {           
@@ -61,6 +59,14 @@ class App extends React.Component {
         }
       }
     )
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowSizeChange)
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth })
   }
 
   ///////// LOGIN/SIGNUP
@@ -903,65 +909,66 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        { this.state.user ?
-          <div>
-            <Route exact path="/dashboard" render={() => 
-              <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} 
-                
-                addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential} 
-                
-                deleteTask={this.deleteTask} addNewTask={this.addNewTask} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}
-                
-                addNewBill={this.addNewBill} removeBill={this.removeBill} updateBillSplit={this.updateBillSplit} addOtherBillsToCurrentUser={this.addOtherBillsToCurrentUser}
-                />
-              </div>
-            } />
-            <Route exact path="/profile" render={() => 
-              <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <Profile user={this.state.user} updateUser={this.updateUser} deleteUser={this.deleteUser} redirectToCookiePolicy={this.redirectToCookiePolicy} />
-              </div>
-            } />
-            <Route exact path="/home" render={() => 
-              <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.getHomesData} submitNewHomeKey={this.submitNewHomeKey} generateRandomHomeKey={this.generateRandomHomeKey}/>
-              </div>
-            } />
-            <Route exact path="/cookie-policy" render={() => 
-              <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <CookiePolicy/>
-              </div>
-            } />
-            <Route exact path="/moving-home" render={() => 
-              <div>
-                <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
-                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.getHomesDataForNewHome} generateRandomHomeKey={this.generateRandomHomeKey}/>
-              </div>
-            } />
-            <Route exact path="/join-a-home" render={() => 
-              <div>
-                <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.getHomesDataForNewHome} generateRandomHomeKey={this.generateRandomHomeKey}/>
-              </div>
-            } />
-          </div>
-        :
-          <div>
-            <Route exact path="/login" render={() => 
-              <LogInForm user={this.state.user} submit={this.logIn}/>
-            } />
-            <Route exact path="/signup" render={() => 
-              <SignUpForm submit={this.signUp}/>
-            } />
-          </div>
-        }
-      </div>
-    )
+
+      return (
+        <div>
+          { this.state.user ?
+            <div>
+              <Route exact path="/dashboard" render={() => 
+                <div>
+                  <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                  <Dashboard user={this.state.user} data={this.state.data} redirectToHomeProfile={this.redirectToHomeProfile} width={this.state.width}
+                  
+                  addNewEssential={this.addNewEssential} deleteEssential={this.deleteEssential} updateEssential={this.updateEssential} 
+                  
+                  deleteTask={this.deleteTask} addNewTask={this.addNewTask} updateTask={this.updateTask} addTaskToCurrentUser={this.addTaskToCurrentUser}
+                  
+                  addNewBill={this.addNewBill} removeBill={this.removeBill} updateBillSplit={this.updateBillSplit} addOtherBillsToCurrentUser={this.addOtherBillsToCurrentUser}
+                  />
+                </div>
+              } />
+              <Route exact path="/profile" render={() => 
+                <div>
+                  <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                  <Profile user={this.state.user} updateUser={this.updateUser} deleteUser={this.deleteUser} redirectToCookiePolicy={this.redirectToCookiePolicy} width={this.state.width}/>
+                </div>
+              } />
+              <Route exact path="/home" render={() => 
+                <div>
+                  <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                  <Home user={this.state.user} data={this.state.data} submitNewHomeDetails={this.getHomesData} submitNewHomeKey={this.submitNewHomeKey} generateRandomHomeKey={this.generateRandomHomeKey}/>
+                </div>
+              } />
+              <Route exact path="/cookie-policy" render={() => 
+                <div>
+                  <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                  <CookiePolicy/>
+                </div>
+              } />
+              <Route exact path="/moving-home" render={() => 
+                <div>
+                  <Navbar user={this.state.user} logOut={this.logOut} redirectToDashboard={this.redirectToDashboard} redirectToUserProfile={this.redirectToUserProfile} redirectToMovingHome={this.redirectToMovingHome}/>
+                  <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.getHomesDataForNewHome} generateRandomHomeKey={this.generateRandomHomeKey} width={this.state.width}/>
+                </div>
+              } />
+              <Route exact path="/join-a-home" render={() => 
+                <div>
+                  <MovingHome moveToNewHome={this.moveToNewHome} data={this.state.data} createNewHome={this.getHomesDataForNewHome} generateRandomHomeKey={this.generateRandomHomeKey} width={this.state.width}/>
+                </div>
+              } />
+            </div>
+          :
+            <div>
+              <Route exact path="/login" render={() => 
+                <LogInForm user={this.state.user} submit={this.logIn}/>
+              } />
+              <Route exact path="/signup" render={() => 
+                <SignUpForm submit={this.signUp}/>
+              } />
+            </div>
+          }
+        </div>
+      )
   }
 }
 

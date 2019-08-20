@@ -15,9 +15,9 @@ const Home = ({ data, submitNewHomeDetails, generateRandomHomeKey }) => {
     return (
         <div>
             {data.home ? 
-                <div>
+                <div className='home'>
                     <Grid textAlign='center' style={{ height: '80vh'}} verticalAlign='middle'>
-                        <Grid.Column style={{ maxWidth: 450, width: '50vw' }}>
+                        <Grid.Column style={{ maxWidth: 450}}>
                             <Header as='h2' color='teal' textAlign='center'>
                                 <Image src={logo} size='small'/>
                                 <Divider hidden/>

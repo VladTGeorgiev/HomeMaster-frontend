@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import logo from '../media/smart-house.png'
 import user from '../media/user.png'
-import { Button, Menu, Item, Label, Header, Divider } from 'semantic-ui-react'
+import { Button, Menu, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 export default class Navbar extends Component {

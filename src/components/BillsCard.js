@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Header, Image, Grid, Button, Checkbox, Label, Divider } from 'semantic-ui-react'
+import { Table, Header, Grid, Button, Checkbox, Label, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 class BillsCard extends React.Component {
@@ -7,7 +7,7 @@ class BillsCard extends React.Component {
     message = () => {
         swal({
             title: "Error!",
-            text: "You cannot mark as complete bill shares of other users",
+            text: "You cannot mark other users' bills as paid",
             icon: "info",
             button: "OK",
           });

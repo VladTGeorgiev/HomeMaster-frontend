@@ -1,18 +1,14 @@
 import React from 'react';
-import { Grid, Table, Header, Image, Checkbox, Button, Label, Divider } from 'semantic-ui-react'
+import { Grid, Table, Header, Checkbox, Button, Label, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 class TasksCard extends React.Component {
 
-    // state = { 
-    // }
-    
-    // toggle = (taskId) => this.setState(prevState => ({ [taskId]: !prevState[taskId] }))
-
     message = () => {
+        const text = ["You cannot complete tasks", "that are not assigned to you"]
         swal({
             title: "Error!",
-            text: "You cannot complete tasks that are not assigned to you",
+            text: text.join('\n'),
             icon: "info",
             button: "OK",
           });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image} from 'semantic-ui-react'
 
-const UsersCard = ({user}) => (
-    <Card>
+const UsersCardMobileBack = ({user, showDetails}) => (
+    <Card onClick = {showDetails}>
         <Image floated='right' size='mini' src={user.avatar} wrapped ui={false} />
         <Card.Content>
         <Card.Header>{user.first_name}</Card.Header>
@@ -19,4 +19,4 @@ const UsersCard = ({user}) => (
     </Card>
 )
 
-export default UsersCard;
+export default UsersCardMobileBack;

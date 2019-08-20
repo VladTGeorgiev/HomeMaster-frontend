@@ -1,22 +1,32 @@
 import React, { Component } from 'react';
 import { Grid, Loader, Image, Segment, Container, Divider, Menu, Label } from 'semantic-ui-react'
 import UsersCard from './UsersCard'
+import UsersCardMobile from './UsersCardMobile'
+import UsersCardMobileBack from './UsersCardMobileBack'
 import HomeCard from '../components/HomeCard'
 import BillsCard from '../components/BillsCard'
 import TasksCard from '../components/TasksCard'
 import EssentialsCard from '../components/EssentialsCard'
 import Outstanding from '../components/Outstanding'
-import BillsCardOld from '../components/BillsCardOld'
+// import BillsCardOld from '../components/BillsCardOld'
 import swal from '@sweetalert/with-react'
 import NewTask from '../components/NewTask'
 import NewBill from '../components/NewBill'
 import API from '../adapters/API'
-import { thisExpression } from '@babel/types';
-import essentialsicon from '../media/check.png'
+// import { thisExpression } from '@babel/types';
+import essentialsIcon from '../media/check-purple.png'
+import oustandingIcon from '../media/hourglass.png'
+import taskIcon from '../media/construction.png'
+import billIcon from '../media/credit-card-yellow.png'
 
 class Dashboard extends Component {
     state = { 
-        activeItem: 'outstanding' 
+        activeItem: 'outstanding',
+        front: true
+    }
+
+    showDetails = () => {
+        this.setState({front: !this.state.front})
     }
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
@@ -61,13 +71,11 @@ class Dashboard extends Component {
                 text: "Add Item!",
                 closeModal: false,
                 },
-                // icon: essentialsicon
             })
             .then(name => {
                 if (!name) throw null;
                 return this.props.addNewEssential(this.props.data.home.id, name);
             })
-            // .then(this.props.fetchData())
     }
 
 // TASKS
@@ -130,9 +138,69 @@ class Dashboard extends Component {
 }
 
     render() {
+        
+        const width = this.props.width;
+        const isMobile = width < 550;
         const { activeItem } = this.state
         let displayedCard
+        let users = this.props.data.users
+        
+        let displayCardUser
+        if (users === undefined) {
+            console.log(users)
+        } else {
+        this.state.front ? displayCardUser = <Grid columns={2}>
+            {users.filter(user => user.id !== this.props.user.id).map(user => <Grid.Column key={user.id}><UsersCardMobile user={user} showDetails={this.showDetails}/></Grid.Column>)}        
+        </Grid>
+        : displayCardUser = <Grid columns={1}>
+            {users.filter(user => user.id !== this.props.user.id).map(user => <Grid.Column key={user.id}><UsersCardMobileBack user={user} showDetails={this.showDetails}/></Grid.Column>)}        
+        </Grid>
+        }
 
+
+        if (isMobile) {
+            switch (this.state.activeItem) {
+                case 'outstanding':
+                    displayedCard = <div>
+                        <Divider hidden fitted/>
+                        <Divider hidden fitted/>
+                        <Divider hidden fitted/>
+                        <Label className="mobile-dashboard-menu-item" color='teal'>Outstanding</Label>
+                        <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} width={this.width} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
+                        </div> 
+                    break;
+                case 'bills':
+                    displayedCard = <div>
+                        <Divider hidden fitted/>
+                        <Divider hidden fitted/>
+                        <Divider hidden fitted/>
+                        <Label className="mobile-dashboard-menu-item" color='yellow'>Bills</Label>
+                        <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
+                        /> 
+                    </div> 
+                    break;
+                case 'tasks':
+                    displayedCard = <div>
+                        <Divider hidden fitted/>
+                        <Divider hidden fitted/>
+                        <Divider hidden fitted/>
+                        <Label className="mobile-dashboard-menu-item" color='olive'>Tasks</Label>
+                        <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
+                    </div> 
+                    break;
+                case 'household essentials':
+                    displayedCard = <div>
+                    <Divider hidden fitted/>
+                    <Divider hidden fitted/>
+                    <Divider hidden fitted/>
+                    <Label className="mobile-dashboard-menu-item" color='pink'>Household essentials</Label>
+                    <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
+                    </div> 
+                    break;
+                default:
+                    displayedCard = <Outstanding/>
+            }
+        } else {
         switch (this.state.activeItem) {
             case 'outstanding':
                 displayedCard = <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
@@ -144,50 +212,88 @@ class Dashboard extends Component {
             case 'tasks':
                 displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
                 break;
-            case 'Household essentials':
+            case 'household essentials':
                 displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
                 break;
             default:
                 displayedCard = <Outstanding/>
         }
-
-        return (
-            this.props.data.home ? 
-                <Container >   
-                    <Container>              
-                        <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
-                    </Container>
-                    <Divider hidden/>
-                    <Divider hidden/>
-                    <Container >
-                        <Menu attached='top' tabular>
-                        <Menu.Item color='teal' name='outstanding' active={activeItem === 'outstanding'} onClick={this.handleItemClick} />
-                        <Menu.Item color='yellow' name='bills' active={activeItem === 'bills'} onClick={this.handleItemClick}/>
-                        <Menu.Item color='olive' name='tasks' active={activeItem === 'tasks'} onClick={this.handleItemClick}/>
-                        <Menu.Item color='pink' name='Household essentials' active={activeItem === 'Household essentials'} onClick={this.handleItemClick}/>
-                        </Menu>
-                        <div>{displayedCard}</div>
-                    </Container>
-                    <Divider />
-                    <Divider hidden/>
-                    <Container >
-                        {this.props.data.users.length - 1 === 1 ? 
-                            <Label ribbon color="teal" size="large">There is one other person living with you</Label>
-                        :
-                            <Label ribbon color="teal" size="large">There are {this.props.data.users.length-1} other people living with you</Label>
-                        }
+    }
+    
+        if (isMobile) {
+            return (
+                this.props.data.home ? 
+                    <Container >   
+                        <Container >
+                            <Menu attached='top' tabular>
+                            <Menu.Item color='teal' name='outstanding' active={activeItem === 'outstanding'} onClick={this.handleItemClick} ><img src={oustandingIcon} alt='outstanding'/></Menu.Item>
+                            <Menu.Item color='yellow' name='bills' active={activeItem === 'bills'} onClick={this.handleItemClick}><img src={billIcon} alt='bills'/></Menu.Item>
+                            <Menu.Item color='olive' name='tasks' active={activeItem === 'tasks'} onClick={this.handleItemClick}><img src={taskIcon} alt='tasks'/></Menu.Item>
+                            <Menu.Item color='pink' name='household essentials' active={activeItem === 'household essentials'} onClick={this.handleItemClick}><img src={essentialsIcon} alt='household essentials'/></Menu.Item>
+                            </Menu>
+                            <div>{displayedCard}</div>
+                        </Container>
+                        <Divider />
+                        <Container text>              
+                            <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
+                        </Container>
                         <Divider hidden/>
-                        <Grid columns={4}>
-                            {this.props.data.users.filter(user => user.id !== this.props.user.id).map(user => <Grid.Column key={user.id} mobile={16} tablet={8} computer={4}><UsersCard  user={user}/></Grid.Column>)}
-                        </Grid>
+                        <Divider />
+                        <Container >
+                            {this.props.data.users.length - 1 === 1 ? 
+                                <Label ribbon color="teal" size="large">There is one other person living with you</Label>
+                            :
+                                <Label ribbon color="teal" size="large">There are {this.props.data.users.length-1} other people living with you</Label>
+                            }
+                            <Divider hidden/>
+                            <div>{displayCardUser}</div>
+                        </Container>
                     </Container>
-                </Container>
-            : 
-                <Segment>
-                    <Loader />
-                    <Image src='/images/wireframe/short-paragraph.png' />
-                </Segment>
-        )
+                : 
+                    <Segment>
+                        <Loader />
+                        <Image src='/images/wireframe/short-paragraph.png' />
+                    </Segment>
+            )
+        } else {
+            return (
+                this.props.data.home ? 
+                    <Container >   
+                        <Container>              
+                            <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
+                        </Container>
+                        <Divider hidden/>
+                        <Divider hidden/>
+                        <Container >
+                            <Menu attached='top' tabular>
+                            <Menu.Item color='teal' name='outstanding' active={activeItem === 'outstanding'} onClick={this.handleItemClick} />
+                            <Menu.Item color='yellow' name='bills' active={activeItem === 'bills'} onClick={this.handleItemClick}/>
+                            <Menu.Item color='olive' name='tasks' active={activeItem === 'tasks'} onClick={this.handleItemClick}/>
+                            <Menu.Item color='pink' name='household essentials' active={activeItem === 'household essentials'} onClick={this.handleItemClick}/>
+                            </Menu>
+                            <div>{displayedCard}</div>
+                        </Container>
+                        <Divider />
+                        <Divider hidden/>
+                        <Container >
+                            {this.props.data.users.length - 1 === 1 ? 
+                                <Label ribbon color="teal" size="large">There is one other person living with you</Label>
+                            :
+                                <Label ribbon color="teal" size="large">There are {this.props.data.users.length-1} other people living with you</Label>
+                            }
+                            <Divider hidden/>
+                            <Grid columns={4}>
+                                {this.props.data.users.filter(user => user.id !== this.props.user.id).map(user => <Grid.Column key={user.id} mobile={16} tablet={8} computer={4}><UsersCard  user={user}/></Grid.Column>)}
+                            </Grid>
+                        </Container>
+                    </Container>
+                : 
+                    <Segment>
+                        <Loader />
+                        <Image src='/images/wireframe/short-paragraph.png' />
+                    </Segment>
+            )
+        }
     }
 }
 

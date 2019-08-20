@@ -1,5 +1,4 @@
 import swal from 'sweetalert';
-import App from '../App';
 const endpoint = 'http://localhost:3000/api/v1'
 const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`

@@ -1,37 +1,25 @@
 import React from 'react'
-import { Card, Icon, Image, Label, Button, Divider } from 'semantic-ui-react'
+import HomeCardFront from '../components/HomeCardFront'
+import HomeCardBack from '../components/HomeCardBack'
 
-// rewor`k to show only the name and key. Upon click expand the details and give the option to edit
+class HomeCard extends React.Component {
 
-const HomeCard = ({home, redirectToHomeProfile}) => (
-        <Card>
-            {/* <Image src={} wrapped ui={false} /> */}
-            <Card.Content>
-            <Card.Header><div className='text-home-name'>{home.name}</div></Card.Header>
-            <Divider hidden />
-            <Card.Meta>
-                <span className='date'>{home.address_one}</span>
-            </Card.Meta>
-            <Card.Meta>
-                <span className='date'>{home.address_two}</span>
-            </Card.Meta>
-            <Card.Meta>
-                <span className='date'>{home.city}</span>
-            </Card.Meta>
-            <Card.Meta>
-                <span className='date'>{home.postcode}</span>
-            </Card.Meta>
-            </Card.Content>
-            <Card.Content extra>
-            <Card.Meta>
-                <Label>
-                    <Icon name='key' /> Home key
-                </Label>
-                <span className='date'>{home.home_key}</span>
-            </Card.Meta>
-            </Card.Content>
-            <Button color='teal' fluid size='small' onClick={() => redirectToHomeProfile()}><div className='comfortaa'>Change home details</div></Button>
-        </Card>
-)
+    state = {
+        front: true
+    }
+
+    showDetails = () => {
+        this.setState({front: !this.state.front})
+    }
+
+
+    render () {
+        let displayCard
+        this.state.front ? displayCard = <HomeCardFront home={this.props.home} showDetails={this.showDetails}/> : displayCard = <HomeCardBack home={this.props.home}  showDetails={this.showDetails} redirectToHomeProfile={this.props.redirectToHomeProfile}/> 
+        return (
+            <div>{displayCard}</div>
+        )
+    }
+}
 
 export default HomeCard

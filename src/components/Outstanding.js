@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Checkbox, Label, Grid, Divider, Header } from 'semantic-ui-react'
+import { Table, Checkbox, Label, Grid, Divider, Header } from 'semantic-ui-react'
 
 class Outstanding extends Component{
 
@@ -7,13 +7,22 @@ class Outstanding extends Component{
 
         const unpaidBillSplits = this.props.data.bill_splits.filter(bill_split => bill_split.paid === false)
         const uncompletedTasks = this.props.data.tasks.filter(task => task.completed === false)
-        const neededEssentials = this.props.data.essentials.filter(essential => essential.more == true)
+        const neededEssentials = this.props.data.essentials.filter(essential => essential.more === true)
         const updateTask = this.props.updateTask
         const updateBillSplit = this.props.updateBillSplit
         const updateEssential = this.props.updateEssential
 
         const bills = this.props.bills
         const userBills = unpaidBillSplits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
+
+        const width = this.props.width;
+        const isMobile = width < 550;
+
+        if (isMobile) {
+            return (
+<div>Mobile</div>
+            )
+        } else {
 
         return (
             <Grid textAlign='center' verticalAlign='top'>
@@ -47,7 +56,7 @@ class Outstanding extends Component{
                                     {userBills.map(bill => <p>{bill.date_due}</p>)}
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle checked={unpaid_bill_split.paid} onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
+                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle checked={unpaid_bill_split.paid} key={unpaid_bill_split.id} onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>
                             
@@ -70,7 +79,7 @@ class Outstanding extends Component{
                                     {uncompletedTasks.map(task => <p>{task.day}</p>)}
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle checked={false_task.completed} onChange={() => updateTask(false_task, this.props.user)} /></p>)}</div>
+                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle checked={false_task.completed} key={false_task.id} onChange={() => updateTask(false_task, this.props.user)} /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>
 
@@ -92,7 +101,7 @@ class Outstanding extends Component{
                                 <Table.Cell>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle checked={!false_essentail.more} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
+                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle checked={!false_essentail.more} key={false_essentail.id} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
                                 </Table.Cell>
                             </Table.Row>
 
@@ -102,7 +111,7 @@ class Outstanding extends Component{
                 </Grid.Column>
             </Grid>
         )
-    }
+    }}
 }
 
 export default Outstanding
