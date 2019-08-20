@@ -26,7 +26,7 @@ const NewBill = ({ home, addNewBill }) => {
             <Segment stacked>
                 <Form.Input fluid required icon='user' iconPosition='left' required placeholder='Name' type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
                 <Form.Input fluid required icon='suitcase' iconPosition='left' placeholder='Provider'  type="text" name="provider" value={provider} onChange={e => setProvider(e.target.value)}/>
-                <Form.Input fluid required icon='money bill alternate outline' iconPosition='left' placeholder='Total'  type="text" name="total" value={total} onChange={e => setTotal(e.target.value)}/>
+                <Form.Input fluid required icon='money bill alternate outline' iconPosition='left' placeholder='Household total'  type="text" name="total" value={total} onChange={e => setTotal(e.target.value)}/>
                 <Form.Input fluid icon='time' iconPosition='left' placeholder='Date Due' type="date" name="date_due" value={date_due} onChange={e => setDateDue(e.target.value)}/>
                 <Button color='teal' fluid size='large' type='submit'><div className='comfortaa'>Submit</div></Button>
             </Segment>

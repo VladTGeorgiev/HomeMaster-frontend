@@ -21,7 +21,7 @@ class Outstanding extends Component{
         if (isMobile) {
             return (
                 <Grid textAlign='center' verticalAlign='top'>
-                <Grid.Column style={{ width: '100vw' }}>
+                <Grid.Column style={{ width: '90vw' }}>
                 <Divider hidden fitted/>
                 <Divider hidden fitted/>
                 <Divider hidden fitted/>
@@ -29,7 +29,7 @@ class Outstanding extends Component{
                 <Table.Body>
                             <Table.Row>
                                 <Table.HeaderCell></Table.HeaderCell>
-                                <Table.HeaderCell>Amount</Table.HeaderCell>
+                                <Table.HeaderCell></Table.HeaderCell>
                                 <Table.HeaderCell>When</Table.HeaderCell> 
                                 <Table.HeaderCell>Complete</Table.HeaderCell>
                             </Table.Row>
@@ -44,10 +44,11 @@ class Outstanding extends Component{
                                         </Header.Content>
                                     </Header>
                                 </Table.Cell>
-
                                 <Table.Cell>
-                                    {unpaidBillSplits.map(unpaid_bill_split => <p> £{unpaid_bill_split.amount} </p>)}
                                 </Table.Cell>
+                                {/* <Table.Cell>
+                                    {unpaidBillSplits.map(unpaid_bill_split => <p> £{unpaid_bill_split.amount} </p>)}
+                                </Table.Cell> */}
                                 <Table.Cell>
                                     {userBills.map(bill => <p>{bill.date_due}</p>)}
                                 </Table.Cell>
@@ -86,7 +87,7 @@ class Outstanding extends Component{
                             <Divider hidden fitted/>
                             <Divider hidden fitted/>
 
-                        <Label ribbon color="pink">Essentials</Label>
+                        <Label ribbon color="pink">Household essentials</Label>
                         <Divider hidden fitted/>
                         <Table.Row>
                                 <Table.Cell>

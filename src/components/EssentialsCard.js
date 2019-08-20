@@ -25,9 +25,10 @@ class EssentailsCard extends React.Component {
                             <Table.Body>
                                 <Table.Row>
                                     <Table.HeaderCell></Table.HeaderCell>
+                                    <Table.HeaderCell></Table.HeaderCell>
                                     <Table.HeaderCell>Need more?</Table.HeaderCell>
                                     <Table.HeaderCell></Table.HeaderCell>
-                                <Table.HeaderCell>You could also...</Table.HeaderCell>
+                                    <Table.HeaderCell>You could also...</Table.HeaderCell>
                                 </Table.Row>
     
                             <Label ribbon color="pink">Needed</Label>
@@ -41,17 +42,19 @@ class EssentailsCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
+                                    </Table.Cell>
+                                    <Table.Cell>
                                         {neededEssentials.map(essential => <p><Checkbox toggle checked={essential.more} onChange={() => updateEssential(essential)} /></p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {neededEssentials.map(essential => <Button color='orange' fluid size='small' onClick={(e) => buyFromAmazon(e, essential.name)}><div className='comfortaa'>Buy from Amazon</div></Button>)}
+                                        {neededEssentials.map(essential => <Button color='orange' fluid size='small' onClick={(e) => buyFromAmazon(e, essential.name)}><div className='comfortaa'>Amazon</div></Button>)}
                                     </Table.Cell>
                                 </Table.Row>
                                 <Divider hidden fitted/>
-                            <Divider hidden fitted/>
-                            <Divider hidden fitted/>
+                                <Divider hidden fitted/>
+                                <Divider hidden fitted/>
     
                             <Label ribbon color="pink">We have enough of theses</Label>
                             <Divider hidden fitted/>
@@ -62,6 +65,8 @@ class EssentailsCard extends React.Component {
                                                 {notNeededEssentials.map(essential => <p>{essential.name}</p>)}
                                             </Header.Content>
                                         </Header>
+                                    </Table.Cell>
+                                    <Table.Cell>
                                     </Table.Cell>
                                     <Table.Cell>
                                         {notNeededEssentials.map(essential => <p><Checkbox toggle checked={essential.more} onChange={() => updateEssential(essential)} /></p>)}

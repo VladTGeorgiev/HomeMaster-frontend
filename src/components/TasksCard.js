@@ -17,7 +17,8 @@ class TasksCard extends React.Component {
     userTaskDetails = (task) => {
         const description = `Description: ${task.description}`
         const user = `Who's responsible: ${this.props.user.first_name}`
-        const text = [description, user]
+        const day = `When: ${task.day}`
+        const text = [description, user, day]
         swal({
             title: "Details",
             text: text.join('\n\n'),
@@ -31,7 +32,8 @@ class TasksCard extends React.Component {
         const taskUser = users.find(user => user.id === task.user_id).first_name
         const description = `Description: ${task.description}`
         const user = `Who's responsible: ${taskUser}`
-        const text = [description, user]
+        const day = `When: ${task.day}`
+        const text = [description, user, day]
         swal({
             title: "Details",
             text: text.join('\n\n'),
@@ -55,16 +57,14 @@ class TasksCard extends React.Component {
                 <Grid textAlign='center' verticalAlign='top'>
                     <Grid.Column style={{ width: '90vw' }}>
                     <Divider hidden fitted/>
-                <Divider hidden fitted/>
-                <Divider hidden fitted/>
-                <Divider hidden fitted/>
-                            
+                    <Divider hidden fitted/>
+                    <Divider hidden fitted/>
+                    <Divider hidden fitted/>   
                         <Table.Body>
                                 <Table.Row>
                                     <Table.HeaderCell></Table.HeaderCell>
-                                    <Table.HeaderCell>Completed?</Table.HeaderCell>
                                     <Table.HeaderCell></Table.HeaderCell>
-                                    <Table.HeaderCell>When</Table.HeaderCell>
+                                    <Table.HeaderCell>Completed?</Table.HeaderCell>
                                     <Table.HeaderCell></Table.HeaderCell>
                                     <Table.HeaderCell>You could also...</Table.HeaderCell>
                                 </Table.Row>
@@ -81,12 +81,9 @@ class TasksCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
+                                    </Table.Cell>
+                                    <Table.Cell>
                                         {tasks.map(task => <p><Checkbox toggle checked={task.completed} onChange={() => updateTask(task, this.props.user)}/></p>)}           
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {tasks.map(task => <p>{task.day}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                     </Table.Cell>
@@ -95,8 +92,9 @@ class TasksCard extends React.Component {
                                     </Table.Cell>
                                 </Table.Row>
                                 <Divider hidden fitted/>
-                            <Divider hidden fitted/>
-                            <Divider hidden fitted/>
+                                <Divider hidden fitted/>
+                                <Divider hidden fitted/>
+
                             <Label ribbon color="olive">All other tasks</Label>
                             <Divider hidden fitted/>
                                 <Table.Row>
@@ -109,23 +107,20 @@ class TasksCard extends React.Component {
                                         </Header>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {otherTasks.map(task => <p><Checkbox toggle onChange={this.message} checked={task.completed}/></p>)} 
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {otherTasks.map(task => <p><Checkbox toggle onChange={this.message} checked={task.completed}/></p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {otherTasks.map(task => <p>{task.day}</p>)}
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}><div className='comfortaa'>Assign to yourself</div></Button>)} 
+                                        {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}><div className='comfortaa'>Volunteer</div></Button>)} 
                                     </Table.Cell>
                                 </Table.Row>
                                 <Divider hidden/>
                                 <Divider hidden fitted/>
-                            <Divider hidden fitted/>
-                            <Divider hidden fitted/>
+                                <Divider hidden fitted/>
+                                <Divider hidden fitted/>
                             </Table.Body>
                             <Button color='olive' size='medium' onClick={() => this.props.addNewTaskForm()} ><div className='comfortaa'>Add more tasks</div></Button>
                     </Grid.Column>
