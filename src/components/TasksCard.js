@@ -50,7 +50,7 @@ class TasksCard extends React.Component {
         const users = this.props.users
 
         const width = this.props.width;
-        const isMobile = width < 550;
+        const isMobile = width < 770;
 
         if (isMobile) {
             return (

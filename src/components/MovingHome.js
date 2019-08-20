@@ -13,7 +13,7 @@ const MovingHome = ({ moveToNewHome, generateRandomHomeKey, createNewHome, width
   const [city, setCity] = useState('')
   const [postcode, setPostcode] = useState('')
 
-  const isMobile = width < 550;
+  const isMobile = width < 770;
   
 if (isMobile) {
     return (

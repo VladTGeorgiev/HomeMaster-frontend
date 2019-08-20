@@ -69,7 +69,7 @@ class BillsCard extends React.Component {
         const addOtherBillsToCurrentUser = this.props.addOtherBillsToCurrentUser
 
         const width = this.props.width;
-        const isMobile = width < 550;
+        const isMobile = width < 770;
 
         if (isMobile) {
             return (

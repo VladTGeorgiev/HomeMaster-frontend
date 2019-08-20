@@ -140,7 +140,7 @@ class Dashboard extends Component {
     render() {
         
         const width = this.props.width;
-        const isMobile = width < 550;
+        const isMobile = width < 770;
         const { activeItem } = this.state
         let displayedCard
         let users = this.props.data.users

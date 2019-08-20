@@ -16,7 +16,7 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy, width }
   const [password, setPassword] = useState('')
   // const [avatar, setAvatar] = useState('')
 
-  const isMobile = width < 550;
+  const isMobile = width < 770;
 
   let cookie_policy = user.cookie_policy
   const setCookiePolicy = () => {

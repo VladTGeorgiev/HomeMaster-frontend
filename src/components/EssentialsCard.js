@@ -12,7 +12,7 @@ class EssentailsCard extends React.Component {
         const buyFromAmazon = this.props.buyFromAmazon
 
         const width = this.props.width;
-        const isMobile = width < 550;
+        const isMobile = width < 770;
 
         if (isMobile) {
             return (

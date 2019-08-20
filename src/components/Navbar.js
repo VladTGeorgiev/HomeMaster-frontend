@@ -52,7 +52,7 @@ export default class Navbar extends Component {
             <Menu.Item active position='left' name='dashboard' active={activeItem === 'dashboard'} onClick={this.handleItemClick} onClick={() => this.props.redirectToDashboard()}>
                 <img src={logo} alt="Logo" size='small' />  
             </Menu.Item>
-            <div className='logo'>Home Sweet Home</div>
+              <div className='logo'>Home Sweet Home</div>
             <Menu.Item position='right' name='PROFILE' active={activeItem === 'PROFILE'} onClick={this.handleItemClick} onClick={() => this.userMenu()}>
               <div className='welcome-message'>Hello, {this.props.user.first_name}!</div>
             <img src={user} alt="Logo"/>

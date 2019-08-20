@@ -16,7 +16,7 @@ class Outstanding extends Component{
         const userBills = unpaidBillSplits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
 
         const width = this.props.width;
-        const isMobile = width < 550;
+        const isMobile = width < 770;
 
         if (isMobile) {
             return (
