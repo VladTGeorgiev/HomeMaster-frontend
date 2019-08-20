@@ -14,7 +14,7 @@ const Profile = ({ user, updateUser, deleteUser, redirectToCookiePolicy }) => {
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [password, setPassword] = useState('')
-  // const [avatar, setAvatar] = useState('')
+  const [avatar, setAvatar] = useState('')
 
   let cookie_policy = user.cookie_policy
   const setCookiePolicy = () => {

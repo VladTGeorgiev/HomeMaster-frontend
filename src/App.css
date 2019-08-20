@@ -24,6 +24,8 @@
 .welcome-message {
   display: flex;
   float: right;
+  color: #02b5ac;
+  padding-right: 1rem;
 }
 
 .comfortaa {
@@ -48,6 +50,14 @@
   color: #02b5ac;
 }
 
-
+@media screen and (max-width: 905px){
+  .logo {
+    font-size: 1.5rem;
+  }
+  .welcome-message{
+    display: none;
+  }
+  
+}
 
 

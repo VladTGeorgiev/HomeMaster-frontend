@@ -5,6 +5,7 @@ import { Button, Menu, Item, Label, Header, Divider } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 export default class Navbar extends Component {
+
     state = { 
         activeItem: '' 
     }
@@ -53,7 +54,7 @@ export default class Navbar extends Component {
             </Menu.Item>
             <div className='logo'>Home Sweet Home</div>
             <Menu.Item position='right' name='PROFILE' active={activeItem === 'PROFILE'} onClick={this.handleItemClick} onClick={() => this.userMenu()}>
-              <Item><div className='comfortaa'>Hello, {this.props.user.first_name}!</div></Item>
+              <div className='welcome-message'>Hello, {this.props.user.first_name}!</div>
             <img src={user} alt="Logo"/>
             </Menu.Item>
         </Menu>

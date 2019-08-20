@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card, Icon, Image, Label, Button, Divider } from 'semantic-ui-react'
 
+// rewor`k to show only the name and key. Upon click expand the details and give the option to edit
+
 const HomeCard = ({home, redirectToHomeProfile}) => (
         <Card>
             {/* <Image src={} wrapped ui={false} /> */}

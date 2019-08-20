@@ -194,7 +194,7 @@ class BillsCard extends React.Component {
                                         {otherBills.map(otherBill => <p>£{otherBill.total}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {userBills.map(bill => <p>{bill.provider}</p>)}
+                                        {otherBills.map(bill => <p>{bill.provider}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
                                         {otherBills.map(otherBill => <p>{otherBill.date_due}</p>)}
