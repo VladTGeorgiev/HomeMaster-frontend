@@ -158,7 +158,7 @@ class BillsCard extends React.Component {
                                     <Table.Row>
                                         <Table.HeaderCell></Table.HeaderCell>
                                         <Table.HeaderCell></Table.HeaderCell>
-                                        <Table.HeaderCell>Paid?</Table.HeaderCell>
+                                        <Table.HeaderCell>Have you paid?</Table.HeaderCell>
                                         <Table.HeaderCell></Table.HeaderCell>
                                         <Table.HeaderCell>You could also...</Table.HeaderCell>
                                     </Table.Row>

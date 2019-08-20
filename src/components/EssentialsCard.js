@@ -19,9 +19,9 @@ class EssentailsCard extends React.Component {
                 <Grid textAlign='center' verticalAlign='top'>
                     <Grid.Column style={{ width: '90vw' }}>
                     <Divider hidden fitted/>
-                <Divider hidden fitted/>
-                <Divider hidden fitted/>
-                <Divider hidden fitted/>
+                    <Divider hidden fitted/>
+                    <Divider hidden fitted/>
+                    <Divider hidden fitted/>
                             <Table.Body>
                                 <Table.Row>
                                     <Table.HeaderCell></Table.HeaderCell>
@@ -56,7 +56,7 @@ class EssentailsCard extends React.Component {
                                 <Divider hidden fitted/>
                                 <Divider hidden fitted/>
     
-                            <Label ribbon color="pink">We have enough of theses</Label>
+                            <Label ribbon color="pink">We have enough of these</Label>
                             <Divider hidden fitted/>
                                 <Table.Row>
                                     <Table.Cell>
@@ -79,8 +79,8 @@ class EssentailsCard extends React.Component {
                                 </Table.Row>
                                 <Divider hidden/>
                                 <Divider hidden fitted/>
-                            <Divider hidden fitted/>
-                            <Divider hidden fitted/>
+                                <Divider hidden fitted/>
+                                <Divider hidden fitted/>
 
                             </Table.Body>
                             <Button color='pink' size='medium' onClick={() => addNewEssential()} ><div className='comfortaa'>Add more items</div></Button>
@@ -121,7 +121,7 @@ class EssentailsCard extends React.Component {
                                     </Table.Cell>
                                 </Table.Row>
     
-                            <Label ribbon color="pink">We have enough of theses</Label>
+                            <Label ribbon color="pink">We have enough of these</Label>
                                 <Table.Row>
                                     <Table.Cell>
                                         <Header as='h5'>
