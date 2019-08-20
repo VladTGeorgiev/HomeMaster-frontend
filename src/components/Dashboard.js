@@ -165,8 +165,8 @@ class Dashboard extends Component {
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
-                        <Label className="mobile-dashboard-menu-item" color='teal'>Outstanding</Label>
-                        <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} width={this.width} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
+                        <Label className="mobile-dashboard-menu-item" color='teal' horizontal>Outstanding</Label>
+                        <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} width={this.props.width} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
                         </div> 
                     break;
                 case 'bills':
@@ -174,8 +174,8 @@ class Dashboard extends Component {
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
-                        <Label className="mobile-dashboard-menu-item" color='yellow'>Bills</Label>
-                        <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
+                        <Label className="mobile-dashboard-menu-item" color='yellow' horizontal>Bills</Label>
+                        <BillsCard user={this.props.user} width={this.props.width} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
                         /> 
                     </div> 
                     break;
@@ -184,8 +184,8 @@ class Dashboard extends Component {
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
-                        <Label className="mobile-dashboard-menu-item" color='olive'>Tasks</Label>
-                        <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
+                        <Label className="mobile-dashboard-menu-item" color='olive' horizontal>Tasks</Label>
+                        <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} width={this.props.width} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
                     </div> 
                     break;
                 case 'household essentials':
@@ -193,8 +193,8 @@ class Dashboard extends Component {
                     <Divider hidden fitted/>
                     <Divider hidden fitted/>
                     <Divider hidden fitted/>
-                    <Label className="mobile-dashboard-menu-item" color='pink'>Household essentials</Label>
-                    <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
+                    <Label className="mobile-dashboard-menu-item" color='pink' horizontal>Household essentials</Label>
+                    <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} width={this.props.width} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
                     </div> 
                     break;
                 default:
@@ -203,17 +203,17 @@ class Dashboard extends Component {
         } else {
         switch (this.state.activeItem) {
             case 'outstanding':
-                displayedCard = <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} updateTask={this.props.updateTask} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
+                displayedCard = <Outstanding user={this.props.user} data={this.props.data} bills={this.props.data.bills} width={this.props.width} updateTask={this.props.updateTask} updateBillSplit={this.updateBillSplitState} updateEssential={this.props.updateEssential}/>
                 break;
             case 'bills':
-                displayedCard = <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
+                displayedCard = <BillsCard user={this.props.user} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} width={this.props.width} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
                 />
                 break;
             case 'tasks':
-                displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
+                displayedCard = <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} users={this.props.data.users} width={this.props.width} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
                 break;
             case 'household essentials':
-                displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
+                displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} width={this.props.width} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
                 break;
             default:
                 displayedCard = <Outstanding/>
@@ -234,10 +234,11 @@ class Dashboard extends Component {
                             <div>{displayedCard}</div>
                         </Container>
                         <Divider />
-                        <Container text>              
+                        <Container>
+                        <Label ribbon color="teal" size="large">Your home</Label>
+                        <Divider hidden/>           
                             <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
                         </Container>
-                        <Divider hidden/>
                         <Divider />
                         <Container >
                             {this.props.data.users.length - 1 === 1 ? 

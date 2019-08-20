@@ -203,6 +203,7 @@ class BillsCard extends React.Component {
                                         {otherBills.map(otherBill => <Button color='yellow' fluid size='small' onClick={(e) => addOtherBillsToCurrentUser(otherBill, this.props.user)}>Take part</Button>)} 
                                     </Table.Cell>
                                 </Table.Row>
+                                <Divider hidden/>
                                 <Table.Row>
                                     <Button color='yellow' size='medium' onClick={() => addNewBillForm()} >Add more bills</Button>
                                 </Table.Row>

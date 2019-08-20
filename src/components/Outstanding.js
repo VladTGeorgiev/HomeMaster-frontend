@@ -20,7 +20,101 @@ class Outstanding extends Component{
 
         if (isMobile) {
             return (
-<div>Mobile</div>
+                <Grid textAlign='center' verticalAlign='top'>
+                <Grid.Column style={{ width: '100vw' }}>
+                <Divider hidden fitted/>
+                <Divider hidden fitted/>
+                <Divider hidden fitted/>
+                <Divider hidden fitted/>
+                <Table.Body>
+                            <Table.Row>
+                                <Table.HeaderCell></Table.HeaderCell>
+                                <Table.HeaderCell>Amount</Table.HeaderCell>
+                                <Table.HeaderCell>When</Table.HeaderCell> 
+                                <Table.HeaderCell>Complete</Table.HeaderCell>
+                            </Table.Row>
+                        
+                        <Label ribbon color="yellow">Bills</Label>
+                        <Divider hidden fitted/>
+                            <Table.Row>
+                                <Table.Cell>
+                                    <Header as='h5'>
+                                        <Header.Content>
+                                            {userBills.map(bill => <p>{bill.name}</p>)}
+                                        </Header.Content>
+                                    </Header>
+                                </Table.Cell>
+
+                                <Table.Cell>
+                                    {unpaidBillSplits.map(unpaid_bill_split => <p> £{unpaid_bill_split.amount} </p>)}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {userBills.map(bill => <p>{bill.date_due}</p>)}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <div>{unpaidBillSplits.map(unpaid_bill_split => <p><Checkbox toggle checked={unpaid_bill_split.paid} key={unpaid_bill_split.id} onChange={() => updateBillSplit(unpaid_bill_split, this.props.user)} /></p>)}</div>
+                                </Table.Cell>
+                            </Table.Row>
+                            <Divider hidden fitted/>
+                            <Divider hidden fitted/>
+                            <Divider hidden fitted/>
+                            
+                        <Label ribbon color="olive">Tasks</Label>
+                        <Divider hidden fitted/>
+                            <Table.Row>
+                                <Table.Cell>
+                                    <Header as='h5'>
+                                        <Header.Content>
+                                        <div>{uncompletedTasks.map(false_task => <>
+                                                    <p>{false_task.name}</p>
+                                                </>
+                                            )}</div>
+                                        </Header.Content>
+                                    </Header>
+                                </Table.Cell>
+
+                                <Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {uncompletedTasks.map(task => <p>{task.day}</p>)}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <div>{uncompletedTasks.map(false_task => <p><Checkbox toggle checked={false_task.completed} key={false_task.id} onChange={() => updateTask(false_task, this.props.user)} /></p>)}</div>
+                                </Table.Cell>
+                            </Table.Row>
+                            <Divider hidden fitted/>
+                            <Divider hidden fitted/>
+                            <Divider hidden fitted/>
+
+                        <Label ribbon color="pink">Essentials</Label>
+                        <Divider hidden fitted/>
+                        <Table.Row>
+                                <Table.Cell>
+                                    <Header as='h5'>
+                                        <Header.Content>
+                                        <div>{neededEssentials.map(false_essentail=> <>
+                                                    <p>{false_essentail.name}</p>
+                                                </>
+                                            )}</div>
+                                        </Header.Content>
+                                    </Header>
+                                </Table.Cell>
+                                <Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <div>{neededEssentials.map(false_essentail => <p><Checkbox toggle checked={!false_essentail.more} key={false_essentail.id} onChange={() => updateEssential(false_essentail, this.props.user)} /></p>)}</div>
+                                </Table.Cell>
+                            </Table.Row>
+                            <Divider hidden fitted/>
+                            <Divider hidden fitted/>
+                            <Divider hidden fitted/>
+
+
+                        </Table.Body>
+                </Grid.Column>
+            </Grid>
             )
         } else {
 
@@ -50,7 +144,7 @@ class Outstanding extends Component{
                                     </Header>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    {unpaidBillSplits.map(unpaid_bill_split => <p> £ {unpaid_bill_split.amount} </p>)}
+                                    {unpaidBillSplits.map(unpaid_bill_split => <p> £{unpaid_bill_split.amount} </p>)}
                                 </Table.Cell>
                                 <Table.Cell>
                                     {userBills.map(bill => <p>{bill.date_due}</p>)}
