@@ -17,7 +17,7 @@ class EssentailsCard extends React.Component {
         if (isMobile) {
             return (
                 <Grid textAlign='center' verticalAlign='top'>
-                    <Grid.Column style={{ width: '100vw' }}>
+                    <Grid.Column style={{ width: '90vw' }}>
                     <Divider hidden fitted/>
                 <Divider hidden fitted/>
                 <Divider hidden fitted/>
@@ -73,15 +73,12 @@ class EssentailsCard extends React.Component {
                                     </Table.Cell>
                                 </Table.Row>
                                 <Divider hidden/>
-                                <Table.Row>
-                                    <Button color='pink' size='medium' onClick={() => addNewEssential()} ><div className='comfortaa'>Add more items</div></Button>
-                                </Table.Row>
                                 <Divider hidden fitted/>
                             <Divider hidden fitted/>
                             <Divider hidden fitted/>
 
                             </Table.Body>
-
+                            <Button color='pink' size='medium' onClick={() => addNewEssential()} ><div className='comfortaa'>Add more items</div></Button>
                     </Grid.Column>
                 </Grid>
     
