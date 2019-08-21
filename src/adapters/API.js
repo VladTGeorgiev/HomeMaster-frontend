@@ -1,5 +1,5 @@
 import swal from 'sweetalert';
-const endpoint = 'tcp://0.0.0.0:54926'
+const endpoint = 'https://home-sweet-home-api.herokuapp.com/api/v1'
 const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
