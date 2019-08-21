@@ -16,6 +16,7 @@ import essentialsIcon from '../media/check-purple.png'
 import oustandingIcon from '../media/hourglass.png'
 import taskIcon from '../media/construction.png'
 import billIcon from '../media/credit-card-yellow.png'
+import Rechart from '../components/Rechart'
 
 class Dashboard extends Component {
     state = { 
@@ -235,6 +236,7 @@ class Dashboard extends Component {
                         <Label ribbon color="teal" size="large">Your home</Label>
                         <Divider hidden/>           
                             <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
+                            <Rechart></Rechart>
                         </Container>
                         <Divider />
                         <Container >
@@ -259,6 +261,7 @@ class Dashboard extends Component {
                     <Container >   
                         <Container>              
                             <HomeCard home={this.props.data.home} redirectToHomeProfile={this.props.redirectToHomeProfile}/>
+                            <Rechart></Rechart>
                         </Container>
                         <Divider hidden/>
                         <Divider hidden/>
