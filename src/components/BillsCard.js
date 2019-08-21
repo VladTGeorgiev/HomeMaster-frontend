@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Header, Grid, Button, Checkbox, Label, Divider, Icon } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
+import PieChart from '../components/PieChart.jsx'
 
 class BillsCard extends React.Component {
 
