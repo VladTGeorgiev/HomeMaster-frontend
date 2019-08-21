@@ -145,7 +145,6 @@ class Dashboard extends Component {
         
         let displayCardUser
         if (users === undefined) {
-            console.log(users)
         } else {
         this.state.front ? displayCardUser = <Grid columns={2}>
             {users.filter(user => user.id !== this.props.user.id).map(user => <Grid.Column key={user.id}><UsersCardMobile user={user} showDetails={this.showDetails}/></Grid.Column>)}        

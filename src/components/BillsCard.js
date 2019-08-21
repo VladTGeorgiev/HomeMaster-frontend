@@ -57,7 +57,11 @@ class BillsCard extends React.Component {
 
         const other_bill_splits = other_bill_splits_all.filter(obs => !user_bill_splits.map(ubs => ubs.bill_id).includes(obs.bill_id))
 
-        const otherBillsAll = other_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
+        const unique_other_bill_splits = other_bill_splits.map(e => e.bill_id).map((e, i, final) => final.indexOf(e) === i && i).filter(e => other_bill_splits[e]).map(e => other_bill_splits[e]);
+          
+          
+
+        const otherBillsAll = unique_other_bill_splits.map(bill_split => bills.filter(bill => bill_split.bill_id === bill.id)[0])
 
         const otherBills = otherBillsAll.filter(oB => !userBills.map(uB => uB.id).includes(oB.id))
 
@@ -204,7 +208,7 @@ class BillsCard extends React.Component {
                                         <Table.Cell>
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {other_bill_splits.map(other_bill_split => <p><Checkbox toggle onChange={this.message} checked={other_bill_split.paid}/></p>)}
+                                            {unique_other_bill_splits.map(unique_other_bill_split => <p><Checkbox toggle onChange={this.message} checked={unique_other_bill_split.paid}/></p>)}
                                         </Table.Cell>
                                         <Table.Cell>
                                         </Table.Cell>
@@ -374,7 +378,7 @@ class BillsCard extends React.Component {
     
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {other_bill_splits.map(other_bill_split => <p><Checkbox toggle onChange={this.message} checked={other_bill_split.paid}/></p>)}
+                                            {unique_other_bill_splits.map(unique_other_bill_split => <p><Checkbox toggle onChange={this.message} checked={unique_other_bill_split.paid}/></p>)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             {otherBills.map(otherBill => <p>£{otherBill.total}</p>)}
