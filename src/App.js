@@ -14,6 +14,7 @@ import CookiePolicy from './components/CookiePolicy';
 import MovingHome from './components/MovingHome';
 
 class App extends React.Component {
+  
 
   constructor(props)
   {
