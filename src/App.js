@@ -204,7 +204,7 @@ class App extends React.Component {
 
   moveToNewHome = (home_key) => {
     if (this.state.data.bill_splits === undefined) {
-      fetch('http://localhost:3000/api/v1/homes', {
+      fetch(homesUrl, {
         headers: {Authorization: API.token()}
         }).then(res => res.json())
         .then(homes => this.findHome(homes, home_key))
@@ -218,7 +218,7 @@ class App extends React.Component {
           buttons: false
           })
       } else {
-        fetch('http://localhost:3000/api/v1/homes', {
+        fetch(homesUrl, {
           headers: {Authorization: API.token()}
           }).then(res => res.json())
           .then(homes => this.findHome(homes, home_key))
