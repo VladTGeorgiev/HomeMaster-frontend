@@ -114,7 +114,7 @@ class TasksCard extends React.Component {
                                     <Table.Cell>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}><div className='comfortaa'>Volunteer</div></Button>)} 
+                                        {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}><div className='comfortaa'>Take over</div></Button>)} 
                                     </Table.Cell>
                                 </Table.Row>
                                 <Divider hidden/>
@@ -194,7 +194,7 @@ class TasksCard extends React.Component {
                                         {otherTasks.map(task => <p>{task.day}</p>)}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}><div className='comfortaa'>Assign to yourself</div></Button>)} 
+                                        {otherTasks.map(task => <Button color='yellow' fluid size='small' onClick={(e) => this.props.addTaskToCurrentUser(task, this.props.user)}><div className='comfortaa'>Take over</div></Button>)} 
                                     </Table.Cell>
                                 </Table.Row>
                                 <Divider hidden/>
