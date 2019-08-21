@@ -1,5 +1,5 @@
 import swal from 'sweetalert';
-const endpoint = 'http://localhost:3000/api/v1'
+const endpoint = 'tcp://0.0.0.0:54926'
 const usersUrl = `${endpoint}/users`
 const loginUrl = `${endpoint}/login`
 const homesUrl = `${endpoint}/homes`
