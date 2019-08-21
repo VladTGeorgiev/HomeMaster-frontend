@@ -321,10 +321,11 @@ class App extends React.Component {
           if (this.state.data.users.length === 1) {
             let tasks = this.state.data.tasks
             tasks.map(task => this.deleteTask(task))
+            this.deleteThisUser(this.state.user)
           } else {
             this.assignTasksToOtherUsers(this.state.user)
+            this.deleteThisUser(this.state.user)
           }
-          this.deleteThisUser(this.state.user)
           API.clearToken()
           swal({
             title: "Success!",

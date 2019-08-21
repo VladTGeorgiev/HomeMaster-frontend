@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import logo from '../media/smart-house.png'
 import user from '../media/user.png'
-import { Button, Menu, Divider } from 'semantic-ui-react'
+import { Button, Menu, Divider, Label } from 'semantic-ui-react'
 import swal from '@sweetalert/with-react'
 
 export default class Navbar extends Component {
@@ -33,9 +33,11 @@ export default class Navbar extends Component {
           },
           content: (
             <div>
-              <Button color='teal' size='huge' onClick={()=>this.redirectToUserProfileCloseSwal()}><div className='text'>Your profile</div></Button>
+              <Label color='teal'>Hello, {this.props.user.first_name}!</Label>
                 <Divider hidden/>
-              <Button color='yellow' size='huge' onClick={()=>this.redirectToMovingHomeCloseSwal()}><div className='text'>Moving home?</div></Button>
+              <Button color='yellow' size='huge' onClick={()=>this.redirectToUserProfileCloseSwal()}><div className='text'>Your profile</div></Button>
+                <Divider hidden/>
+              <Button color='purple' size='huge' onClick={()=>this.redirectToMovingHomeCloseSwal()}><div className='text'>Moving home?</div></Button>
                 <Divider hidden/>
               <Button color='red' size='huge' onClick={()=>this.logOutCloseSwal()}><div className='text'>Log out</div></Button>
             </div>
