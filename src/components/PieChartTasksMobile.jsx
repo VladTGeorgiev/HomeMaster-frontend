@@ -23,13 +23,13 @@ export default class Example extends PureComponent {
 
     let extractNames = () =>{
         return this.props.data ?
-        this.props.data.bills : null
+        this.props.data.all_tasks : null
       }
     
       let createObject = (array) =>{
         let new_array = []
         for(let i=0;i< array.length;i++){
-          new_array.push({name: array[i].name, value: array[i].total})
+          new_array.push({name: array[i].name, value: array[i].user_id})
         }
         return new_array
       }
@@ -77,10 +77,10 @@ export default class Example extends PureComponent {
           />
           <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
           <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-          <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`£${value}`}</text>
-          <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+          {/* <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${value}`}</text> */}
+          {/* <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
             {`(${(percent * 100).toFixed(2)}%)`}
-          </text>
+          </text> */}
         </g>
       );
     };
@@ -88,13 +88,13 @@ export default class Example extends PureComponent {
     return (
       <>
       <Divider hidden/>
-      <Label ribbon color="yellow">Household statistics: Bills</Label>
-      <PieChart width={600} height={300}>
+      <Label ribbon color="olive">Household statistics: Tasks</Label>
+      <PieChart width={400} height={300}>
         <Pie
           activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          cx={400}
+          cx={170}
           cy={150}
           innerRadius={60}
           outerRadius={80}

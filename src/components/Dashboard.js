@@ -17,6 +17,9 @@ import oustandingIcon from '../media/hourglass.png'
 import taskIcon from '../media/construction.png'
 import billIcon from '../media/credit-card-yellow.png'
 import PieChart from './PieChart.jsx'
+import PieChartTasks from './PieChartTasks.jsx'
+import PieChartMobile from './PieChartMobile.jsx'
+import PieChartTasksMobile from './PieChartTasksMobile.jsx'
 
 class Dashboard extends Component {
     state = { 
@@ -173,8 +176,8 @@ class Dashboard extends Component {
                         <Divider hidden fitted/>
                         <Divider hidden fitted/>
                         <Label className="mobile-dashboard-menu-item" color='yellow' horizontal>Bills</Label>
-                        <BillsCard user={this.props.user} width={this.props.width} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}
-                        /> 
+                        <BillsCard user={this.props.user} width={this.props.width} bills={this.props.data.bills} bill_splits={this.props.data.bill_splits} all_bill_splits={this.props.data.all_bill_splits} removeBill={this.props.removeBill} addNewBillForm={this.addNewBillForm} updateBillSplit={this.updateBillSplitState} addOtherBillsToCurrentUser={this.props.addOtherBillsToCurrentUser}/> 
+                        <PieChartMobile data={this.props.data}></PieChartMobile>
                     </div> 
                     break;
                 case 'tasks':
@@ -184,6 +187,7 @@ class Dashboard extends Component {
                         <Divider hidden fitted/>
                         <Label className="mobile-dashboard-menu-item" color='olive' horizontal>Tasks</Label>
                         <TasksCard tasks={this.props.data.tasks} all_tasks={this.props.data.all_tasks} user={this.props.user} width={this.props.width} users={this.props.data.users} home={this.props.data.home} removeTask={this.removeTask} addNewTaskForm={this.addNewTaskForm} updateTask={this.props.updateTask} addTaskToCurrentUser={this.props.addTaskToCurrentUser}/>
+                        <PieChartTasksMobile data={this.props.data} ></PieChartTasksMobile>
                     </div> 
                     break;
                 case 'household essentials':
@@ -213,6 +217,9 @@ class Dashboard extends Component {
             case 'household essentials':
                 displayedCard = <EssentialsCard essentials={this.props.data.essentials} buyFromAmazon={this.buyFromAmazon} width={this.props.width} removeEssential={this.removeEssential} addNewEssential={this.addNewEssential} updateEssential={this.props.updateEssential}/>
                 break;
+            case 'reports':
+                displayedCard = <><PieChart data={this.props.data}></PieChart><PieChartTasks data={this.props.data} ></PieChartTasks></>
+                break;
             default:
                 displayedCard = <Outstanding/>
         }
@@ -222,7 +229,7 @@ class Dashboard extends Component {
             return (
                 this.props.data.home ? 
                     <Container >   
-                        <Container >
+                        {/* <Container > */}
                             <Menu attached='top' tabular>
                             <Menu.Item color='teal' name='outstanding' active={activeItem === 'outstanding'} onClick={this.handleItemClick} ><img src={oustandingIcon} alt='outstanding'/></Menu.Item>
                             <Menu.Item color='yellow' name='bills' active={activeItem === 'bills'} onClick={this.handleItemClick}><img src={billIcon} alt='bills'/></Menu.Item>
@@ -230,7 +237,7 @@ class Dashboard extends Component {
                             <Menu.Item color='pink' name='household essentials' active={activeItem === 'household essentials'} onClick={this.handleItemClick}><img src={essentialsIcon} alt='household essentials'/></Menu.Item>
                             </Menu>
                             <div>{displayedCard}</div>
-                        </Container>
+                        {/* </Container> */}
                         <Divider />
                         <Container>
                         <Label ribbon color="teal" size="large">Your home</Label>
@@ -269,6 +276,7 @@ class Dashboard extends Component {
                             <Menu.Item color='yellow' name='bills' active={activeItem === 'bills'} onClick={this.handleItemClick}/>
                             <Menu.Item color='olive' name='tasks' active={activeItem === 'tasks'} onClick={this.handleItemClick}/>
                             <Menu.Item color='pink' name='household essentials' active={activeItem === 'household essentials'} onClick={this.handleItemClick}/>
+                            <Menu.Item color='red' name='reports' active={activeItem === 'reports'} onClick={this.handleItemClick}/>
                             </Menu>
                             <div>{displayedCard}</div>
                         </Container>
