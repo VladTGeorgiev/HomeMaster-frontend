@@ -1,73 +1,73 @@
 * {
-  margin: 0;
-  padding: 0;
-  font-family: 'Comfortaa', cursive;
+	margin: 0;
+	padding: 0;
+	font-family: 'Comfortaa', cursive;
 }
 
 .logo {
-  height: 2rem;
-  margin-top: 1.5rem;
-  font-family: 'Lobster', cursive;
-  font-size: 3rem;
-  color: #02b5ac;
+	height: 2rem;
+	margin-top: 1.5rem;
+	font-family: 'Lobster', cursive;
+	font-size: 3rem;
+	color: #02b5ac;
 }
 
-.logo-main-page{
-  font-family: 'Lobster', cursive;
-  font-size: 6rem;
-  color: #02b5ac;
-  text-align: center;
-  padding-top: 15%;
-  padding-bottom: 3%;
+.logo-main-page {
+	font-family: 'Lobster', cursive;
+	font-size: 6rem;
+	color: #02b5ac;
+	text-align: center;
+	padding-top: 15%;
+	padding-bottom: 3%;
 }
 
 .welcome-message {
-  display: flex;
-  float: right;
-  color: #02b5ac;
-  padding-right: 1rem;
+	display: flex;
+	float: right;
+	color: #02b5ac;
+	padding-right: 1rem;
 }
 
 .comfortaa {
-  font-family: 'Comfortaa', cursive;
+	font-family: 'Comfortaa', cursive;
 }
 
 .text {
-  font-size: 1.8rem;
-  font-family: 'Lobster', cursive;
+	font-size: 1.8rem;
+	font-family: 'Lobster', cursive;
 }
 
 .text-home-name {
-  font-size: 1.8rem;
-  font-family: 'Lobster', cursive;
-  color: #02b5ac;
+	font-size: 1.8rem;
+	font-family: 'Lobster', cursive;
+	color: #02b5ac;
 }
 .swal-text {
-  text-align: center;
+	text-align: center;
 }
 
 .swal-title {
-  color: #02b5ac;
+	color: #02b5ac;
 }
 
 .mobile-dashboard-menu-item {
-  margin-top: 1rem;
-  text-align: center;
-  color: red;
+	margin-top: 1rem;
+	text-align: center;
+	color: red;
 }
 
 .home {
-  width: 100vw;
+	width: 100vw;
 }
 
-@media screen and (max-width: 905px){
-  .logo {
-    font-size: 1.5rem;
-  }
-  .logo-main-page {
-    font-size: 3rem;
-  }
-  .welcome-message{
-    display: none;
-  }
+@media screen and (max-width: 905px) {
+	.logo {
+		font-size: 1.5rem;
+	}
+	.logo-main-page {
+		font-size: 3rem;
+	}
+	.welcome-message {
+		display: none;
+	}
 }
